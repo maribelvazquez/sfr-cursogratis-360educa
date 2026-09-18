@@ -24,7 +24,7 @@ Todo el contenido normativo vive en el HTML, en secciones comentadas (`<!-- ====
 
 - `PREG` — las diez preguntas del levantamiento.
 - `FICHAS` — las cinco fichas de recitar.
-- `Q` — los seis reactivos.
+- `Q` — los tres reactivos.
 - `CHECK` — los ocho renglones del semáforo.
 
 Para cambiar un precepto citado hay que tocar tanto el texto visible como la ficha o el reactivo que lo repite. Están marcados con la clase `fte` (fuente).
@@ -52,13 +52,17 @@ Si cualquiera de estos cambia, la herramienta queda incorrecta:
 1. **La fecha del primer periodo anual de capacitación de Actividades Vulnerables** — 1 de enero a 31 de diciembre de 2027. Fuente: Reglas de Carácter General a que se refiere la LFPIORPI, Transitorio Séptimo del Acuerdo de 24 de julio de 2026. Está codificada en el contador (`new Date(2027,0,1)`) y repetida en el paso 1, en la tabla del paso 3, en una ficha y en un reactivo.
 2. **Las otras cuatro fechas de los transitorios** — 1 mar 2027 (Manual y selección de personal), 1 jun 2027 (mecanismos automatizados), 1 ene 2028 (auditoría). Tabla del paso 1.
 3. **Los cinco años de experiencia del capacitador** — Reglas, artículo 39 Bis, fracción III.
-4. **Los diez años de resguardo de evidencia** — Reglas, artículo 39 Bis 1.
+4. **El contraste de resguardo de evidencia de capacitación: diez años contra cinco.** En Actividad Vulnerable, mínimo diez años y es obligación expresa (Reglas de Carácter General, artículo 39 Bis 1). En bancos, las Disposiciones no fijan plazo para esa evidencia: los cinco años vienen de la Guía de la CNBV para el desarrollo del programa anual de capacitación y difusión, apartado VI, que no es vinculante. Al editar, no convertir esos cinco años en obligación del banco, y no confundirlos con los diez años de la 59ª de las Disposiciones, que son de operaciones y expedientes de cliente, ni con los cinco de la 21ª-4 (metodología de riesgos) y la 60ª (auditoría).
 5. **El carácter no vinculante de la Guía de la CNBV de 2020** y sus horas sugeridas (20/30/20/30/40). Si la CNBV la sustituye por algo vinculante, cambia el argumento central del paso 5.
 6. **Las disposiciones 49ª y 50ª** de las Disposiciones de Carácter General a que se refiere el artículo 115 de la Ley de Instituciones de Crédito, que sostienen toda la columna «Banco» de la tabla del paso 3.
 
 No depende de la UMA ni de ningún valor que se actualice solo: en esta herramienta no hay montos ni conversiones.
 
 ---
+
+## La agenda se imprime
+
+El paso 4 termina con un botón que abre el diálogo de impresión del navegador, para que el alumno se lleve su agenda en papel o la guarde en PDF. No hay generador de PDF ni librería: es `window.print()` con una hoja de estilos `@media print` que oculta todo menos el recuadro de la agenda y agrega un pie con la fecha. Si se agregan secciones nuevas al micrositio, revisar esa hoja para que no se cuelen en la impresión.
 
 ## Lo que la herramienta guarda
 
@@ -69,7 +73,7 @@ Sólo en el navegador del alumno, con `localStorage`, bajo la llave `360educa_SF
   "circulos": ["fin", "av", "otro"],
   "regimenes": 2,
   "levantamiento": { "total": 10, "faltan": 4 },
-  "quiz": { "aciertos": 5, "total": 6 },
+  "quiz": { "aciertos": 2, "total": 3 },
   "semaforo": { "color": "a", "n": 5, "total": 8, "fecha": "2026-09-23" }
 }
 ```

@@ -86,6 +86,10 @@ p{margin:0 0 .8rem}
 /* ---- gráficos ---- */
 .viz{background:var(--blanco);border:1px solid var(--linea);border-radius:var(--r);padding:1rem;box-shadow:var(--sombra)}
 svg{display:block;max-width:100%;height:auto}
+.hit{cursor:pointer}
+.hit rect,.hit text{transition:.16s}
+.hit:hover rect{stroke:var(--madre-letra)}
+.hit:focus-visible{outline:3px solid var(--madre-letra);outline-offset:3px}
 .hero{background:var(--oscuro);border-radius:var(--r);padding:1.15rem 1.25rem;color:#fff;display:flex;gap:1rem;align-items:center}
 .hero .n{font:700 2.6rem "Space Grotesk";line-height:1;color:var(--madre)}
 .hero p{margin:0;font-size:.9rem;color:#e9e3d9}
@@ -136,6 +140,24 @@ th{font-size:.72rem;text-transform:uppercase;letter-spacing:.06em;color:var(--ma
 .res h3{color:var(--madre)}
 .res p,.res li{color:#e9e3d9}
 .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+#pieImp{display:none}
+@media print{
+  @page{margin:16mm}
+  body{background:#fff;font-size:11pt}
+  .app{max-width:none !important;padding:0 !important}
+  .layout{display:block !important;grid-template-columns:none !important;gap:0 !important}
+  .top,.rail,.nav,.kicker,#preguntas,.viz,#imprime,.xs{display:none !important}
+  .panel{display:none !important}
+  .panel:has(#salidaLev){display:block !important}
+  .panel:has(#salidaLev) h2,.panel:has(#salidaLev)>p{display:none}
+  #salidaLev{background:#fff !important;color:#1b1b1e !important;border:1px solid #bbb;
+             border-radius:0;padding:0;margin:0;page-break-inside:avoid}
+  #salidaLev h3{color:#1b1b1e !important;font-size:1.3rem;border-bottom:2px solid #d9663f;padding-bottom:.35rem}
+  #salidaLev p,#salidaLev li{color:#1b1b1e !important}
+  #salidaLev li{margin-bottom:.7rem;page-break-inside:avoid}
+  #pieImp{display:block;margin-top:1.4rem;padding-top:.6rem;border-top:1px solid #ccc;
+          font-size:.75rem;color:#4d4d4d}
+}
 </style>
 </head>
 <body>
@@ -219,17 +241,36 @@ th{font-size:.72rem;text-transform:uppercase;letter-spacing:.06em;color:var(--ma
     <p class="mut sm">Marca lo que aplique. Nada de esto sale de tu pantalla.</p>
 
     <div class="viz">
-      <svg viewBox="0 0 420 200" role="img" aria-label="Tres círculos que representan sector financiero, Actividad Vulnerable y el resto del grupo.">
-        <g id="vfin"><circle cx="140" cy="88" r="62" fill="#ffb59d" fill-opacity=".18" stroke="#e8dfd2" stroke-width="2"/></g>
-        <g id="vav"><circle cx="230" cy="88" r="62" fill="#ffb59d" fill-opacity=".18" stroke="#e8dfd2" stroke-width="2"/></g>
-        <g id="votro"><circle cx="185" cy="126" r="62" fill="#ffb59d" fill-opacity=".12" stroke="#e8dfd2" stroke-width="2" stroke-dasharray="6 5"/></g>
-        <g font-family="Space Grotesk" font-size="11.5" font-weight="700" fill="#4d4d4d">
-          <text x="104" y="42" text-anchor="middle">Financiero</text>
-          <text x="268" y="42" text-anchor="middle">Act. Vulnerable</text>
-          <text x="185" y="192" text-anchor="middle">Resto del grupo</text>
+      <p class="sm mut" style="margin:0 0 .5rem"><b>Toca cada bloque</b> que exista en tu grupo. Puedes elegir más de uno.</p>
+      <svg viewBox="0 0 420 206" role="group" aria-label="Elige los perímetros que hay en tu grupo">
+        <g fill="none" stroke-linecap="round">
+          <path id="lfin" d="M66 112 V124 Q66 134 76 134 H204" stroke="#e0d5c6" stroke-width="2"/>
+          <path id="lav" d="M210 112 V134" stroke="#e0d5c6" stroke-width="2"/>
+          <path id="lotro" d="M354 112 V124 Q354 134 344 134 H216" stroke="#e0d5c6" stroke-width="2"/>
+          <path d="M210 134 V150" stroke="#e0d5c6" stroke-width="2"/>
+        </g>
+        <g class="hit" data-c="fin" role="button" tabindex="0" aria-pressed="false" aria-label="Sector financiero">
+          <rect x="8" y="14" width="116" height="72" rx="14" fill="#ffb59d" fill-opacity=".18" stroke="#e8dfd2" stroke-width="2"/>
+          <path d="M45 46h42M50 46v22M66 46v22M82 46v22M43 72h46M66 34l24 12H42z" fill="none" stroke="#d9663f" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+          <text x="66" y="103" text-anchor="middle" font-family="Space Grotesk" font-size="11.5" font-weight="700" fill="#4d4d4d">Sector financiero</text>
+        </g>
+        <g class="hit" data-c="av" role="button" tabindex="0" aria-pressed="false" aria-label="Actividad Vulnerable">
+          <rect x="152" y="14" width="116" height="72" rx="14" fill="#ffb59d" fill-opacity=".18" stroke="#e8dfd2" stroke-width="2"/>
+          <path d="M210 32l21 10v13c0 11-8 19-21 23-13-4-21-12-21-23V42z" fill="none" stroke="#d9663f" stroke-width="2.4" stroke-linejoin="round"/>
+          <path d="M202 54l6 6 11-12" fill="none" stroke="#d9663f" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+          <text x="210" y="103" text-anchor="middle" font-family="Space Grotesk" font-size="11.5" font-weight="700" fill="#4d4d4d">Actividad Vulnerable</text>
+        </g>
+        <g class="hit" data-c="otro" role="button" tabindex="0" aria-pressed="false" aria-label="Resto del grupo">
+          <rect x="296" y="14" width="116" height="72" rx="14" fill="#ffb59d" fill-opacity=".1" stroke="#e8dfd2" stroke-width="2" stroke-dasharray="7 5"/>
+          <path d="M336 70V38h18v32M354 70V46h18v24M330 70h48M342 48h5M342 58h5M360 56h5" fill="none" stroke="#d9663f" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+          <text x="354" y="103" text-anchor="middle" font-family="Space Grotesk" font-size="11.5" font-weight="700" fill="#4d4d4d">Resto del grupo</text>
+        </g>
+        <g>
+          <rect x="66" y="150" width="288" height="42" rx="21" fill="#393e41"/>
+          <text x="210" y="176" text-anchor="middle" font-family="Space Grotesk" font-size="12.5" font-weight="700" fill="#ffb59d">Un solo programa de capacitación</text>
         </g>
       </svg>
-      <span class="fte">Dos círculos con obligación dura y distinta entre sí. El tercero, punteado, no tiene obligación PLD — y aun así toca a los otros dos.</span>
+      <span class="fte">Dos perímetros con obligación dura y distinta entre sí. El tercero, punteado, no tiene obligación PLD — y aun así se alimenta del mismo programa.</span>
     </div>
 
     <div id="picker" style="margin-top:.9rem">
@@ -248,9 +289,10 @@ th{font-size:.72rem;text-transform:uppercase;letter-spacing:.06em;color:var(--ma
 
     <div class="viz">
       <h3>Años que debes guardar la evidencia de capacitación</h3>
-      <div class="barra hi"><span class="et">Act. Vulnerable</span><span class="tr"><i style="width:100%"></i></span><span class="v">10 años</span></div>
-      <div class="barra"><span class="et">Banco</span><span class="tr"><i style="width:50%"></i></span><span class="v">5 años</span></div>
-      <span class="fte">Diez años es obligación expresa: Reglas de Carácter General, artículo 39 Bis 1. Los cinco años del banco no son obligación — es lo que recomienda la Guía de la CNBV de 2020, que no es vinculante, y el capítulo de Capacitación y Difusión de sus Disposiciones no fija plazo propio.</span>
+      <div class="barra hi"><span class="et">Act. Vulnerable</span><span class="tr"><i style="width:100%"></i></span><span class="v">10 años · obligación</span></div>
+      <div class="barra"><span class="et">Banco</span><span class="tr"><i style="width:50%"></i></span><span class="v">5 años · recomendación</span></div>
+      <span class="fte">En Actividad Vulnerable son <b>diez años como mínimo y es obligación expresa</b>: programas, talleres, materiales, listas de asistencia, evaluaciones y constancias (Reglas de Carácter General, artículo 39 Bis 1). En bancos, las Disposiciones no fijan plazo para esa evidencia; los cinco años salen de la Guía de la CNBV para el desarrollo del programa anual de capacitación y difusión, apartado VI — y esa Guía <b>no es vinculante</b>.</span>
+      <p class="sm" style="margin:.7rem 0 0"><b>Doble trampa.</b> La primera es copiarle al banco los cinco años: en Actividad Vulnerable te quedas corto por la mitad, y ahí sí hay obligación. La segunda es al revés — creer que el banco tiene obligación de cinco años, cuando lo que tiene es una recomendación. Los plazos de diez años que sí están en sus Disposiciones (59ª) son de operaciones y expedientes de cliente, no de capacitación.</p>
     </div>
 
     <div class="viz" style="margin-top:.8rem">
@@ -261,7 +303,7 @@ th{font-size:.72rem;text-transform:uppercase;letter-spacing:.06em;color:var(--ma
     </div>
 
     <div class="nota" style="margin-top:.9rem">
-      <b>Léelo al revés.</b> La Actividad Vulnerable, que llega tarde y con menos estructura, queda con un requisito de capacitador más duro que el del banco y con el doble de años de resguardo. Compartir riesgo no es compartir obligación — y tampoco significa que al más chico le pidan menos.
+      <b>Léelo al revés.</b> La Actividad Vulnerable, que llega tarde y con menos estructura, queda con un requisito de capacitador más duro que el del banco y con el doble de años de resguardo — y con obligación, no con recomendación. Compartir riesgo no es compartir obligación — y tampoco significa que al más chico le pidan menos.
     </div>
 
     <details style="margin-top:.9rem">
@@ -373,7 +415,7 @@ th{font-size:.72rem;text-transform:uppercase;letter-spacing:.06em;color:var(--ma
   <!-- ===== 7 ===== -->
   <section class="panel" data-t="Compruébalo">
     <div class="kicker">Paso 7 · Compruébalo</div>
-    <h2>Seis preguntas</h2>
+    <h2>Tres preguntas</h2>
     <p class="mut sm">Cada explicación te dice por qué la correcta lo es y en qué se diferencia del distractor que más tienta.</p>
     <div id="quiz"></div>
     <div id="quizRes" class="res" style="display:none"></div>
@@ -395,6 +437,7 @@ th{font-size:.72rem;text-transform:uppercase;letter-spacing:.06em;color:var(--ma
     <button class="btn" id="next">Siguiente →</button>
   </div>
 
+  <p id="pieImp"></p>
   <p class="xs mut" style="margin-top:1.4rem">Todo lo que capturas aquí se queda en tu navegador. No se envía a ningún servidor ni queda ligado a tu correo. Las obligaciones citadas provienen de la LFPIORPI, de las Reglas de Carácter General a que se refiere esa Ley y de las Disposiciones de Carácter General a que se refiere el artículo 115 de la Ley de Instituciones de Crédito. La Guía de la CNBV de 2020 se cita como sana práctica no vinculante.</p>
 
   </main>
@@ -474,10 +517,19 @@ var TXT={
 function pintaCirc(){
   var cont=$("#salidaCirc"),act=Object.keys(sel).filter(function(k){return sel[k];});
   ["fin","av","otro"].forEach(function(k){
-    var c=document.querySelector("#v"+k+" circle");
-    if(!c)return;
-    c.setAttribute("fill-opacity",sel[k]?".42":(k==="otro"?".12":".18"));
-    c.setAttribute("stroke",sel[k]?"#d9663f":"#e8dfd2");
+    var g=document.querySelector('.hit[data-c="'+k+'"]');
+    if(g){
+      var c=g.querySelector("rect");
+      c.setAttribute("fill-opacity",sel[k]?".5":(k==="otro"?".1":".18"));
+      c.setAttribute("stroke",sel[k]?"#d9663f":"#e8dfd2");
+      c.setAttribute("stroke-width",sel[k]?"3":"2");
+      g.querySelector("text").setAttribute("fill",sel[k]?"#8a3c1e":"#4d4d4d");
+      g.setAttribute("aria-pressed",sel[k]?"true":"false");
+      var ln=document.getElementById("l"+k);
+      if(ln){ln.setAttribute("stroke",sel[k]?"#d9663f":"#e0d5c6");ln.setAttribute("stroke-width",sel[k]?"3":"2");}
+    }
+    var ch=document.querySelector('#picker .chip[data-c="'+k+'"]');
+    if(ch) ch.setAttribute("aria-pressed",sel[k]?"true":"false");
   });
   if(!act.length){cont.style.display="none";return;}
   var h="";
@@ -495,10 +547,13 @@ function pintaCirc(){
   cont.innerHTML=h;cont.style.display="block";
   var g=lee()||{};g.circulos=act;g.regimenes=reg;guarda(g);
 }
-[].forEach.call(document.querySelectorAll("#picker .chip"),function(b){
-  b.addEventListener("click",function(){
-    var k=b.getAttribute("data-c");sel[k]=!sel[k];
-    b.setAttribute("aria-pressed",sel[k]?"true":"false");pintaCirc();});
+function alterna(k){ sel[k]=!sel[k]; pintaCirc(); }
+[].forEach.call(document.querySelectorAll('#picker .chip, .hit'),function(b){
+  var k=b.getAttribute("data-c");
+  b.addEventListener("click",function(){alterna(k);});
+  b.addEventListener("keydown",function(e){
+    if(e.key===" "||e.key==="Enter"){e.preventDefault();e.stopPropagation();alterna(k);}
+  });
 });
 
 /* ---------- 4 · levantamiento ---------- */
@@ -554,8 +609,14 @@ function avance(){
     faltan.forEach(function(p){h+='<li style="margin-bottom:.4rem">'+p.pide+'</li>';});
     h+='</ol>';
   }
-  h+='<p class="sm" style="margin-bottom:0">Anótalo ahora. Esta página no lo guarda en ningún servidor y no te lo va a poder recordar desde otra computadora.</p>';
+  h+='<p class="sm" style="margin-bottom:0">Esta página no guarda nada en ningún servidor y no te lo va a poder recordar desde otra computadora. Imprímela o guárdala en PDF y llévatela a la junta.</p>'
+   +'<button class="btn" id="imprime" style="margin-top:.9rem">Imprimir o guardar en PDF</button>';
   out.innerHTML=h;out.style.display="block";
+  document.getElementById("imprime").addEventListener("click",function(){
+    var f=document.getElementById("pieImp");
+    if(f) f.textContent="Agenda generada el "+new Date().toLocaleDateString("es-MX",{day:"numeric",month:"long",year:"numeric"})+" · PLD/FT sin fronteras regulatorias · Jornada360";
+    window.print();
+  });
   var g=lee()||{};g.levantamiento={total:tot,faltan:faltan.length};guarda(g);
 }
 
@@ -587,18 +648,9 @@ var Q=[
  {t:"Quieren contratar a un capacitador con dos años de experiencia en PLD, muy bien recomendado, para la Actividad Vulnerable del grupo.",
   o:["Sí puede: la norma no pide experiencia mínima","Sí, si tiene certificación de la CNBV","No: debe contar y acreditar al menos cinco años en la materia","Sólo si lo aprueba el Comité"],c:2,
   e:"Reglas de Carácter General, artículo 39 Bis, fracción III. La certificación tienta porque suena a más, pero la norma no pide certificado: pide años acreditables. Y el Comité es figura del lado financiero, no de esta ecuación."},
- {t:"Un director te dice: «capacitamos 40 horas al año, como pide la norma».",
-  o:["Nada que corregir, son las horas exactas","Son 20 horas, no 40","La norma no fija horas: las 40 vienen de una guía no vinculante de la CNBV","Las horas sólo aplican a bancos"],c:2,
-  e:"Ni la LFPIORPI ni las Reglas fijan horas. Las 40 anuales del Oficial de Cumplimiento están en la Guía de la CNBV de 2020, que se declara enunciativa, no vinculante, no supervisable ni sancionable. La última opción tienta porque la Guía sí está escrita para Sujetos Supervisados — pero el error del director no es a quién aplica, es creer que es obligación."},
- {t:"Contratan a una cajera que va a atender público desde el lunes.",
-  o:["Se capacita en la siguiente sesión anual programada","Previa o simultáneamente a su ingreso o al inicio de sus actividades","Dentro de los 90 días siguientes","Al terminar su periodo de prueba"],c:1,
-  e:"Y es donde los dos regímenes coinciden casi palabra por palabra: Reglas, artículo 39 Bis 1, tercer párrafo, para Actividad Vulnerable; y 50ª de las Disposiciones del artículo 115 de la Ley de Instituciones de Crédito, para bancos. Por eso la inducción es tronco común: se diseña una vez para todo el grupo. Los 90 días tientan porque ese plazo existe en la norma, pero para otra cosa."},
  {t:"Una comercializadora del grupo no es Actividad Vulnerable ni entidad financiera.",
   o:["Se le aplica el mismo programa que a la Actividad Vulnerable, por prudencia","Queda fuera: sin obligación no hay nada que hacer","Sensibilización y banderas rojas de su operación, presentado como sana práctica","Debida diligencia completa de cliente, como a un banco"],c:2,
-  e:"No tiene obligación PLD, y decirle que sí la tiene es contaminar regímenes. Pero es la misma tesorería y los mismos proveedores: si el riesgo entra por ahí, entra completo. La primera y la cuarta son el error más caro y está documentado — sobrerregular a quien no le toca produce daño real, y es lo que el GAFI tuvo que corregir en su propia Recomendación 8 para el sector no lucrativo."},
- {t:"Guardaste cinco años la evidencia de capacitación de la Actividad Vulnerable, igual que en el banco hermano.",
-  o:["Bien: cinco años es el plazo general","Mal: en Actividad Vulnerable el mínimo son diez años","Mal: son tres años","Da igual, la norma no fija plazo"],c:1,
-  e:"Reglas de Carácter General, artículo 39 Bis 1: plazo mínimo de diez años. Los cinco tientan porque es lo que recomienda la Guía de la CNBV — y ahí está la trampa: copiaste un criterio del banco que ni siquiera es obligación suya, y con eso te quedaste corto donde sí lo es."}
+  e:"No tiene obligación PLD, y decirle que sí la tiene es contaminar regímenes. Pero es la misma tesorería y los mismos proveedores: si el riesgo entra por ahí, entra completo. La primera y la cuarta son el error más caro y está documentado — sobrerregular a quien no le toca produce daño real, y es lo que el GAFI tuvo que corregir en su propia Recomendación 8 para el sector no lucrativo."}
 ];
 var aciertos=0,contestadas=0;
 (function(){
@@ -620,7 +672,7 @@ var aciertos=0,contestadas=0;
         if(contestadas===Q.length){
           var r=$("#quizRes");
           r.innerHTML='<h3>'+aciertos+' de '+Q.length+'</h3><p>'
-            +(aciertos>=5?"Distingues bien los dos regímenes. Eso es exactamente lo que te va a salvar de armar un programa de talla única."
+            +(aciertos>=2?"Distingues bien los dos regímenes. Eso es exactamente lo que te va a salvar de armar un programa de talla única."
                          :"Regresa al paso 3. Las que se fallan casi siempre son las mismas: el año, las horas y el plazo de resguardo.")
             +'</p>';
           r.style.display="block";
