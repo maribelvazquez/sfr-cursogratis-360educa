@@ -1,0 +1,684 @@
+<!DOCTYPE html>
+<html lang="es-MX">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>El levantamiento · PLD/FT sin fronteras regulatorias</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --madre:#ffb59d; --madre-letra:#d9663f; --accion:#ff8361;
+  --crema:#faf5ec; --oscuro:#393e41; --negro:#1b1b1e; --gris:#4d4d4d;
+  --linea:#e8dfd2; --blanco:#fff;
+  --ok:#3f8f5c; --alerta:#b8892a; --rojo:#c0503f;
+  --r:16px; --sombra:0 1px 2px rgba(27,27,30,.04),0 8px 24px rgba(27,27,30,.07);
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--crema);color:var(--negro);
+ font-family:Inter,system-ui,-apple-system,sans-serif;font-size:16px;line-height:1.55;overflow-x:hidden}
+h1,h2,h3,.num,.pill,.btn,th,summary{font-family:"Space Grotesk",Inter,sans-serif}
+h1{font-size:clamp(1.5rem,5vw,2.1rem);font-weight:700;line-height:1.15;letter-spacing:-.02em;margin:0 0 .4rem}
+h2{font-size:clamp(1.15rem,3.4vw,1.5rem);font-weight:700;line-height:1.2;letter-spacing:-.015em;margin:0 0 .5rem}
+h3{font-size:1rem;font-weight:700;margin:0 0 .3rem}
+p{margin:0 0 .8rem}
+.mut{color:var(--gris)}
+.sm{font-size:.87rem}
+.xs{font-size:.78rem}
+
+/* ---- armazón ---- */
+.app{max-width:1060px;margin:0 auto;padding:0 14px 3rem}
+.top{position:sticky;top:0;z-index:20;background:rgba(250,245,236,.93);
+ backdrop-filter:saturate(1.4) blur(10px);border-bottom:1px solid var(--linea);margin:0 -14px 1.25rem;padding:.6rem 14px .5rem}
+.marca{display:flex;align-items:center;justify-content:space-between;gap:.75rem;margin-bottom:.5rem}
+.marca b{font-family:"Space Grotesk";font-size:.7rem;letter-spacing:.14em;text-transform:uppercase;color:var(--gris)}
+.marca b i{color:var(--madre-letra);font-style:normal}
+.marca .cuenta{font-family:"Space Grotesk";font-weight:700;font-size:.72rem;color:var(--madre-letra);white-space:nowrap}
+.dots{display:flex;gap:6px;align-items:center}
+.dot{flex:1 1 0;min-width:0;height:30px;border:0;cursor:pointer;border-radius:8px;
+ background:var(--linea);color:var(--gris);font:700 .78rem "Space Grotesk";transition:.16s;padding:0}
+.dot:hover{background:#f0e4d6}
+.dot[aria-current="true"]{background:var(--madre-letra);color:#fff}
+.dot.hecho{background:var(--madre);color:#7a3a20}
+.dot:focus-visible,.btn:focus-visible,.chip:focus-visible,.op:focus-visible,summary:focus-visible{outline:3px solid var(--madre-letra);outline-offset:2px}
+
+.layout{display:block}
+.rail{display:none}
+@media(min-width:900px){
+  .layout{display:grid;grid-template-columns:230px 1fr;gap:2rem;align-items:start}
+  .rail{position:sticky;top:96px;display:block}
+  .top .dots{display:none}
+}
+.rail button{display:block;width:100%;text-align:left;border:0;background:none;cursor:pointer;
+ padding:.5rem .7rem;border-radius:10px;font:600 .9rem Inter;color:var(--gris);border-left:3px solid transparent;margin-bottom:2px}
+.rail button:hover{background:#f3e9dd;color:var(--negro)}
+.rail button[aria-current="true"]{background:var(--blanco);color:var(--negro);border-left-color:var(--madre-letra);box-shadow:var(--sombra)}
+.rail button i{display:inline-block;width:20px;font-style:normal;font-family:"Space Grotesk";font-weight:700;color:var(--madre-letra)}
+.rail .hecho::after{content:"";display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--ok);margin-left:.45rem;vertical-align:middle}
+
+.panel{display:none;animation:ap .22s ease both}
+.panel.on{display:block}
+@keyframes ap{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+.kicker{display:inline-flex;align-items:center;gap:.5rem;font:700 .7rem "Space Grotesk";
+ letter-spacing:.13em;text-transform:uppercase;color:var(--madre-letra);margin-bottom:.6rem}
+.kicker::before{content:"";width:22px;height:3px;background:var(--madre);border-radius:2px}
+.card{background:var(--blanco);border:1px solid var(--linea);border-radius:var(--r);padding:1.1rem;box-shadow:var(--sombra)}
+.grid{display:grid;gap:.8rem}
+@media(min-width:620px){.g2{grid-template-columns:1fr 1fr}.g3{grid-template-columns:repeat(3,1fr)}}
+.nav{display:flex;justify-content:space-between;gap:.6rem;margin-top:1.6rem;padding-top:1.1rem;border-top:1px solid var(--linea)}
+.btn{border:0;cursor:pointer;background:var(--accion);color:#fff;font-weight:700;font-size:.92rem;
+ padding:.7rem 1.2rem;border-radius:999px;box-shadow:var(--sombra)}
+.btn:hover{filter:brightness(1.06)}
+.btn[disabled]{opacity:.35;cursor:default;box-shadow:none}
+.btn.gh{background:var(--blanco);color:var(--madre-letra);border:1.5px solid var(--madre);box-shadow:none}
+.fte{display:block;font-size:.76rem;color:var(--gris);margin-top:.4rem;line-height:1.4}
+.capa{display:inline-block;font:700 .66rem "Space Grotesk";letter-spacing:.07em;text-transform:uppercase;
+ padding:.18rem .5rem;border-radius:999px}
+.capa.a{background:#e6f1e9;color:#2f7a4a}
+.capa.c{background:#fbf0d9;color:#8d6612}
+.capa.n{background:#f2e7db;color:#8a5a3c}
+.nota{background:#fff4ee;border:1px solid var(--madre);border-radius:12px;padding:.85rem 1rem;font-size:.9rem}
+.nota b{color:var(--madre-letra)}
+
+/* ---- gráficos ---- */
+.viz{background:var(--blanco);border:1px solid var(--linea);border-radius:var(--r);padding:1rem;box-shadow:var(--sombra)}
+svg{display:block;max-width:100%;height:auto}
+.hero{background:var(--oscuro);border-radius:var(--r);padding:1.15rem 1.25rem;color:#fff;display:flex;gap:1rem;align-items:center}
+.hero .n{font:700 2.6rem "Space Grotesk";line-height:1;color:var(--madre)}
+.hero p{margin:0;font-size:.9rem;color:#e9e3d9}
+.barra{display:flex;align-items:center;gap:.6rem;margin-bottom:.55rem}
+.barra .et{flex:0 0 108px;font-size:.84rem;font-weight:600}
+.barra .tr{flex:1;height:26px;background:#f1e8db;border-radius:6px;overflow:hidden}
+.barra .tr i{display:block;height:100%;border-radius:0 6px 6px 0;background:var(--gris)}
+.barra.hi .tr i{background:var(--madre-letra)}
+.barra .v{flex:0 0 auto;font:700 .9rem "Space Grotesk";color:var(--gris)}
+.barra.hi .v{color:var(--madre-letra)}
+
+/* ---- controles ---- */
+.chip{display:block;width:100%;text-align:left;cursor:pointer;background:var(--blanco);
+ border:1.5px solid var(--linea);border-radius:12px;padding:.7rem .85rem;font:inherit;margin-bottom:.5rem;transition:.14s}
+.chip:hover{border-color:var(--madre)}
+.chip[aria-pressed="true"]{border-color:var(--madre-letra);background:#fff6f1;box-shadow:inset 3px 0 0 var(--madre-letra)}
+.chip b{display:block;font-family:"Space Grotesk"}
+.chip span{display:block;font-size:.84rem;color:var(--gris);margin-top:.12rem}
+.op{display:block;width:100%;text-align:left;cursor:pointer;background:var(--blanco);
+ border:1.5px solid var(--linea);border-radius:10px;padding:.6rem .8rem;font:inherit;margin-bottom:.4rem}
+.op:hover{border-color:var(--madre)}
+.op.bien{border-color:var(--ok);background:#f1f8f3}
+.op.mal{border-color:var(--rojo);background:#fdf1ef}
+.expl{font-size:.86rem;color:var(--gris);border-left:3px solid var(--madre);padding-left:.75rem;margin-top:.55rem;display:none}
+.expl.on{display:block}
+details{background:var(--blanco);border:1px solid var(--linea);border-radius:12px;padding:.8rem .95rem;margin-bottom:.55rem}
+details[open]{border-color:var(--madre)}
+summary{cursor:pointer;font-weight:700;list-style:none}
+summary::-webkit-details-marker{display:none}
+summary::after{content:"+";float:right;color:var(--madre-letra);font-size:1.1rem;line-height:1}
+details[open] summary::after{content:"−"}
+table{width:100%;border-collapse:collapse;font-size:.86rem}
+th,td{text-align:left;padding:.55rem;border-bottom:1px solid var(--linea);vertical-align:top}
+th{font-size:.72rem;text-transform:uppercase;letter-spacing:.06em;color:var(--madre-letra)}
+.scroll{overflow-x:auto;-webkit-overflow-scrolling:touch}
+.flash{background:var(--blanco);border:1px solid var(--linea);border-radius:var(--r);padding:1.2rem;
+ min-height:150px;display:flex;flex-direction:column;justify-content:center;cursor:pointer;box-shadow:var(--sombra)}
+.flash .q{font:700 1.02rem "Space Grotesk"}
+.flash .a{color:var(--gris);font-size:.9rem;margin-top:.6rem;display:none}
+.flash.rev{background:#fff6f1;border-color:var(--madre)}
+.flash.rev .a{display:block}
+.chk{display:flex;gap:.6rem;align-items:flex-start;padding:.55rem 0;border-bottom:1px solid var(--linea)}
+.chk input{margin-top:.25rem;width:18px;height:18px;accent-color:var(--madre-letra);flex:0 0 auto}
+.chk label{font-size:.92rem;cursor:pointer}
+.tri{display:flex;gap:.45rem;flex-wrap:wrap}
+.tri button{flex:1;min-width:92px}
+.res{background:var(--oscuro);color:#fff;border-radius:var(--r);padding:1.15rem;margin-top:1rem}
+.res h3{color:var(--madre)}
+.res p,.res li{color:#e9e3d9}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+</style>
+</head>
+<body>
+
+<div class="app">
+
+<!-- ================= NAVEGACIÓN ================= -->
+<div class="top">
+  <div class="marca">
+    <b>Jornada360 · <i>PLD/FT sin fronteras regulatorias</i></b>
+    <span class="cuenta" id="cuenta">Paso 1 de 8</span>
+  </div>
+  <div class="dots" id="dots" role="tablist" aria-label="Pasos"></div>
+</div>
+
+<div class="layout">
+
+  <nav class="rail" id="rail" aria-label="Pasos del ejercicio"></nav>
+
+  <main id="main">
+
+  <!-- ===== 1 ===== -->
+  <section class="panel on" data-t="El reloj">
+    <div class="kicker">Paso 1 · Qué cambió</div>
+    <h1>La fecha no está donde crees</h1>
+    <p class="mut">La obligación nace en la <b>LFPIORPI, artículo 18, fracción IX</b>. Pero el año no lo fija la Ley.</p>
+
+    <div class="hero">
+      <div class="n" id="dias">—</div>
+      <p id="diasTxt">días para el <b>1 de enero de 2027</b>, cuando arranca el primer periodo anual de capacitación de las Actividades Vulnerables.</p>
+    </div>
+
+    <div class="viz" style="margin-top:.9rem">
+      <h3>Lo que cae, y cuándo</h3>
+      <svg viewBox="0 0 640 168" role="img" aria-label="Línea de tiempo: 1 de enero de 2027 capacitación; 1 de marzo de 2027 manual y selección de personal; 1 de junio de 2027 mecanismos automatizados; 1 de enero de 2028 auditoría.">
+        <line x1="30" y1="86" x2="610" y2="86" stroke="#e8dfd2" stroke-width="3" stroke-linecap="round"/>
+        <line x1="30" y1="86" x2="180" y2="86" stroke="#d9663f" stroke-width="3" stroke-linecap="round"/>
+        <g font-family="Space Grotesk" font-size="12">
+          <g><circle cx="30" cy="86" r="9" fill="#d9663f"/><circle cx="30" cy="86" r="3.5" fill="#fff"/>
+             <text x="30" y="46" text-anchor="start" font-weight="700" fill="#d9663f">1 ene 2027</text>
+             <text x="30" y="62" text-anchor="start" fill="#4d4d4d">Capacitación</text></g>
+          <g><circle cx="180" cy="86" r="7" fill="#ffb59d" stroke="#d9663f" stroke-width="2"/>
+             <text x="180" y="112" text-anchor="middle" font-weight="700" fill="#1b1b1e">1 mar 2027</text>
+             <text x="180" y="128" text-anchor="middle" fill="#4d4d4d">Manual</text>
+             <text x="180" y="142" text-anchor="middle" fill="#4d4d4d">Selección</text></g>
+          <g><circle cx="360" cy="86" r="7" fill="#fff" stroke="#4d4d4d" stroke-width="2"/>
+             <text x="360" y="46" text-anchor="middle" font-weight="700" fill="#1b1b1e">1 jun 2027</text>
+             <text x="360" y="62" text-anchor="middle" fill="#4d4d4d">Monitoreo automatizado</text></g>
+          <g><circle cx="610" cy="86" r="7" fill="#fff" stroke="#4d4d4d" stroke-width="2"/>
+             <text x="610" y="112" text-anchor="end" font-weight="700" fill="#1b1b1e">1 ene 2028</text>
+             <text x="610" y="128" text-anchor="end" fill="#4d4d4d">Auditoría</text></g>
+        </g>
+      </svg>
+      <span class="fte">Reglas de Carácter General a que se refiere la LFPIORPI, Transitorios Tercero, Sexto, Séptimo, Octavo y Noveno del Acuerdo de 24 de julio de 2026.</span>
+    </div>
+
+    <div class="grid g2" style="margin-top:.9rem">
+      <div class="card">
+        <span class="capa a">Capa A · Obligación</span>
+        <h3 style="margin-top:.45rem">Lo que dice la Ley</h3>
+        <p class="sm mut" style="margin:0">«…adoptar programas de capacitación anuales, dirigidos a quienes integran su órgano de administración o persona administradora única, directivas, personas representantes encargadas de cumplimiento y empleadas o empleados que tengan relación directa con las personas Clientes o Usuarias…»</p>
+        <span class="fte">LFPIORPI, artículo 18, fracción IX (adicionada DOF 16-07-2025)</span>
+      </div>
+      <div class="card">
+        <span class="capa a">Capa A · Obligación</span>
+        <h3 style="margin-top:.45rem">Lo que fija el año</h3>
+        <p class="sm mut" style="margin:0">«El primer periodo anual de capacitación a que se refiere el artículo 39 Bis de estas reglas, comprenderá del primero de enero al treinta y uno de diciembre de dos mil veintisiete.»</p>
+        <span class="fte">Reglas de Carácter General, Transitorio Séptimo</span>
+      </div>
+    </div>
+
+    <div class="nota" style="margin-top:.9rem">
+      <b>Cuidado con ésta.</b> El Transitorio Segundo de la Ley dice que el primer periodo inicia «el 1 de enero del año siguiente a aquel en que se publique el presente Decreto». Como el Decreto es de 2025, leído solo apuntaría a 2026. No es así: ese párrafo define qué se entiende por <i>periodo anual</i>, y el Transitorio Tercero difiere la entrada en vigor a lo que digan las Reglas — que fijaron 2027.
+    </div>
+  </section>
+
+  <!-- ===== 2 ===== -->
+  <section class="panel" data-t="Tu perímetro">
+    <div class="kicker">Paso 2 · Tu perímetro</div>
+    <h2>¿Qué hay dentro de tu grupo?</h2>
+    <p class="mut sm">Marca lo que aplique. Nada de esto sale de tu pantalla.</p>
+
+    <div class="viz">
+      <svg viewBox="0 0 420 200" role="img" aria-label="Tres círculos que representan sector financiero, Actividad Vulnerable y el resto del grupo.">
+        <g id="vfin"><circle cx="140" cy="88" r="62" fill="#ffb59d" fill-opacity=".18" stroke="#e8dfd2" stroke-width="2"/></g>
+        <g id="vav"><circle cx="230" cy="88" r="62" fill="#ffb59d" fill-opacity=".18" stroke="#e8dfd2" stroke-width="2"/></g>
+        <g id="votro"><circle cx="185" cy="126" r="62" fill="#ffb59d" fill-opacity=".12" stroke="#e8dfd2" stroke-width="2" stroke-dasharray="6 5"/></g>
+        <g font-family="Space Grotesk" font-size="11.5" font-weight="700" fill="#4d4d4d">
+          <text x="104" y="42" text-anchor="middle">Financiero</text>
+          <text x="268" y="42" text-anchor="middle">Act. Vulnerable</text>
+          <text x="185" y="192" text-anchor="middle">Resto del grupo</text>
+        </g>
+      </svg>
+      <span class="fte">Dos círculos con obligación dura y distinta entre sí. El tercero, punteado, no tiene obligación PLD — y aun así toca a los otros dos.</span>
+    </div>
+
+    <div id="picker" style="margin-top:.9rem">
+      <button class="chip" data-c="fin" aria-pressed="false"><b>Entidad del sector financiero</b><span>Banco, SOFOM, casa de bolsa, casa de cambio, transmisor de dinero, fintech, SOFIPO, unión de crédito, seguros…</span></button>
+      <button class="chip" data-c="av" aria-pressed="false"><b>Actividad Vulnerable</b><span>Alguna de las del artículo 17 de la LFPIORPI: inmobiliaria, automotriz, fedatarios, mutuo, blindaje, activos virtuales, donativos…</span></button>
+      <button class="chip" data-c="otro" aria-pressed="false"><b>Otras empresas del grupo</b><span>Servicios corporativos, logística, comercializadora, arrendadora, tenedora, la constructora, la de nómina.</span></button>
+    </div>
+    <div id="salidaCirc" style="display:none"></div>
+  </section>
+
+  <!-- ===== 3 ===== -->
+  <section class="panel" data-t="Lo que no se parece">
+    <div class="kicker">Paso 3 · La trampa del programa único</div>
+    <h2>Se parecen lo suficiente para engañarte</h2>
+    <p class="mut sm">Y difieren justo en lo que cuesta caro. Dos ejemplos, antes de la tabla completa.</p>
+
+    <div class="viz">
+      <h3>Años que debes guardar la evidencia de capacitación</h3>
+      <div class="barra hi"><span class="et">Act. Vulnerable</span><span class="tr"><i style="width:100%"></i></span><span class="v">10 años</span></div>
+      <div class="barra"><span class="et">Banco</span><span class="tr"><i style="width:50%"></i></span><span class="v">5 años</span></div>
+      <span class="fte">Diez años es obligación expresa: Reglas de Carácter General, artículo 39 Bis 1. Los cinco años del banco no son obligación — es lo que recomienda la Guía de la CNBV de 2020, que no es vinculante, y el capítulo de Capacitación y Difusión de sus Disposiciones no fija plazo propio.</span>
+    </div>
+
+    <div class="viz" style="margin-top:.8rem">
+      <h3>Años de experiencia que debe acreditar quien imparte</h3>
+      <div class="barra hi"><span class="et">Act. Vulnerable</span><span class="tr"><i style="width:100%"></i></span><span class="v">5 años, obligatorio</span></div>
+      <div class="barra"><span class="et">Banco</span><span class="tr"><i style="width:0%"></i></span><span class="v">no se exige</span></div>
+      <span class="fte">Reglas de Carácter General, artículo 39 Bis, fracción III. En bancos las Disposiciones no lo exigen; la Guía de la CNBV sólo dice que es «deseable» que cuente con certificaciones.</span>
+    </div>
+
+    <div class="nota" style="margin-top:.9rem">
+      <b>Léelo al revés.</b> La Actividad Vulnerable, que llega tarde y con menos estructura, queda con un requisito de capacitador más duro que el del banco y con el doble de años de resguardo. Compartir riesgo no es compartir obligación — y tampoco significa que al más chico le pidan menos.
+    </div>
+
+    <details style="margin-top:.9rem">
+      <summary>La tabla completa, renglón por renglón</summary>
+      <div class="scroll" style="margin-top:.7rem">
+      <table>
+        <thead><tr><th></th><th>Actividad Vulnerable</th><th>Banco</th></tr></thead>
+        <tbody>
+          <tr><td><b>Primer periodo anual</b></td><td>1 ene – 31 dic 2027<span class="fte">Reglas, Transitorio Séptimo</span></td><td>Ya vigente<span class="fte">Disposiciones art. 115 LIC, 49ª</span></td></tr>
+          <tr><td><b>Frecuencia</b></td><td>Por lo menos una vez al año<span class="fte">Reglas, art. 39 Bis fr. I</span></td><td>Al menos una vez al año<span class="fte">Disposiciones, 49ª fr. I</span></td></tr>
+          <tr><td><b>Selección de personal</b></td><td>Procedimientos y declaración firmada de cada funcionario o empleado<span class="fte">Reglas, art. 39 Bis 2</span></td><td>No está en el capítulo de Capacitación y Difusión</td></tr>
+          <tr><td><b>Evaluación y constancias</b></td><td>Sí; las medidas para quien no aprueba van en el Manual de Políticas Internas<span class="fte">Reglas, art. 39 Bis 1</span></td><td>Sí, con evaluaciones y medidas<span class="fte">Disposiciones, 50ª</span></td></tr>
+          <tr style="background:#f3f8f4"><td><b>Nuevo ingreso</b></td><td>Previa o simultánea al ingreso<span class="fte">Reglas, art. 39 Bis 1</span></td><td>Previa o simultánea al ingreso<span class="fte">Disposiciones, 50ª</span></td></tr>
+        </tbody>
+      </table>
+      </div>
+      <p class="sm" style="margin:.7rem 0 0">El renglón verde es tu tronco común real: <b>nadie entra a atender público sin capacitación previa o simultánea</b>. Ése lo diseñas una sola vez para todo el grupo.</p>
+    </details>
+  </section>
+
+  <!-- ===== 4 ===== -->
+  <section class="panel" data-t="La junta con RH">
+    <div class="kicker">Paso 4 · La junta con RH</div>
+    <h2>Diez datos que tienes que traerte de esa junta</h2>
+    <p class="mut sm">Un plan no se arma con la norma en la mano: se arma con el censo de tu gente. Lo que no sepas es, literalmente, tu agenda.</p>
+
+    <div class="viz" style="display:flex;align-items:center;gap:1.1rem">
+      <svg width="92" height="92" viewBox="0 0 92 92" role="img" aria-label="Avance del levantamiento">
+        <circle cx="46" cy="46" r="38" fill="none" stroke="#f1e8db" stroke-width="10"/>
+        <circle id="ring" cx="46" cy="46" r="38" fill="none" stroke="#d9663f" stroke-width="10"
+                stroke-linecap="round" stroke-dasharray="238.8" stroke-dashoffset="238.8"
+                transform="rotate(-90 46 46)" style="transition:stroke-dashoffset .3s"/>
+        <text id="ringT" x="46" y="52" text-anchor="middle" font-family="Space Grotesk" font-weight="700" font-size="19" fill="#1b1b1e">0</text>
+      </svg>
+      <div>
+        <h3 id="ringH" style="margin:0">Sin contestar</h3>
+        <p class="sm mut" style="margin:.2rem 0 0" id="ringP">Contesta las diez y te armo la agenda para RH.</p>
+      </div>
+    </div>
+
+    <div id="preguntas" style="margin-top:.9rem"></div>
+    <div id="salidaLev" class="res" style="display:none"></div>
+  </section>
+
+  <!-- ===== 5 ===== -->
+  <section class="panel" data-t="Con lo que hay">
+    <div class="kicker">Paso 5 · Con lo que hay</div>
+    <h2>Ni horas, ni plataforma, ni presupuesto</h2>
+    <p class="mut sm">Vale la pena decirlo fuerte porque es lo que más paraliza.</p>
+
+    <div class="grid g3">
+      <div class="card">
+        <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#d9663f" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
+        <h3 style="margin-top:.5rem">Horas</h3>
+        <p class="sm mut" style="margin:0">La norma no fija ninguna. Cero.</p>
+      </div>
+      <div class="card">
+        <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#d9663f" stroke-width="2" stroke-linecap="round"><rect x="3" y="4" width="18" height="13" rx="2"/><path d="M8 21h8M12 17v4"/></svg>
+        <h3 style="margin-top:.5rem">Modalidad</h3>
+        <p class="sm mut" style="margin:0">Presencial, en línea o mixta. Tú decides.</p>
+      </div>
+      <div class="card">
+        <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#d9663f" stroke-width="2" stroke-linecap="round"><path d="M4 19V5a1 1 0 011-1h14a1 1 0 011 1v14"/><path d="M4 19h16M8 15V9M12 15v-3M16 15v-6"/></svg>
+        <h3 style="margin-top:.5rem">Plataforma</h3>
+        <p class="sm mut" style="margin:0">Ninguna en particular. Lo que ya tengas sirve.</p>
+      </div>
+    </div>
+
+    <p style="margin-top:.9rem">Lo que sí exige: contenido mínimo, frecuencia anual, capacitador con experiencia acreditable, evaluación, constancias y evidencia guardada diez años.</p>
+
+    <details>
+      <summary>¿Y las 20, 30 o 40 horas de las que todos hablan?</summary>
+      <p class="sm" style="margin-top:.6rem">Salen de la Guía de la CNBV de 2020: 20 horas para el consejo, 30 para alta dirección, 20 para primer contacto, 30 para auditoría interna y 40 anuales para el Oficial de Cumplimiento o Representante y el Comité.</p>
+      <p class="sm"><b>No son obligación.</b> La propia Guía dice que «no resulta vinculante para los Sujetos Supervisados y, por lo tanto, su grado de adopción no será objeto de supervisión, observación o sanción por parte de esta Comisión». Sirven para dimensionar; presentarlas como exigencia se paga con presupuesto.</p>
+      <span class="capa c">Capa C · Sana práctica, no vinculante</span>
+    </details>
+
+    <details>
+      <summary>¿Con qué se puede impartir, entonces?</summary>
+      <p class="sm" style="margin-top:.6rem">Con lo que ya tienes. Una videollamada grabada sirve como sesión y como evidencia si levantas lista y aplicas la evaluación. La sala de juntas con un pizarrón sirve igual. Un correo mensual bien hecho es difusión, que es obligación distinta y también cuenta.</p>
+      <p class="sm">Lo que <b>no</b> cuenta es mandar el manual por correo y darlo por visto: sin evaluación no puedes expedir la constancia, y sin constancia no tienes evidencia.</p>
+      <span class="fte">Reglas de Carácter General, artículo 39 Bis 1, segundo párrafo</span>
+    </details>
+
+    <details>
+      <summary>¿Puedo apoyarme en inteligencia artificial?</summary>
+      <p class="sm" style="margin-top:.6rem">Para preparar, sí: ordenar el temario, redactar casos, armar reactivos, el borrador de la lista de asistencia. Te ahorra horas de mecanografía.</p>
+      <p class="sm">Para <b>impartir</b>, no: la obligación pide que quien imparta acredite al menos cinco años de experiencia. Una máquina no acredita experiencia, y tú no firmas una constancia respaldada en algo que no revisaste.</p>
+      <span class="fte">Reglas de Carácter General, artículo 39 Bis, fracción III</span>
+    </details>
+  </section>
+
+  <!-- ===== 6 ===== -->
+  <section class="panel" data-t="De memoria">
+    <div class="kicker">Paso 6 · Que se te quede</div>
+    <h2>Cinco fichas</h2>
+    <p class="mut sm">Piensa la respuesta antes de voltearla. Se aprende recuperando, no releyendo.</p>
+    <div class="flash" id="flash" role="button" tabindex="0" aria-live="polite">
+      <div class="q" id="fq">—</div>
+      <div class="a" id="fa">—</div>
+    </div>
+    <div style="display:flex;gap:.5rem;margin-top:.7rem;align-items:center;flex-wrap:wrap">
+      <button class="btn gh" id="fvolt">Voltear</button>
+      <button class="btn" id="fsig">Siguiente</button>
+      <span class="sm mut" id="fnum"></span>
+    </div>
+  </section>
+
+  <!-- ===== 7 ===== -->
+  <section class="panel" data-t="Compruébalo">
+    <div class="kicker">Paso 7 · Compruébalo</div>
+    <h2>Seis preguntas</h2>
+    <p class="mut sm">Cada explicación te dice por qué la correcta lo es y en qué se diferencia del distractor que más tienta.</p>
+    <div id="quiz"></div>
+    <div id="quizRes" class="res" style="display:none"></div>
+  </section>
+
+  <!-- ===== 8 ===== -->
+  <section class="panel" data-t="Tu semáforo">
+    <div class="kicker">Paso 8 · Tu semáforo</div>
+    <h2>¿Tu capacitación de hoy aguanta lo que viene?</h2>
+    <p class="mut sm">Marca sólo lo que puedas comprobar con un documento. Lo que no tienes en papel, no lo marques.</p>
+    <div id="check"></div>
+    <button class="btn" id="calc" style="margin-top:.9rem">Ver mi semáforo</button>
+    <div id="semaforo" style="display:none;margin-top:1rem"></div>
+  </section>
+
+  <!-- navegación inferior -->
+  <div class="nav">
+    <button class="btn gh" id="prev">← Anterior</button>
+    <button class="btn" id="next">Siguiente →</button>
+  </div>
+
+  <p class="xs mut" style="margin-top:1.4rem">Todo lo que capturas aquí se queda en tu navegador. No se envía a ningún servidor ni queda ligado a tu correo. Las obligaciones citadas provienen de la LFPIORPI, de las Reglas de Carácter General a que se refiere esa Ley y de las Disposiciones de Carácter General a que se refiere el artículo 115 de la Ley de Instituciones de Crédito. La Guía de la CNBV de 2020 se cita como sana práctica no vinculante.</p>
+
+  </main>
+</div>
+</div>
+
+<script>
+(function(){
+"use strict";
+var LLAVE="360educa_SFR_resultado";
+function guarda(o){try{localStorage.setItem(LLAVE,JSON.stringify(o));}catch(e){}}
+function lee(){try{var v=localStorage.getItem(LLAVE);return v?JSON.parse(v):null;}catch(e){return null;}}
+var $=function(s){return document.querySelector(s);};
+
+/* ---------- stepper ---------- */
+var paneles=[].slice.call(document.querySelectorAll(".panel"));
+var titulos=paneles.map(function(p){return p.getAttribute("data-t");});
+var visto={0:true}, cur=0;
+var dots=$("#dots"), rail=$("#rail");
+titulos.forEach(function(t,i){
+  var b=document.createElement("button");
+  b.className="dot";b.type="button";b.textContent=i+1;
+  b.setAttribute("role","tab");b.setAttribute("aria-label","Paso "+(i+1)+": "+t);
+  b.addEventListener("click",function(){ir(i);});
+  dots.appendChild(b);
+  var r=document.createElement("button");
+  r.type="button";r.innerHTML='<i>'+(i+1)+'</i>'+t;
+  r.addEventListener("click",function(){ir(i);});
+  rail.appendChild(r);
+});
+function ir(i){
+  if(i<0||i>=paneles.length)return;
+  paneles[cur].classList.remove("on");
+  cur=i; visto[i]=true;
+  paneles[cur].classList.add("on");
+  pintaNav();
+  window.scrollTo({top:0,behavior:"smooth"});
+}
+function pintaNav(){
+  [].forEach.call(dots.children,function(b,i){
+    b.setAttribute("aria-current",i===cur?"true":"false");
+    b.classList.toggle("hecho",!!visto[i]&&i!==cur);
+  });
+  [].forEach.call(rail.children,function(b,i){
+    b.setAttribute("aria-current",i===cur?"true":"false");
+    b.classList.toggle("hecho",!!visto[i]&&i!==cur);
+  });
+  $("#cuenta").textContent="Paso "+(cur+1)+" de "+paneles.length;
+  $("#prev").disabled=(cur===0);
+  $("#next").disabled=(cur===paneles.length-1);
+}
+$("#prev").addEventListener("click",function(){ir(cur-1);});
+$("#next").addEventListener("click",function(){ir(cur+1);});
+pintaNav();
+
+/* ---------- reloj ---------- */
+(function(){
+  var meta=new Date(2027,0,1),hoy=new Date();hoy.setHours(0,0,0,0);
+  var d=Math.round((meta-hoy)/86400000);
+  $("#dias").textContent=d>0?d.toLocaleString("es-MX"):"0";
+  if(d<=0){$("#diasTxt").innerHTML="El primer periodo anual de capacitación de las Actividades Vulnerables <b>ya está corriendo</b>.";}
+})();
+
+/* ---------- 2 · círculos ---------- */
+var sel={fin:false,av:false,otro:false};
+var TXT={
+ fin:{t:"Sector financiero",cls:"capa a",cap:"Capa A · Obligación, ya vigente",
+   p:"Ya tiene obligación de programa anual de capacitación y difusión, sin fecha nueva que esperar. En bancos, el Comité aprueba los programas y el Oficial de Cumplimiento define características, contenido y alcance.",
+   f:"Disposiciones de Carácter General a que se refiere el artículo 115 de la Ley de Instituciones de Crédito, 49ª y 50ª"},
+ av:{t:"Actividad Vulnerable",cls:"capa a",cap:"Capa A · Obligación, primer periodo 2027",
+   p:"Programa anual para consejo o administrador único, directivos, funcionarios, la persona Representante Encargada de Cumplimiento y, en todo caso, empleados de atención al público, de identificación del cliente, de envío de Avisos o de auditoría. Capacitador con cinco años acreditables y evidencia diez años.",
+   f:"LFPIORPI, artículo 18, fracción IX · Reglas de Carácter General, artículos 39 Bis y 39 Bis 1"},
+ otro:{t:"El resto del grupo",cls:"capa n",cap:"Sin obligación PLD — y aun así, tu puerta de entrada",
+   p:"Ninguna norma PLD les exige capacitarse. Pero son la misma tesorería, los mismos proveedores, la misma gente que factura y contrata. Si el riesgo entra por ahí, entra al grupo completo. Se capacitan por el deber de diligencia de quien administra y porque bancos y contrapartes te lo van a exigir — nunca presentado como obligación, y con contenido distinto: sensibilización y banderas rojas de su operación, no la debida diligencia de un banco.",
+   f:"Sana práctica y deber de diligencia. No se cita junto a la Ley sin distinguirlo."}
+};
+function pintaCirc(){
+  var cont=$("#salidaCirc"),act=Object.keys(sel).filter(function(k){return sel[k];});
+  ["fin","av","otro"].forEach(function(k){
+    var c=document.querySelector("#v"+k+" circle");
+    if(!c)return;
+    c.setAttribute("fill-opacity",sel[k]?".42":(k==="otro"?".12":".18"));
+    c.setAttribute("stroke",sel[k]?"#d9663f":"#e8dfd2");
+  });
+  if(!act.length){cont.style.display="none";return;}
+  var h="";
+  act.forEach(function(k){var o=TXT[k];
+    h+='<div class="card" style="margin-top:.6rem"><span class="'+o.cls+'">'+o.cap+'</span>'
+      +'<h3 style="margin-top:.45rem">'+o.t+'</h3><p class="sm mut" style="margin:0">'+o.p+'</p>'
+      +'<span class="fte">'+o.f+'</span></div>';});
+  var reg=(sel.fin?1:0)+(sel.av?1:0),cierre;
+  if(reg===2&&sel.otro) cierre="Tres perímetros en un solo grupo: dos con obligación dura y distinta entre sí, y uno sin obligación que igual te puede abrir la puerta. Un solo programa para los tres no existe — y tres desde cero, tampoco: lo que hay es tronco común más módulos.";
+  else if(reg===2) cierre="Dos obligaciones duras conviviendo, con fechas, capacitador y resguardo distintos. Tronco común más un módulo por régimen, y evidencia separada para cada uno.";
+  else if(reg===1&&sel.otro) cierre="Una obligación dura y un perímetro sin obligación pegado a ella. El riesgo no respeta esa frontera aunque la norma sí. Capacita a los dos, con contenido y etiqueta distintos.";
+  else if(reg===1) cierre="Un solo régimen. Tu ventaja es que puedes hacerlo bien a la primera; tu riesgo es asumir que lo que leíste del otro régimen te aplica.";
+  else cierre="Sin entidad financiera ni Actividad Vulnerable, hoy no tienes obligación PLD de capacitar. Si aun así lo haces es por diligencia y por lo que exigen tus contrapartes — y así debe decirse, sin prometer un cumplimiento que no existe.";
+  h+='<div class="nota" style="margin-top:.7rem"><b>Tu perímetro.</b> '+cierre+'</div>';
+  cont.innerHTML=h;cont.style.display="block";
+  var g=lee()||{};g.circulos=act;g.regimenes=reg;guarda(g);
+}
+[].forEach.call(document.querySelectorAll("#picker .chip"),function(b){
+  b.addEventListener("click",function(){
+    var k=b.getAttribute("data-c");sel[k]=!sel[k];
+    b.setAttribute("aria-pressed",sel[k]?"true":"false");pintaCirc();});
+});
+
+/* ---------- 4 · levantamiento ---------- */
+var PREG=[
+ {id:"quien",t:"¿Sabes ya, con nombre y apellido, quién entra al programa?",s:"Consejo o administrador único, directivos, funcionarios, la persona Representante Encargada de Cumplimiento, y quien atienda público, identifique clientes, envíe Avisos o audite.",pide:"La lista nominal de quién entra. Sin ella no tienes a quién capacitar ni a quién expedirle constancia."},
+ {id:"cuantos",t:"¿Cuántas personas son, en total y por empresa del grupo?",s:"El número decide si te alcanza con una sesión o necesitas varias, y si conviene presencial o remoto.",pide:"El headcount por empresa y por área. Es el primer dato del plan y RH lo tiene a la mano."},
+ {id:"puestos",t:"¿Tienes el puesto y la función real de cada uno?",s:"No el puesto del organigrama: lo que de verdad hace. La norma pide que el contenido se adecue a las responsabilidades de cada quien.",pide:"La descripción de puestos vigente. Un cajero y un analista de riesgos no llevan el mismo módulo."},
+ {id:"estudios",t:"¿Sabes el nivel de estudios de la gente que vas a capacitar?",s:"Decide el lenguaje, la duración de cada sesión y si funcionan los casos escritos o necesitas video.",pide:"El nivel de escolaridad por área. Un material que nadie entiende no es capacitación, es una constancia vacía."},
+ {id:"nuevos",t:"¿Hay proceso para el personal de nuevo ingreso?",s:"Quien vaya a atender público o administrar recursos debe recibir capacitación previa o simultánea a su ingreso. Es el punto donde los dos regímenes dicen casi lo mismo.",pide:"El acuerdo con RH de que nadie entra a esas áreas sin inducción PLD. Se pacta hoy, no en enero."},
+ {id:"recursos",t:"¿Con qué recursos cuentas para impartirla?",s:"Sala, proyector, pizarrón, videollamada, o una mezcla. La norma no te pide plataforma ni modalidad.",pide:"El inventario de lo que hay. Suele haber más de lo que crees y se compra menos de lo que se teme."},
+ {id:"capacita",t:"¿Ya sabes quién la va a impartir?",s:"Quien imparta debe contar y acreditar al menos cinco años de experiencia en prevención de lavado de dinero.",pide:"El nombre y cómo acreditará esos cinco años. Es lo que más tarde se resuelve y no se improvisa en diciembre."},
+ {id:"evalua",t:"¿Tienes cómo evaluar y expedir constancias?",s:"Sin evaluación de conocimientos no puedes expedir la constancia, y sin constancia no tienes evidencia.",pide:"El formato de evaluación y el de constancia. Y las medidas para quien no apruebe, que van en tu Manual de Políticas Internas."},
+ {id:"evidencia",t:"¿Tienes dónde guardar la evidencia diez años?",s:"Programas, talleres, materiales, listas de asistencia, evaluaciones, constancias y cualquier documento que compruebe que sí se dio.",pide:"El repositorio y quién lo cuida. Diez años es más de lo que dura casi cualquier laptop de la empresa."},
+ {id:"quiendecide",t:"¿Quién aprueba el programa y el presupuesto?",s:"En banco, el Comité lo aprueba y el Oficial de Cumplimiento define contenido y alcance. En Actividad Vulnerable la Ley no nombra aprobador, pero alguien tiene que firmar.",pide:"La cita en la agenda de esa persona. Es la junta que hay que pedir esta semana, no en 2027."}
+];
+var resp={};
+(function(){
+  var c=$("#preguntas");
+  PREG.forEach(function(p){
+    var d=document.createElement("div");d.className="card";d.style.marginBottom=".6rem";
+    d.innerHTML='<h3>'+p.t+'</h3><p class="sm mut">'+p.s+'</p>'
+      +'<div class="tri"><button class="btn gh" data-v="si">Ya lo tengo</button><button class="btn gh" data-v="no">Me falta</button></div>';
+    [].forEach.call(d.querySelectorAll("button"),function(b){
+      b.addEventListener("click",function(){
+        resp[p.id]=b.getAttribute("data-v");
+        [].forEach.call(d.querySelectorAll("button"),function(x){x.style.background="";x.style.borderColor="";x.style.color="";});
+        b.style.background=resp[p.id]==="si"?"#e6f1e9":"#fdf1ef";
+        b.style.borderColor=resp[p.id]==="si"?"#3f8f5c":"#c0503f";
+        b.style.color=resp[p.id]==="si"?"#2f7a4a":"#c0503f";
+        avance();});
+    });
+    c.appendChild(d);
+  });
+})();
+function avance(){
+  var n=Object.keys(resp).length,tot=PREG.length;
+  var C=2*Math.PI*38;
+  $("#ring").style.strokeDashoffset=String(C-(n/tot)*C);
+  $("#ringT").textContent=n;
+  if(n<tot){
+    $("#ringH").textContent=n===0?"Sin contestar":"Vas en "+n+" de "+tot;
+    $("#ringP").textContent="Contesta las diez y te armo la agenda para RH.";
+    return;
+  }
+  var faltan=PREG.filter(function(p){return resp[p.id]==="no";});
+  $("#ringH").textContent="Listo";
+  $("#ringP").textContent=faltan.length?("Te faltan "+faltan.length+" datos. Abajo va tu agenda."):"Tienes los diez datos.";
+  var out=$("#salidaLev"),h='<h3>Tu agenda para la junta con RH</h3>';
+  if(!faltan.length){
+    h+='<p>Contestaste que ya tienes los diez. Si es cierto y está documentado, ya no estás en el levantamiento: estás listo para armar el programa — que es otra cosa, y es donde se decide si tu capacitación sirve o sólo genera constancias.</p>';
+  }else{
+    h+='<p>Te faltan <b>'+faltan.length+'</b> de 10. Esto es lo que vas a pedir, en este orden:</p><ol style="margin:0 0 .4rem 1.1rem">';
+    faltan.forEach(function(p){h+='<li style="margin-bottom:.4rem">'+p.pide+'</li>';});
+    h+='</ol>';
+  }
+  h+='<p class="sm" style="margin-bottom:0">Anótalo ahora. Esta página no lo guarda en ningún servidor y no te lo va a poder recordar desde otra computadora.</p>';
+  out.innerHTML=h;out.style.display="block";
+  var g=lee()||{};g.levantamiento={total:tot,faltan:faltan.length};guarda(g);
+}
+
+/* ---------- 6 · fichas ---------- */
+var FICHAS=[
+ {q:"¿Desde cuándo corre el primer periodo anual de capacitación para Actividades Vulnerables?",a:"Del 1 de enero al 31 de diciembre de 2027. Lo fija el Transitorio Séptimo de las Reglas de Carácter General, no la Ley."},
+ {q:"¿Cuántos años de experiencia debe acreditar quien imparte capacitación a una Actividad Vulnerable?",a:"Al menos cinco años en prevención de lavado de dinero. Reglas de Carácter General, artículo 39 Bis, fracción III. Es obligación, no recomendación."},
+ {q:"¿Cuánto tiempo se conserva la evidencia de capacitación en Actividad Vulnerable?",a:"Mínimo diez años: programas, talleres, materiales, listas de asistencia, evaluaciones y constancias. Reglas, artículo 39 Bis 1."},
+ {q:"¿Qué se necesita antes de expedir una constancia?",a:"Practicar al participante una evaluación sobre los conocimientos adquiridos, y tener en el Manual de Políticas Internas las medidas para quien no obtenga resultado satisfactorio. Reglas, artículo 39 Bis 1."},
+ {q:"¿Cuántas horas anuales de capacitación exige la norma?",a:"Ninguna. Ni la LFPIORPI ni las Reglas fijan horas. Las 20, 30 y 40 vienen de la Guía de la CNBV de 2020, que expresamente no es vinculante."}
+];
+var fi=0;
+function pintaFicha(){
+  $("#fq").textContent=FICHAS[fi].q;$("#fa").textContent=FICHAS[fi].a;
+  $("#flash").classList.remove("rev");$("#fnum").textContent=(fi+1)+" de "+FICHAS.length;
+}
+function voltea(){$("#flash").classList.toggle("rev");}
+$("#fvolt").addEventListener("click",voltea);
+$("#flash").addEventListener("click",voltea);
+$("#flash").addEventListener("keydown",function(e){if(e.key===" "||e.key==="Enter"){e.preventDefault();voltea();}});
+$("#fsig").addEventListener("click",function(){fi=(fi+1)%FICHAS.length;pintaFicha();});
+pintaFicha();
+
+/* ---------- 7 · reactivos ---------- */
+var Q=[
+ {t:"Una inmobiliaria que realiza Actividad Vulnerable te pregunta cuándo tiene que dar su primera capacitación anual.",
+  o:["Ya debió darla en 2026, porque el Decreto se publicó en 2025","Su primer periodo corre del 1 de enero al 31 de diciembre de 2027","Cuando el SAT se lo requiera por oficio","No tiene obligación: eso es sólo del sector financiero"],c:1,
+  e:"El Transitorio Séptimo de las Reglas lo dice literal. La primera opción es el distractor que más tienta, porque el Transitorio Segundo de la Ley habla del «año siguiente a aquel en que se publique el Decreto»; pero ese párrafo sólo define qué es un periodo anual, y el Tercero difiere la entrada en vigor a lo que digan las Reglas."},
+ {t:"Quieren contratar a un capacitador con dos años de experiencia en PLD, muy bien recomendado, para la Actividad Vulnerable del grupo.",
+  o:["Sí puede: la norma no pide experiencia mínima","Sí, si tiene certificación de la CNBV","No: debe contar y acreditar al menos cinco años en la materia","Sólo si lo aprueba el Comité"],c:2,
+  e:"Reglas de Carácter General, artículo 39 Bis, fracción III. La certificación tienta porque suena a más, pero la norma no pide certificado: pide años acreditables. Y el Comité es figura del lado financiero, no de esta ecuación."},
+ {t:"Un director te dice: «capacitamos 40 horas al año, como pide la norma».",
+  o:["Nada que corregir, son las horas exactas","Son 20 horas, no 40","La norma no fija horas: las 40 vienen de una guía no vinculante de la CNBV","Las horas sólo aplican a bancos"],c:2,
+  e:"Ni la LFPIORPI ni las Reglas fijan horas. Las 40 anuales del Oficial de Cumplimiento están en la Guía de la CNBV de 2020, que se declara enunciativa, no vinculante, no supervisable ni sancionable. La última opción tienta porque la Guía sí está escrita para Sujetos Supervisados — pero el error del director no es a quién aplica, es creer que es obligación."},
+ {t:"Contratan a una cajera que va a atender público desde el lunes.",
+  o:["Se capacita en la siguiente sesión anual programada","Previa o simultáneamente a su ingreso o al inicio de sus actividades","Dentro de los 90 días siguientes","Al terminar su periodo de prueba"],c:1,
+  e:"Y es donde los dos regímenes coinciden casi palabra por palabra: Reglas, artículo 39 Bis 1, tercer párrafo, para Actividad Vulnerable; y 50ª de las Disposiciones del artículo 115 de la Ley de Instituciones de Crédito, para bancos. Por eso la inducción es tronco común: se diseña una vez para todo el grupo. Los 90 días tientan porque ese plazo existe en la norma, pero para otra cosa."},
+ {t:"Una comercializadora del grupo no es Actividad Vulnerable ni entidad financiera.",
+  o:["Se le aplica el mismo programa que a la Actividad Vulnerable, por prudencia","Queda fuera: sin obligación no hay nada que hacer","Sensibilización y banderas rojas de su operación, presentado como sana práctica","Debida diligencia completa de cliente, como a un banco"],c:2,
+  e:"No tiene obligación PLD, y decirle que sí la tiene es contaminar regímenes. Pero es la misma tesorería y los mismos proveedores: si el riesgo entra por ahí, entra completo. La primera y la cuarta son el error más caro y está documentado — sobrerregular a quien no le toca produce daño real, y es lo que el GAFI tuvo que corregir en su propia Recomendación 8 para el sector no lucrativo."},
+ {t:"Guardaste cinco años la evidencia de capacitación de la Actividad Vulnerable, igual que en el banco hermano.",
+  o:["Bien: cinco años es el plazo general","Mal: en Actividad Vulnerable el mínimo son diez años","Mal: son tres años","Da igual, la norma no fija plazo"],c:1,
+  e:"Reglas de Carácter General, artículo 39 Bis 1: plazo mínimo de diez años. Los cinco tientan porque es lo que recomienda la Guía de la CNBV — y ahí está la trampa: copiaste un criterio del banco que ni siquiera es obligación suya, y con eso te quedaste corto donde sí lo es."}
+];
+var aciertos=0,contestadas=0;
+(function(){
+  var c=$("#quiz");
+  Q.forEach(function(q,i){
+    var d=document.createElement("div");d.className="card";d.style.marginBottom=".6rem";
+    var h='<h3>'+(i+1)+'. '+q.t+'</h3>';
+    q.o.forEach(function(o,j){h+='<button class="op" data-j="'+j+'">'+o+'</button>';});
+    h+='<div class="expl"><b>Por qué.</b> '+q.e+'</div>';
+    d.innerHTML=h;
+    var listo=false;
+    [].forEach.call(d.querySelectorAll(".op"),function(b){
+      b.addEventListener("click",function(){
+        if(listo)return;listo=true;contestadas++;
+        var j=+b.getAttribute("data-j");if(j===q.c)aciertos++;
+        [].forEach.call(d.querySelectorAll(".op"),function(x,k){
+          if(k===q.c)x.classList.add("bien");else if(k===j)x.classList.add("mal");});
+        d.querySelector(".expl").classList.add("on");
+        if(contestadas===Q.length){
+          var r=$("#quizRes");
+          r.innerHTML='<h3>'+aciertos+' de '+Q.length+'</h3><p>'
+            +(aciertos>=5?"Distingues bien los dos regímenes. Eso es exactamente lo que te va a salvar de armar un programa de talla única."
+                         :"Regresa al paso 3. Las que se fallan casi siempre son las mismas: el año, las horas y el plazo de resguardo.")
+            +'</p>';
+          r.style.display="block";
+          var g=lee()||{};g.quiz={aciertos:aciertos,total:Q.length};guarda(g);
+        }});
+    });
+    c.appendChild(d);
+  });
+})();
+
+/* ---------- 8 · semáforo ---------- */
+var CHECK=[
+ "Tengo por escrito la lista nominal de quién entra al programa, por empresa del grupo.",
+ "El contenido está diferenciado por puesto y función, no es el mismo material para todos.",
+ "Quien imparte puede acreditar al menos cinco años de experiencia en la materia.",
+ "Aplico una evaluación de conocimientos y de ahí sale la constancia.",
+ "Tengo definidas, en el Manual de Políticas Internas, las medidas para quien no aprueba.",
+ "Nadie entra a atender público o administrar recursos sin capacitación previa o simultánea.",
+ "Guardo la evidencia completa y sé dónde va a estar dentro de diez años.",
+ "Sé qué parte de mi programa es obligación y qué parte es sana práctica, y está etiquetado."
+];
+(function(){
+  var c=$("#check");
+  CHECK.forEach(function(t,i){
+    var d=document.createElement("div");d.className="chk";
+    d.innerHTML='<input type="checkbox" id="ck'+i+'"><label for="ck'+i+'">'+t+'</label>';
+    c.appendChild(d);});
+})();
+$("#calc").addEventListener("click",function(){
+  var n=document.querySelectorAll("#check input:checked").length,tot=CHECK.length;
+  var color,titulo,txt,hex;
+  if(n>=7){color="v";titulo="Verde";hex="#3f8f5c";txt="Tu programa ya tiene la forma correcta. Lo que falta no es entender la obligación: es sostenerla año con año, con la evidencia en orden y el contenido actualizado cuando la norma se mueva.";}
+  else if(n>=4){color="a";titulo="Ámbar";hex="#b8892a";txt="Tienes la mitad. Lo que suele faltar aquí no es voluntad: es el plan que amarra quién, qué, cuándo, con qué evidencia y quién responde. Sin ese plan, cada año se vuelve a improvisar.";}
+  else{color="r";titulo="Rojo";hex="#c0503f";txt="Hoy no tendrías cómo comprobar tu capacitación ante un requerimiento. La buena noticia: el primer periodo no ha empezado y el levantamiento ya lo hiciste aquí.";}
+  var pct=n/tot, C=2*Math.PI*46;
+  var out=$("#semaforo");
+  out.className="res";
+  out.innerHTML=
+    '<div style="display:flex;gap:1.1rem;align-items:center;flex-wrap:wrap">'
+    +'<svg width="112" height="112" viewBox="0 0 112 112" role="img" aria-label="Semáforo '+titulo+', '+n+' de '+tot+'">'
+    +'<circle cx="56" cy="56" r="46" fill="none" stroke="rgba(255,255,255,.14)" stroke-width="11"/>'
+    +'<circle cx="56" cy="56" r="46" fill="none" stroke="'+hex+'" stroke-width="11" stroke-linecap="round"'
+    +' stroke-dasharray="'+C.toFixed(1)+'" stroke-dashoffset="'+(C-pct*C).toFixed(1)+'" transform="rotate(-90 56 56)"/>'
+    +'<text x="56" y="56" text-anchor="middle" font-family="Space Grotesk" font-weight="700" font-size="26" fill="#fff">'+n+'</text>'
+    +'<text x="56" y="74" text-anchor="middle" font-family="Inter" font-size="12" fill="#c9c3b9">de '+tot+'</text></svg>'
+    +'<div style="flex:1;min-width:220px"><h3 style="margin:0 0 .3rem">'+titulo+'</h3><p style="margin:0">'+txt+'</p></div></div>'
+    +'<p class="sm" style="margin:.8rem 0 0">Este resultado se queda en tu navegador. Si abres el curso en otra computadora, no va a estar ahí.</p>';
+  out.style.display="block";
+  var g=lee()||{};g.semaforo={color:color,n:n,total:tot,fecha:new Date().toISOString().slice(0,10)};guarda(g);
+});
+
+/* teclado: flechas entre pasos */
+document.addEventListener("keydown",function(e){
+  if(e.target.matches("input,textarea,button"))return;
+  if(e.key==="ArrowRight")ir(cur+1);
+  if(e.key==="ArrowLeft")ir(cur-1);
+});
+})();
+</script>
+</body>
+</html>
