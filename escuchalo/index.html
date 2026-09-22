@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Escúchalo · PLD/FT sin fronteras regulatorias</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+<style>
+/* SFR · página del audio (capítulo 4). El mp3 vive en audio/ dentro del mismo sitio. */
+:root{
+  --dur:#ffb59d; --dur-letra:#d9663f; --coral:#ff8361;
+  --crema:#faf5ec; --suave:#fff1ec; --osc:#393e41; --neg:#1b1b1e; --gris:#4d4d4d; --linea:#eee3d6; --bl:#ffffff;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{-webkit-text-size-adjust:100%}
+body{font-family:Inter,Arial,sans-serif;color:var(--neg);background:var(--bl);line-height:1.55;font-size:16px}
+a{color:var(--dur-letra);text-decoration:underline;text-underline-offset:3px}
+.wrap{max-width:760px;margin:0 auto;padding:28px 16px 48px}
+h1,h2,h3{font-family:"Space Grotesk",Arial,sans-serif;line-height:1.2}
+.eyebrow{font-family:"Space Grotesk",Arial,sans-serif;font-size:13px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--dur-letra)}
+.hero{background:var(--osc);color:var(--bl);border-radius:20px;padding:28px 22px;position:relative;overflow:hidden}
+.hero::after{content:"";position:absolute;right:-70px;top:-70px;width:130px;height:130px;border-radius:50%;background:var(--dur-letra);opacity:.9}
+.hero::before{content:"";position:absolute;right:66px;top:70px;width:18px;height:18px;border-radius:50%;background:var(--coral)}
+.hero .eyebrow{color:var(--dur);position:relative;z-index:1;max-width:78%}
+.hero h1{font-size:30px;margin:10px 0 12px;max-width:520px;position:relative;z-index:1}
+.hero p{font-size:18px;color:#e9e9e9;max-width:540px;position:relative;z-index:1}
+section{margin-top:40px}
+h2{font-size:24px;margin:6px 0 16px}
+.cards{display:grid;gap:14px}
+.card{background:var(--crema);border-radius:16px;padding:18px 18px 16px;display:flex;gap:14px;align-items:flex-start}
+.card.alt{background:var(--suave)}
+.icon{flex:0 0 44px;width:44px;height:44px;border-radius:50%;background:var(--dur);display:flex;align-items:center;justify-content:center}
+.icon svg{width:22px;height:22px;stroke:var(--neg);fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.card h3{font-size:18px;margin-bottom:4px}
+.card p{color:var(--gris);font-size:15.5px}
+.map{list-style:none;display:grid;gap:10px}
+.map li{display:flex;gap:14px;align-items:center;border:1px solid var(--linea);border-radius:14px;padding:12px 14px;background:var(--bl)}
+.map li.hi{background:var(--suave);border-color:var(--dur)}
+.num{flex:0 0 36px;height:36px;border-radius:50%;background:var(--dur-letra);color:var(--bl);font-family:"Space Grotesk",Arial,sans-serif;font-weight:700;display:flex;align-items:center;justify-content:center}
+.map b{display:block;font-family:"Space Grotesk",Arial,sans-serif;font-size:16.5px}
+.map span{color:var(--gris);font-size:14.5px}
+.steps{counter-reset:p;display:grid;gap:12px}
+.step{display:flex;gap:14px;align-items:flex-start}
+.step .num{background:var(--dur);color:var(--neg)}
+.step p{padding-top:6px}
+.note{margin-top:18px;background:var(--crema);border-radius:14px;padding:14px 16px;color:var(--gris);font-size:15px;display:flex;gap:10px;align-items:flex-start}
+.note svg{flex:0 0 20px;width:20px;height:20px;stroke:var(--dur-letra);fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;margin-top:2px}
+footer{margin-top:44px;color:#8a8a8a;font-size:13px}
+@media (min-width:640px){
+  .wrap{padding:36px 24px 56px}
+  .hero{padding:36px 32px}
+  .hero h1{font-size:36px}
+  .hero::after{width:190px;height:190px;right:-60px;top:-60px}
+  .hero::before{right:140px;top:26px}
+  .cards{grid-template-columns:repeat(3,1fr)}
+  .card{flex-direction:column}
+}
+.player{margin-top:22px;background:var(--crema);border-radius:18px;padding:20px 18px}
+.player h2{font-size:20px;margin:4px 0 12px}
+audio{width:100%}
+.falta{display:none;color:var(--gris);font-size:15px;margin-top:10px}
+.lista{list-style:none;display:grid;gap:10px;margin-top:6px}
+.lista li{display:flex;gap:12px;align-items:flex-start}
+.lista .num{flex:0 0 30px;height:30px;font-size:14px;background:var(--dur);color:var(--neg)}
+.lista p{padding-top:3px}
+</style>
+</head>
+<body>
+<main class="wrap">
+  <header class="hero">
+    <div class="eyebrow">Capítulo 4 · Escúchalo</div>
+    <h1>Diez minutos para repasar lo esencial</h1>
+    <p>Escúchalo camino a la junta con RH, o antes de volver a la herramienta.</p>
+  </header>
+
+  <div class="player">
+    <div class="eyebrow">Audio · unos 10 minutos</div>
+    <h2>Un grupo, tres regímenes</h2>
+    <audio id="aud" controls preload="none" src="../audio/SFR_C04L01_ALU_01_Audio_Un_grupo_tres_regimenes.mp3"></audio>
+    <p class="falta" id="falta">El audio no cargó. Recarga la página; si sigue igual, escríbenos a capacitacion@gmc360.com.mx.</p>
+  </div>
+
+  <section aria-labelledby="t-oye">
+    <div class="eyebrow">Qué vas a oír</div>
+    <h2 id="t-oye">Cuatro ideas</h2>
+    <ol class="lista">
+      <li><div class="num">1</div><p>Por qué el primer periodo anual de capacitación de las Actividades Vulnerables es 2027, y la trampa de leer un solo transitorio.</p></li>
+      <li><div class="num">2</div><p>En qué no se parece la capacitación de una Actividad Vulnerable a la de un banco, y en qué sí.</p></li>
+      <li><div class="num">3</div><p>Qué hacer con la empresa del grupo que no está obligada.</p></li>
+      <li><div class="num">4</div><p>Por qué el primer paso es la junta con RH.</p></li>
+    </ol>
+  </section>
+  <footer>360Educa · GMC360</footer>
+</main>
+<script>
+(function(){try{var a=document.getElementById('aud');a.addEventListener('error',function(){document.getElementById('falta').style.display='block';},true);}catch(e){}})();
+</script>
+</body>
+</html>

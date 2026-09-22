@@ -1,0 +1,4 @@
+Aqui va el mp3 del capitulo 4 (Escuchalo).
+El reproductor de escuchalo/index.html lo busca en esta carpeta.
+Mientras no este el archivo, no subas /escuchalo/ a produccion: la leccion se veria
+con un reproductor vacio.

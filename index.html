@@ -78,6 +78,7 @@ p{margin:0 0 .8rem}
 .capa{display:inline-block;font:700 .66rem "Space Grotesk";letter-spacing:.07em;text-transform:uppercase;
  padding:.18rem .5rem;border-radius:999px}
 .capa.a{background:#e6f1e9;color:#2f7a4a}
+.capa.b{background:#e9eef6;color:#3c5a86}
 .capa.c{background:#fbf0d9;color:#8d6612}
 .capa.n{background:#f2e7db;color:#8a5a3c}
 .nota{background:#fff4ee;border:1px solid var(--madre);border-radius:12px;padding:.85rem 1rem;font-size:.9rem}
@@ -146,10 +147,14 @@ th{font-size:.72rem;text-transform:uppercase;letter-spacing:.06em;color:var(--ma
   body{background:#fff;font-size:11pt}
   .app{max-width:none !important;padding:0 !important}
   .layout{display:block !important;grid-template-columns:none !important;gap:0 !important}
-  .top,.rail,.nav,.kicker,#preguntas,.viz,#imprime,.xs{display:none !important}
+  .top,.rail,.nav,.kicker,#preguntas,.viz,#imprime{display:none !important}
   .panel{display:none !important}
-  .panel:has(#salidaLev){display:block !important}
-  .panel:has(#salidaLev) h2,.panel:has(#salidaLev)>p{display:none}
+  .panel:has(#salidaLev),.panel:has(#salidaCirc){display:block !important}
+  .panel:has(#salidaLev) h2,.panel:has(#salidaLev)>p,
+  .panel:has(#salidaCirc) h2,.panel:has(#salidaCirc)>p{display:none}
+  #salidaCirc{display:block !important;page-break-after:always}
+  #salidaCirc .card,#salidaCirc .nota{border:1px solid #bbb;background:#fff !important;color:#1b1b1e !important}
+  #salidaCirc:empty{display:none !important}
   #salidaLev{background:#fff !important;color:#1b1b1e !important;border:1px solid #bbb;
              border-radius:0;padding:0;margin:0;page-break-inside:avoid}
   #salidaLev h3{color:#1b1b1e !important;font-size:1.3rem;border-bottom:2px solid #d9663f;padding-bottom:.35rem}
@@ -180,38 +185,45 @@ th{font-size:.72rem;text-transform:uppercase;letter-spacing:.06em;color:var(--ma
   <main id="main">
 
   <!-- ===== 1 ===== -->
-  <section class="panel on" data-t="El reloj">
+  <section class="panel on" data-t="Qué cambió">
     <div class="kicker">Paso 1 · Qué cambió</div>
     <h1>La fecha no está donde crees</h1>
-    <p class="mut">La obligación nace en la <b>LFPIORPI, artículo 18, fracción IX</b>. Pero el año no lo fija la Ley.</p>
+    <p class="mut">La obligación nace en la <b>LFPIORPI, artículo 18, fracción IX</b>. La Ley sí fija un año — pero no es el que acaba aplicando.</p>
+      <p class="sm mut" style="margin-top:.5rem">Ocho pasos. Al final vas a tener tu perímetro mapeado, tu diagnóstico y la agenda para sentarte con RH. Hasta ahí llega esta herramienta: armar el programa anual —el calendario, los módulos por puesto, los formatos de evaluación y de constancia— es un trabajo distinto y no cabe en una pantalla.</p>
 
     <div class="hero">
       <div class="n" id="dias">—</div>
       <p id="diasTxt">días para el <b>1 de enero de 2027</b>, cuando arranca el primer periodo anual de capacitación de las Actividades Vulnerables.</p>
+      <p class="sm" style="margin:.45rem 0 0;color:#ffb59d">Si en tu grupo hay entidad financiera, ese reloj no es el tuyo: ahí la obligación ya está corriendo y no hay fecha que esperar.</p>
     </div>
 
     <div class="viz" style="margin-top:.9rem">
       <h3>Lo que cae, y cuándo</h3>
-      <svg viewBox="0 0 640 168" role="img" aria-label="Línea de tiempo: 1 de enero de 2027 capacitación; 1 de marzo de 2027 manual y selección de personal; 1 de junio de 2027 mecanismos automatizados; 1 de enero de 2028 auditoría.">
+      <svg viewBox="0 0 640 168" role="img" aria-label="Línea de tiempo: 30 de noviembre de 2026 entran en vigor las Reglas reformadas; 1 de enero de 2027 arranca el primer periodo anual de capacitación; 1 de marzo de 2027 Manual con metodología y selección de personal; 1 de junio de 2027 mecanismos automatizados; 1 de enero de 2028 arranca el primer año auditado, que cierra el 31 de diciembre de 2028.">
         <line x1="30" y1="86" x2="610" y2="86" stroke="#e8dfd2" stroke-width="3" stroke-linecap="round"/>
         <line x1="30" y1="86" x2="180" y2="86" stroke="#d9663f" stroke-width="3" stroke-linecap="round"/>
         <g font-family="Space Grotesk" font-size="12">
           <g><circle cx="30" cy="86" r="9" fill="#d9663f"/><circle cx="30" cy="86" r="3.5" fill="#fff"/>
-             <text x="30" y="46" text-anchor="start" font-weight="700" fill="#d9663f">1 ene 2027</text>
-             <text x="30" y="62" text-anchor="start" fill="#4d4d4d">Capacitación</text></g>
+             <text x="30" y="40" text-anchor="start" font-weight="700" fill="#d9663f">1 ene 2027</text>
+             <text x="30" y="56" text-anchor="start" fill="#4d4d4d">Capacitación</text>
+             <text x="30" y="118" text-anchor="start" fill="#4d4d4d">Antes: 30 nov 2026,</text>
+             <text x="30" y="132" text-anchor="start" fill="#4d4d4d">entran en vigor</text>
+             <text x="30" y="146" text-anchor="start" fill="#4d4d4d">las Reglas reformadas</text></g>
           <g><circle cx="180" cy="86" r="7" fill="#ffb59d" stroke="#d9663f" stroke-width="2"/>
              <text x="180" y="112" text-anchor="middle" font-weight="700" fill="#1b1b1e">1 mar 2027</text>
-             <text x="180" y="128" text-anchor="middle" fill="#4d4d4d">Manual</text>
+             <text x="180" y="128" text-anchor="middle" fill="#4d4d4d">Manual con metodología</text>
              <text x="180" y="142" text-anchor="middle" fill="#4d4d4d">Selección</text></g>
           <g><circle cx="360" cy="86" r="7" fill="#fff" stroke="#4d4d4d" stroke-width="2"/>
              <text x="360" y="46" text-anchor="middle" font-weight="700" fill="#1b1b1e">1 jun 2027</text>
-             <text x="360" y="62" text-anchor="middle" fill="#4d4d4d">Monitoreo automatizado</text></g>
+             <text x="360" y="62" text-anchor="middle" fill="#4d4d4d">Mecanismos automatizados</text></g>
           <g><circle cx="610" cy="86" r="7" fill="#fff" stroke="#4d4d4d" stroke-width="2"/>
              <text x="610" y="112" text-anchor="end" font-weight="700" fill="#1b1b1e">1 ene 2028</text>
-             <text x="610" y="128" text-anchor="end" fill="#4d4d4d">Auditoría</text></g>
+             <text x="610" y="128" text-anchor="end" fill="#4d4d4d">Arranca el primer</text>
+             <text x="610" y="142" text-anchor="end" fill="#4d4d4d">año auditado</text></g>
         </g>
       </svg>
-      <span class="fte">Reglas de Carácter General a que se refiere la LFPIORPI, Transitorios Tercero, Sexto, Séptimo, Octavo y Noveno del Acuerdo de 24 de julio de 2026.</span>
+      <span class="fte">Reglas de Carácter General a que se refiere la LFPIORPI, Transitorios Primero, Tercero, Sexto, Séptimo, Octavo y Noveno del Acuerdo de 24 de julio de 2026, publicado en el DOF el 7 de agosto de 2026. El Capítulo XII —capacitación y selección de personal— entra en vigor el 30 de noviembre de 2026 (Transitorio Primero): hasta esa fecha nada de lo que sigue es exigible. El 1 de enero de 2028 no es fecha de entrega: es el arranque del primer año auditado, que cierra el 31 de diciembre de 2028 y se dictamina a más tardar el último día hábil de marzo de 2029 (artículo 50).</span>
+      <p class="sm" style="margin:.7rem 0 0">El 1 de marzo de 2027 del Manual es la fecha para quien ya estaba dado de alta y ya cumplió sus noventa días naturales (Transitorio Tercero). Si te das de alta después, tu plazo es el del artículo 37: noventa días naturales contados desde tu propia alta y registro.</p>
     </div>
 
     <div class="grid g2" style="margin-top:.9rem">
@@ -225,12 +237,20 @@ th{font-size:.72rem;text-transform:uppercase;letter-spacing:.06em;color:var(--ma
         <span class="capa a">Capa A · Obligación</span>
         <h3 style="margin-top:.45rem">Lo que fija el año</h3>
         <p class="sm mut" style="margin:0">«El primer periodo anual de capacitación a que se refiere el artículo 39 Bis de estas reglas, comprenderá del primero de enero al treinta y uno de diciembre de dos mil veintisiete.»</p>
-        <span class="fte">Reglas de Carácter General, Transitorio Séptimo</span>
+        <span class="fte">Reglas de Carácter General a que se refiere la LFPIORPI, Transitorio Séptimo del Acuerdo de 24 de julio de 2026</span>
       </div>
     </div>
 
     <div class="nota" style="margin-top:.9rem">
-      <b>Cuidado con ésta.</b> El Transitorio Segundo de la Ley dice que el primer periodo inicia «el 1 de enero del año siguiente a aquel en que se publique el presente Decreto». Como el Decreto es de 2025, leído solo apuntaría a 2026. No es así: ese párrafo define qué se entiende por <i>periodo anual</i>, y el Transitorio Tercero difiere la entrada en vigor a lo que digan las Reglas — que fijaron 2027.
+      <span class="capa b">Capa B · Criterio de la casa</span>
+      <p style="margin:.45rem 0 0"><b>Cuidado con ésta.</b> El Transitorio Segundo del Decreto de 2025 no sólo define el periodo anual como año calendario: además fija su arranque, «el primer periodo iniciará el 1 de enero del año siguiente a aquel en que se publique el presente Decreto y concluirá el 31 de diciembre del mismo año». Como el Decreto se publicó el 16 de julio de 2025, leído por sí solo ese párrafo <b>sí apuntaría a 2026</b>. Nuestra lectura, y la razón: el Transitorio Tercero del mismo Decreto es norma especial sobre entrada en vigor y difiere las fracciones VII a XI del artículo 18 a los plazos que fijen las Reglas de Carácter General — y las Reglas fijaron 2027 en su Transitorio Séptimo. El Segundo dice cómo se mide el periodo; el Tercero dice desde cuándo se cuenta. Si alguien en tu grupo sostiene 2026, ése es el punto a discutir, y conviene dejarlo asentado por escrito.</p>
+      <span class="fte">LFPIORPI, Transitorios Segundo y Tercero del Decreto publicado en el DOF el 16 de julio de 2025 · Reglas de Carácter General, Transitorio Séptimo. La conclusión es criterio de la casa, no texto literal de un solo precepto.</span>
+    </div>
+
+    <div class="nota" style="margin-top:.9rem">
+      <span class="capa c">Capa C · No resuelto por la norma</span>
+      <p style="margin:.45rem 0 0"><b>Hay una capacitación que puede no esperar a 2027.</b> El artículo 20 de la LFPIORPI, en su tercer párrafo, ordena que la persona Representante Encargada del Cumplimiento «deberá recibir anualmente capacitación», y ese artículo <b>no está</b> entre los que el Transitorio Tercero difiere —ese transitorio sólo alcanza las fracciones VII a XI del artículo 18—. Pero el propio párrafo remite a «las reglas de carácter general que emita la Secretaría», y ésas entran en vigor el 30 de noviembre de 2026 con primer periodo 2027. <b>La norma no resuelve desde cuándo corre.</b> Lo prudente, y es lo que recomendamos: documentar ya la capacitación de tu Representante, aunque la discusión de la fecha siga abierta.</p>
+      <span class="fte">LFPIORPI, artículo 20, tercer párrafo (artículo reformado DOF 16-07-2025) · Transitorios Primero y Tercero del Decreto DOF 16-07-2025 · Reglas de Carácter General, Transitorios Primero y Séptimo.</span>
     </div>
   </section>
 
@@ -238,7 +258,7 @@ th{font-size:.72rem;text-transform:uppercase;letter-spacing:.06em;color:var(--ma
   <section class="panel" data-t="Tu perímetro">
     <div class="kicker">Paso 2 · Tu perímetro</div>
     <h2>¿Qué hay dentro de tu grupo?</h2>
-    <p class="mut sm">Marca lo que aplique. Nada de esto sale de tu pantalla.</p>
+    <p class="mut sm">Tu perímetro es el conjunto de empresas de tu grupo y el régimen que le toca a cada una. Es lo primero que hay que tener claro, porque de ahí cuelga todo lo demás. Marca lo que aplique: esto se queda en tu navegador y no se envía a ningún servidor.</p>
 
     <div class="viz">
       <p class="sm mut" style="margin:0 0 .5rem"><b>Toca cada bloque</b> que exista en tu grupo. Puedes elegir más de uno.</p>
@@ -267,22 +287,23 @@ th{font-size:.72rem;text-transform:uppercase;letter-spacing:.06em;color:var(--ma
         </g>
         <g>
           <rect x="66" y="150" width="288" height="42" rx="21" fill="#393e41"/>
-          <text x="210" y="176" text-anchor="middle" font-family="Space Grotesk" font-size="12.5" font-weight="700" fill="#ffb59d">Un solo programa de capacitación</text>
+          <text x="210" y="176" text-anchor="middle" font-family="Space Grotesk" font-size="12.5" font-weight="700" fill="#ffb59d">Un tronco común, tres módulos</text>
         </g>
       </svg>
-      <span class="fte">Dos perímetros con obligación dura y distinta entre sí. El tercero, punteado, no tiene obligación PLD — y aun así se alimenta del mismo programa.</span>
+      <p class="sm mut" style="margin:.5rem 0 0">Dos perímetros con obligación directa y distinta entre sí. El tercero, punteado, no tiene programa anual propio — pero si es filial de propiedad mayoritaria dentro de tu grupo empresarial, la Ley te obliga a extenderle tus políticas.</p>
+      <span class="fte">LFPIORPI, artículos 17 y 18, fracciones VIII, segundo párrafo, y IX · Reglas de Carácter General, artículos 37 Bis 1, 39 Bis y 39 Bis 1 · Disposiciones de Carácter General a que se refiere el artículo 115 de la Ley de Instituciones de Crédito, 49ª y 50ª.</span>
     </div>
 
     <div id="picker" style="margin-top:.9rem">
       <button class="chip" data-c="fin" aria-pressed="false"><b>Entidad del sector financiero</b><span>Banco, SOFOM, casa de bolsa, casa de cambio, transmisor de dinero, fintech, SOFIPO, unión de crédito, seguros…</span></button>
-      <button class="chip" data-c="av" aria-pressed="false"><b>Actividad Vulnerable</b><span>Alguna de las del artículo 17 de la LFPIORPI: inmobiliaria, automotriz, fedatarios, mutuo, blindaje, activos virtuales, donativos…</span></button>
-      <button class="chip" data-c="otro" aria-pressed="false"><b>Otras empresas del grupo</b><span>Servicios corporativos, logística, comercializadora, arrendadora, tenedora, la constructora, la de nómina.</span></button>
+      <button class="chip" data-c="av" aria-pressed="false"><b>Actividad Vulnerable</b><span>Alguna de las del artículo 17 de la LFPIORPI: inmobiliaria y desarrollo inmobiliario, arrendamiento de inmuebles, construcción, automotriz, fedatarios, mutuo y crédito, joyería y metales, obra de arte, blindaje, activos virtuales, donativos…</span></button>
+      <button class="chip" data-c="otro" aria-pressed="false"><b>Otras empresas del grupo</b><span>Servicios compartidos, logística, TI, la tenedora pura, la que sólo factura entre empresas del grupo. Antes de meter una aquí, descarta el artículo 17: la constructora cae en la fracción V o V Bis, la arrendadora de inmuebles en la XV, la que presta a las demás del grupo en la IV, y la comercializadora en la VI, VII u VIII según lo que venda.</span></button>
     </div>
     <div id="salidaCirc" style="display:none"></div>
   </section>
 
   <!-- ===== 3 ===== -->
-  <section class="panel" data-t="Lo que no se parece">
+  <section class="panel" data-t="La trampa del programa único">
     <div class="kicker">Paso 3 · La trampa del programa único</div>
     <h2>Se parecen lo suficiente para engañarte</h2>
     <p class="mut sm">Y difieren justo en lo que cuesta caro. Dos ejemplos, antes de la tabla completa.</p>
@@ -290,16 +311,17 @@ th{font-size:.72rem;text-transform:uppercase;letter-spacing:.06em;color:var(--ma
     <div class="viz">
       <h3>Años que debes guardar la evidencia de capacitación</h3>
       <div class="barra hi"><span class="et">Act. Vulnerable</span><span class="tr"><i style="width:100%"></i></span><span class="v">10 años · obligación</span></div>
-      <div class="barra"><span class="et">Banco</span><span class="tr"><i style="width:50%"></i></span><span class="v">5 años · recomendación</span></div>
-      <span class="fte">En Actividad Vulnerable son <b>diez años como mínimo y es obligación expresa</b>: programas, talleres, materiales, listas de asistencia, evaluaciones y constancias (Reglas de Carácter General, artículo 39 Bis 1). En bancos, las Disposiciones no fijan plazo para esa evidencia; los cinco años salen de la Guía de la CNBV para el desarrollo del programa anual de capacitación y difusión, apartado VI — y esa Guía <b>no es vinculante</b>.</span>
-      <p class="sm" style="margin:.7rem 0 0"><b>Doble trampa.</b> La primera es copiarle al banco los cinco años: en Actividad Vulnerable te quedas corto por la mitad, y ahí sí hay obligación. La segunda es al revés — creer que el banco tiene obligación de cinco años, cuando lo que tiene es una recomendación. Los plazos de diez años que sí están en sus Disposiciones (59ª) son de operaciones y expedientes de cliente, no de capacitación.</p>
+      <div class="barra"><span class="et">Banco</span><span class="tr" style="background:transparent;border:1.5px dashed #c9bfae"><i style="width:50%;background:#c9bfae"></i></span><span class="v">5 años <span class="capa c" style="margin-left:.3rem">No vinculante</span></span></div>
+      <span class="fte">En Actividad Vulnerable son <b>diez años como mínimo y es obligación expresa</b>: programas, talleres, materiales, listas de asistencia, evaluaciones, constancias y cualquier otro documento que ayude a comprobar que se llevó a cabo la capacitación, en físico o en electrónico (Reglas de Carácter General, artículo 39 Bis 1, primer párrafo). En bancos, las Disposiciones no fijan plazo para esa evidencia; los cinco años salen de la Guía de la CNBV para el desarrollo del programa anual de capacitación y difusión, apartado VI, que los cuenta desde la fecha de elaboración o generación del documento y los aplica a todo lo que se genere de capacitación y de difusión — y esa Guía <b>no es vinculante</b> (apartado I, Objeto, cuarto párrafo).</span>
+      <p class="sm" style="margin:.7rem 0 0"><b>Doble trampa.</b> La primera es copiarle al banco los cinco años: en Actividad Vulnerable te quedas corto por la mitad, y ahí sí hay obligación. La segunda es al revés — creer que el banco tiene obligación de cinco años, cuando lo que tiene es una recomendación. Los plazos de diez años que sí están en sus Disposiciones —la 59ª, de operaciones y expedientes de cliente, y la 51ª fracción XIII, de registros históricos de Grado de Riesgo— no son de capacitación. Y dentro de las propias Reglas hay otros diez años que tampoco lo son —los de tu metodología de Riesgos y los de los históricos de Grado de Riesgo— y un plazo de cinco años que se confunde con el del capacitador: el del dictamen de auditoría, contado desde que el auditor te lo entrega (artículo 51).</p>
     </div>
 
     <div class="viz" style="margin-top:.8rem">
       <h3>Años de experiencia que debe acreditar quien imparte</h3>
       <div class="barra hi"><span class="et">Act. Vulnerable</span><span class="tr"><i style="width:100%"></i></span><span class="v">5 años, obligatorio</span></div>
-      <div class="barra"><span class="et">Banco</span><span class="tr"><i style="width:0%"></i></span><span class="v">no se exige</span></div>
-      <span class="fte">Reglas de Carácter General, artículo 39 Bis, fracción III. En bancos las Disposiciones no lo exigen; la Guía de la CNBV sólo dice que es «deseable» que cuente con certificaciones.</span>
+      <div class="barra"><span class="et">Banco</span><span class="tr" style="background:transparent;border:1.5px dashed #c9bfae"><i style="width:0%"></i></span><span class="v">no se exige <span class="capa c" style="margin-left:.3rem">Sólo «deseable»</span></span></div>
+      <span class="fte">Reglas de Carácter General, artículo 39 Bis, fracción III. En bancos ninguna disposición fija años ni exige acreditarlos: la única mención de impartición es la 49ª fracción I, que no adjetiva a quien imparte. La Guía de la CNBV, apartado IV.3, recomienda que imparta quien cuente con los conocimientos y experiencia necesarios, y añade que es deseable que tenga certificaciones; sin número de años y sin ser vinculante.</span>
+      <p class="sm" style="margin:.7rem 0 0"><b>Puede ser alguien de tu propia casa.</b> La norma no pide que el capacitador sea externo, ni certificado, ni proveedor: pide años acreditables en la materia. Si tu Representante Encargada de Cumplimiento los tiene, ya lo tienes resuelto — lo que falta es cómo los documentas.</p>
     </div>
 
     <div class="nota" style="margin-top:.9rem">
@@ -312,15 +334,20 @@ th{font-size:.72rem;text-transform:uppercase;letter-spacing:.06em;color:var(--ma
       <table>
         <thead><tr><th></th><th>Actividad Vulnerable</th><th>Banco</th></tr></thead>
         <tbody>
-          <tr><td><b>Primer periodo anual</b></td><td>1 ene – 31 dic 2027<span class="fte">Reglas, Transitorio Séptimo</span></td><td>Ya vigente<span class="fte">Disposiciones art. 115 LIC, 49ª</span></td></tr>
+          <tr><td><b>Primer periodo anual</b></td><td>1 ene – 31 dic 2027<span class="fte">Reglas, Transitorio Séptimo</span></td><td>Sin fecha de arranque: la obligación ya está vigente y no se habla de «primer periodo»<span class="fte">Disposiciones, 49ª fr. I</span></td></tr>
+          <tr><td><b>Contenido mínimo</b></td><td>Cuatro contenidos —Ley, Reglamento y Reglas; tu Manual de Políticas Internas; tus actos u operaciones del artículo 17; tus Riesgos— más técnicas, métodos y tendencias del artículo 400 Bis. Coherentes con los resultados de tu metodología de Riesgos<span class="fte">Reglas, art. 39 Bis fr. I incisos a) a d), último párrafo de la fr. I, y fr. II</span></td><td>Manual de Cumplimiento; actividades, productos y servicios; Riesgos de la Entidad. Coherentes con la metodología del Capítulo II Bis y adecuados, en forma diferenciada, a las responsabilidades de cada quien<span class="fte">Disposiciones, 49ª fr. I, incisos y párrafo adicionados DOF 28-08-2024</span></td></tr>
+          <tr><td><b>Difusión</b></td><td>Información sobre técnicas, métodos y tendencias. No va por separado: es el mismo programa de capacitación y difusión<span class="fte">Reglas, art. 39 Bis, segundo párrafo y fr. II</span></td><td>Las propias Disposiciones y sus modificaciones, más técnicas, métodos y tendencias<span class="fte">Disposiciones, 49ª fr. II</span></td></tr>
+          <tr><td><b>Experiencia de quien imparte</b></td><td>Al menos cinco años acreditables en prevención de lavado de dinero y delitos relacionados<span class="fte">Reglas, art. 39 Bis fr. III</span></td><td>No se exige; la Guía de la CNBV sólo lo llama «deseable»<span class="fte">Capa C · sana práctica, no vinculante</span></td></tr>
+          <tr><td><b>Resguardo de la evidencia</b></td><td>Mínimo diez años, obligación expresa<span class="fte">Reglas, art. 39 Bis 1</span></td><td>Las Disposiciones no fijan plazo; los cinco años son recomendación<span class="fte">Guía CNBV 2020, apartado VI · Capa C, no vinculante</span></td></tr>
           <tr><td><b>Frecuencia</b></td><td>Por lo menos una vez al año<span class="fte">Reglas, art. 39 Bis fr. I</span></td><td>Al menos una vez al año<span class="fte">Disposiciones, 49ª fr. I</span></td></tr>
-          <tr><td><b>Selección de personal</b></td><td>Procedimientos y declaración firmada de cada funcionario o empleado<span class="fte">Reglas, art. 39 Bis 2</span></td><td>No está en el capítulo de Capacitación y Difusión</td></tr>
+          <tr><td><b>Selección de personal</b></td><td>Procedimientos de selección (calidad técnica, experiencia y honorabilidad) y declaración firmada: sectores obligados en los que haya laborado antes, y que no ha sido sentenciado por delitos patrimoniales ni inhabilitado. Aplica a las nuevas contrataciones hechas a partir del 1 mar 2027<span class="fte">Reglas, art. 39 Bis 2 y Transitorio Sexto</span></td><td>Sí: procedimientos de selección y declaración firmada de cada funcionario o empleado, en el Manual de Cumplimiento. No vive en el capítulo de Capacitación y Difusión, sino en el de Otras obligaciones<span class="fte">Disposiciones, 57ª (declaración firmada adicionada DOF 03-03-2022)</span></td></tr>
           <tr><td><b>Evaluación y constancias</b></td><td>Sí; las medidas para quien no aprueba van en el Manual de Políticas Internas<span class="fte">Reglas, art. 39 Bis 1</span></td><td>Sí, con evaluaciones y medidas<span class="fte">Disposiciones, 50ª</span></td></tr>
-          <tr style="background:#f3f8f4"><td><b>Nuevo ingreso</b></td><td>Previa o simultánea al ingreso<span class="fte">Reglas, art. 39 Bis 1</span></td><td>Previa o simultánea al ingreso<span class="fte">Disposiciones, 50ª</span></td></tr>
+          <tr style="background:#fff6f1"><td><b>Nuevo ingreso · tronco común</b></td><td>Previa o simultánea al ingreso, o al inicio de actividades en esas áreas<span class="fte">Reglas, art. 39 Bis 1, tercer párrafo</span></td><td>Previa o simultánea al ingreso, o al inicio de actividades en esas áreas<span class="fte">Disposiciones, 50ª, segundo párrafo</span></td></tr>
         </tbody>
       </table>
       </div>
-      <p class="sm" style="margin:.7rem 0 0">El renglón verde es tu tronco común real: <b>nadie entra a atender público sin capacitación previa o simultánea</b>. Ése lo diseñas una sola vez para todo el grupo.</p>
+      <p class="sm" style="margin:.7rem 0 0">El renglón marcado <b>tronco común</b> es tu base real: <b>nadie opera en atención al público ni en administración de recursos sin capacitación previa o simultánea — ni el que entra de fuera, ni el que ya estaba y se cambia de área</b>. Ése lo diseñas una sola vez y lo reutilizas en todo el grupo, aunque la obligación de las Reglas sólo alcance a tu Actividad Vulnerable.</p>
+      <p class="sm" style="margin:.5rem 0 0">El de selección de personal es el segundo tronco común: los dos regímenes piden procedimientos y declaración firmada, sólo que el banco los guarda en otro capítulo y sin la fecha de arranque de 2027.</p>
     </details>
   </section>
 
@@ -351,7 +378,7 @@ th{font-size:.72rem;text-transform:uppercase;letter-spacing:.06em;color:var(--ma
   <!-- ===== 5 ===== -->
   <section class="panel" data-t="Con lo que hay">
     <div class="kicker">Paso 5 · Con lo que hay</div>
-    <h2>Ni horas, ni plataforma, ni presupuesto</h2>
+    <h2>Ni horas, ni modalidad, ni plataforma</h2>
     <p class="mut sm">Vale la pena decirlo fuerte porque es lo que más paraliza.</p>
 
     <div class="grid g3">
@@ -363,7 +390,7 @@ th{font-size:.72rem;text-transform:uppercase;letter-spacing:.06em;color:var(--ma
       <div class="card">
         <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#d9663f" stroke-width="2" stroke-linecap="round"><rect x="3" y="4" width="18" height="13" rx="2"/><path d="M8 21h8M12 17v4"/></svg>
         <h3 style="margin-top:.5rem">Modalidad</h3>
-        <p class="sm mut" style="margin:0">Presencial, en línea o mixta. Tú decides.</p>
+        <p class="sm mut" style="margin:0">Presencial, en línea o mixta. Tú decides: ninguna de las dos normas restringe la modalidad.</p>
       </div>
       <div class="card">
         <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#d9663f" stroke-width="2" stroke-linecap="round"><path d="M4 19V5a1 1 0 011-1h14a1 1 0 011 1v14"/><path d="M4 19h16M8 15V9M12 15v-3M16 15v-6"/></svg>
@@ -371,35 +398,40 @@ th{font-size:.72rem;text-transform:uppercase;letter-spacing:.06em;color:var(--ma
         <p class="sm mut" style="margin:0">Ninguna en particular. Lo que ya tengas sirve.</p>
       </div>
     </div>
+    <span class="fte">Ni la LFPIORPI (artículo 18, fracción IX), ni las Reglas de Carácter General (artículos 39 Bis y 39 Bis 1), ni las Disposiciones a que se refiere el artículo 115 de la LIC (49ª y 50ª) fijan número de horas, modalidad ni plataforma. Las horas sugeridas provienen de la Guía de la CNBV de 2020, que no es vinculante.</span>
 
-    <p style="margin-top:.9rem">Lo que sí exige: contenido mínimo, frecuencia anual, capacitador con experiencia acreditable, evaluación, constancias y evidencia guardada diez años.</p>
+    <p style="margin-top:.9rem">Lo que sí exige, y aquí los dos regímenes vuelven a separarse. <b>En los dos:</b> contenido mínimo, frecuencia de por lo menos una vez al año, difusión, evaluación, constancias, y que los temas sean coherentes con los resultados de tu metodología de evaluación de Riesgos y se adecuen a las responsabilidades de cada quien. <b>Sólo en Actividad Vulnerable:</b> capacitador con cinco años acreditables y evidencia guardada diez años. <b>En banco:</b> ni una cosa ni la otra están en sus Disposiciones.
+      <span class="fte">Actividad Vulnerable: Reglas de Carácter General, artículo 39 Bis, fracciones I, II y III, y artículo 39 Bis 1. Banco: Disposiciones de Carácter General a que se refiere el artículo 115 de la Ley de Instituciones de Crédito, 49ª fracciones I y II (reformadas DOF 28-08-2024) y 50ª.</span></p>
+    <p class="sm" style="margin-top:.6rem">Y una razón más para no tomarte la constancia a la ligera: si tu Riesgo sale bajo o medio, tu propia área de auditoría interna puede firmar el dictamen anual — pero sólo si tiene al menos una acreditación de tu programa de capacitación. Sin esa constancia, te toca auditor externo.
+      <span class="fte">Reglas de Carácter General, artículo 44.</span></p>
 
     <details>
       <summary>¿Y las 20, 30 o 40 horas de las que todos hablan?</summary>
+      <span class="capa c" style="margin-top:.6rem;display:inline-block">Capa C · Sana práctica, no vinculante</span>
       <p class="sm" style="margin-top:.6rem">Salen de la Guía de la CNBV de 2020: 20 horas para el consejo, 30 para alta dirección, 20 para primer contacto, 30 para auditoría interna y 40 anuales para el Oficial de Cumplimiento o Representante y el Comité.</p>
       <p class="sm"><b>No son obligación.</b> La propia Guía dice que «no resulta vinculante para los Sujetos Supervisados y, por lo tanto, su grado de adopción no será objeto de supervisión, observación o sanción por parte de esta Comisión». Sirven para dimensionar; presentarlas como exigencia se paga con presupuesto.</p>
-      <span class="capa c">Capa C · Sana práctica, no vinculante</span>
     </details>
 
     <details>
       <summary>¿Con qué se puede impartir, entonces?</summary>
-      <p class="sm" style="margin-top:.6rem">Con lo que ya tienes. Una videollamada grabada sirve como sesión y como evidencia si levantas lista y aplicas la evaluación. La sala de juntas con un pizarrón sirve igual. Un correo mensual bien hecho es difusión, que es obligación distinta y también cuenta.</p>
-      <p class="sm">Lo que <b>no</b> cuenta es mandar el manual por correo y darlo por visto: sin evaluación no puedes expedir la constancia, y sin constancia no tienes evidencia.</p>
-      <span class="fte">Reglas de Carácter General, artículo 39 Bis 1, segundo párrafo</span>
+      <p class="sm" style="margin-top:.6rem">Con lo que ya tienes. Una videollamada grabada sirve como sesión y como evidencia si levantas lista y aplicas la evaluación. La sala de juntas con un pizarrón sirve igual. Un correo mensual bien hecho es difusión: en las Reglas la difusión no va por separado —forma parte del mismo programa de capacitación y difusión—, y en banco es fracción II de la 49ª. Suma como evidencia, pero no sustituye el curso, la evaluación ni la constancia.</p>
+      <p class="sm">Lo que <b>no</b> cuenta es mandar el manual por correo y darlo por visto: sin evaluación no puedes expedir la constancia, y sin constancia te falta la pieza que acredita que cada persona aprobó. El resto de la evidencia —programas, materiales, listas, evaluaciones— la sigues debiendo guardar igual.</p>
+      <span class="fte">Difusión: Reglas de Carácter General, artículo 39 Bis, segundo párrafo y fracción II · Disposiciones a que se refiere el artículo 115 de la LIC, 49ª fr. II. Evaluación y constancia: Reglas, artículo 39 Bis 1, segundo párrafo.</span>
     </details>
 
     <details>
       <summary>¿Puedo apoyarme en inteligencia artificial?</summary>
       <p class="sm" style="margin-top:.6rem">Para preparar, sí: ordenar el temario, redactar casos, armar reactivos, el borrador de la lista de asistencia. Te ahorra horas de mecanografía.</p>
-      <p class="sm">Para <b>impartir</b>, no: la obligación pide que quien imparta acredite al menos cinco años de experiencia. Una máquina no acredita experiencia, y tú no firmas una constancia respaldada en algo que no revisaste.</p>
+      <p class="sm">Para <b>impartir</b>, la norma no habla de inteligencia artificial: habla de que quien imparta acredite al menos cinco años de experiencia. De ahí nuestra conclusión, y es criterio, no texto: la acreditación recae en una persona, y esa persona es la que firma la constancia — no conviene firmar respaldando algo que no revisaste.</p>
+      <span class="capa b">Capa B · Criterio de la casa</span>
       <span class="fte">Reglas de Carácter General, artículo 39 Bis, fracción III</span>
     </details>
   </section>
 
   <!-- ===== 6 ===== -->
-  <section class="panel" data-t="De memoria">
+  <section class="panel" data-t="Que se te quede">
     <div class="kicker">Paso 6 · Que se te quede</div>
-    <h2>Cinco fichas</h2>
+    <h2>Siete fichas</h2>
     <p class="mut sm">Piensa la respuesta antes de voltearla. Se aprende recuperando, no releyendo.</p>
     <div class="flash" id="flash" role="button" tabindex="0" aria-live="polite">
       <div class="q" id="fq">—</div>
@@ -438,7 +470,8 @@ th{font-size:.72rem;text-transform:uppercase;letter-spacing:.06em;color:var(--ma
   </div>
 
   <p id="pieImp"></p>
-  <p class="xs mut" style="margin-top:1.4rem">Todo lo que capturas aquí se queda en tu navegador. No se envía a ningún servidor ni queda ligado a tu correo. Las obligaciones citadas provienen de la LFPIORPI, de las Reglas de Carácter General a que se refiere esa Ley y de las Disposiciones de Carácter General a que se refiere el artículo 115 de la Ley de Instituciones de Crédito. La Guía de la CNBV de 2020 se cita como sana práctica no vinculante.</p>
+  <p class="sm" style="margin-top:1.4rem"><b>Este material es informativo y de apoyo para diseñar tu capacitación. No es asesoría legal ni un dictamen sobre tu empresa:</b> las respuestas que aquí marcas no fueron revisadas por nadie, y la clasificación de cada empresa de tu grupo debe confirmarse caso por caso contra la norma aplicable.</p>
+  <p class="xs mut" style="margin-top:.8rem">Todo lo que capturas aquí se queda en tu navegador. No se envía a ningún servidor ni queda ligado a tu correo. Las obligaciones citadas provienen de la LFPIORPI, de las Reglas de Carácter General a que se refiere esa Ley y de las Disposiciones de Carácter General a que se refiere el artículo 115 de la Ley de Instituciones de Crédito. La Guía de la CNBV de 2020 se cita como sana práctica no vinculante.</p>
 
   </main>
 </div>
@@ -448,6 +481,7 @@ th{font-size:.72rem;text-transform:uppercase;letter-spacing:.06em;color:var(--ma
 (function(){
 "use strict";
 var LLAVE="360educa_SFR_resultado";
+function fechaLocalISO(){var d=new Date();return new Date(d.getTime()-d.getTimezoneOffset()*60000).toISOString().slice(0,10);}
 function guarda(o){try{localStorage.setItem(LLAVE,JSON.stringify(o));}catch(e){}}
 function lee(){try{var v=localStorage.getItem(LLAVE);return v?JSON.parse(v):null;}catch(e){return null;}}
 var $=function(s){return document.querySelector(s);};
@@ -505,14 +539,14 @@ pintaNav();
 var sel={fin:false,av:false,otro:false};
 var TXT={
  fin:{t:"Sector financiero",cls:"capa a",cap:"Capa A · Obligación, ya vigente",
-   p:"Ya tiene obligación de programa anual de capacitación y difusión, sin fecha nueva que esperar. En bancos, el Comité aprueba los programas y el Oficial de Cumplimiento define características, contenido y alcance.",
-   f:"Disposiciones de Carácter General a que se refiere el artículo 115 de la Ley de Instituciones de Crédito, 49ª y 50ª"},
+   p:"Ya tiene obligación de programas de capacitación y difusión, sin fecha nueva que esperar. En bancos, el Comité de Comunicación y Control aprueba los programas y el Oficial de Cumplimiento define características, contenido y alcance. Si la Entidad tiene menos de veinticinco personas a su servicio no hay Comité y las dos cosas quedan en el Oficial de Cumplimiento.",
+   f:"Disposiciones de Carácter General a que se refiere el artículo 115 de la Ley de Instituciones de Crédito, 49ª y 50ª (el programa) · 43ª fr. VII (aprueba el Comité) · 47ª fr. VIII (define el Oficial de Cumplimiento) · 44ª último párrafo (sin Comité)"},
  av:{t:"Actividad Vulnerable",cls:"capa a",cap:"Capa A · Obligación, primer periodo 2027",
-   p:"Programa anual para consejo o administrador único, directivos, funcionarios, la persona Representante Encargada de Cumplimiento y, en todo caso, empleados de atención al público, de identificación del cliente, de envío de Avisos o de auditoría. Capacitador con cinco años acreditables y evidencia diez años.",
-   f:"LFPIORPI, artículo 18, fracción IX · Reglas de Carácter General, artículos 39 Bis y 39 Bis 1"},
- otro:{t:"El resto del grupo",cls:"capa n",cap:"Sin obligación PLD — y aun así, tu puerta de entrada",
-   p:"Ninguna norma PLD les exige capacitarse. Pero son la misma tesorería, los mismos proveedores, la misma gente que factura y contrata. Si el riesgo entra por ahí, entra al grupo completo. Se capacitan por el deber de diligencia de quien administra y porque bancos y contrapartes te lo van a exigir — nunca presentado como obligación, y con contenido distinto: sensibilización y banderas rojas de su operación, no la debida diligencia de un banco.",
-   f:"Sana práctica y deber de diligencia. No se cita junto a la Ley sin distinguirlo."}
+   p:"Programa anual para consejo o administrador único, directivos, funcionarios, la persona Representante Encargada de Cumplimiento y, en todo caso, empleados de atención al público, que participen en la identificación o conocimiento del Cliente o Usuaria, en el envío de Avisos o en auditoría. Capacitador con cinco años acreditables, temas coherentes con los resultados de tu metodología de evaluación de Riesgos, y evidencia diez años. Aparte, y con fecha discutida, la capacitación anual de tu Representante Encargada del Cumplimiento del artículo 20.",
+   f:"LFPIORPI, artículos 18, fracción IX, y 20, tercer párrafo · Reglas de Carácter General, artículos 39 Bis y 39 Bis 1"},
+ otro:{t:"El resto del grupo",cls:"capa a",cap:"Capa A · Obligación indirecta, por la vía de tu Actividad Vulnerable",
+   p:"No tienen programa anual propio: no son sujeto obligado. Pero si tu Actividad Vulnerable forma parte de un grupo empresarial, la Ley te obliga a ti a implementar políticas aplicables a todas tus sucursales y filiales de propiedad mayoritaria, incluidas las extranjeras; y las Reglas te piden políticas y mecanismos centralizados de cumplimiento que resulten aplicables a todos los integrantes — con los programas de capacitación como contenido obligatorio de tu Manual de Políticas Internas. Ojo con el requisito: propiedad mayoritaria; una participación minoritaria queda fuera. Además son la misma tesorería, los mismos proveedores, la misma gente que factura y contrata: si el riesgo entra por ahí, entra al grupo completo. El contenido sí es distinto: sensibilización y banderas rojas de su operación, no la debida diligencia de un banco.",
+   f:"LFPIORPI, artículo 18, fracción VIII, segundo párrafo (adicionada DOF 16-07-2025) · Reglas de Carácter General, artículos 37 Bis, fracción XI, y 37 Bis 1. El contenido diferenciado es criterio de la casa y se cita distinguiéndolo."}
 };
 function pintaCirc(){
   var cont=$("#salidaCirc"),act=Object.keys(sel).filter(function(k){return sel[k];});
@@ -538,12 +572,13 @@ function pintaCirc(){
       +'<h3 style="margin-top:.45rem">'+o.t+'</h3><p class="sm mut" style="margin:0">'+o.p+'</p>'
       +'<span class="fte">'+o.f+'</span></div>';});
   var reg=(sel.fin?1:0)+(sel.av?1:0),cierre;
-  if(reg===2&&sel.otro) cierre="Tres perímetros en un solo grupo: dos con obligación dura y distinta entre sí, y uno sin obligación que igual te puede abrir la puerta. Un solo programa para los tres no existe — y tres desde cero, tampoco: lo que hay es tronco común más módulos.";
+  if(reg===2&&sel.otro) cierre="Tres perímetros en un solo grupo: dos con obligación directa y distinta entre sí, y uno que, si es filial de propiedad mayoritaria, entra por la vía de tus políticas centralizadas. Un solo contenido para los tres no funciona: lo que hay es política centralizada, tronco común y módulos por régimen.";
   else if(reg===2) cierre="Dos obligaciones duras conviviendo, con fechas, capacitador y resguardo distintos. Tronco común más un módulo por régimen, y evidencia separada para cada uno.";
   else if(reg===1&&sel.otro) cierre="Una obligación dura y un perímetro sin obligación pegado a ella. El riesgo no respeta esa frontera aunque la norma sí. Capacita a los dos, con contenido y etiqueta distintos.";
   else if(reg===1) cierre="Un solo régimen. Tu ventaja es que puedes hacerlo bien a la primera; tu riesgo es asumir que lo que leíste del otro régimen te aplica.";
-  else cierre="Sin entidad financiera ni Actividad Vulnerable, hoy no tienes obligación PLD de capacitar. Si aun así lo haces es por diligencia y por lo que exigen tus contrapartes — y así debe decirse, sin prometer un cumplimiento que no existe.";
-  h+='<div class="nota" style="margin-top:.7rem"><b>Tu perímetro.</b> '+cierre+'</div>';
+  else cierre="Marcaste sólo empresas sin obligación PLD. Antes de darlo por bueno, verifica una por una contra el artículo 17 de la LFPIORPI: quien más se equivoca aquí es quien está seguro de que no le toca. Si después de revisarlo ninguna es Actividad Vulnerable ni entidad financiera, no tienes el programa anual del artículo 18, fracción IX — pero eso no es lo mismo que no tener obligaciones PLD: si eres sociedad mercantil, los artículos 33 Bis y 33 Ter te obligan a identificar y registrar a tu Beneficiario Controlador, y el artículo 32 te prohíbe liquidar en efectivo por encima de los umbrales aunque tu giro no sea vulnerable. Ninguna de las dos está diferida.";
+  h+='<div class="nota" style="margin-top:.7rem"><b>Tu perímetro.</b> '+cierre
+     +'<p class="sm" style="margin:.6rem 0 0">Este material es informativo y de apoyo para diseñar tu capacitación. No es asesoría legal ni un dictamen sobre tu empresa: la clasificación de cada empresa de tu grupo debe confirmarse caso por caso contra la norma aplicable.</p></div>';
   cont.innerHTML=h;cont.style.display="block";
   var g=lee()||{};g.circulos=act;g.regimenes=reg;guarda(g);
 }
@@ -558,23 +593,23 @@ function alterna(k){ sel[k]=!sel[k]; pintaCirc(); }
 
 /* ---------- 4 · levantamiento ---------- */
 var PREG=[
- {id:"quien",t:"¿Sabes ya, con nombre y apellido, quién entra al programa?",s:"Consejo o administrador único, directivos, funcionarios, la persona Representante Encargada de Cumplimiento, y quien atienda público, identifique clientes, envíe Avisos o audite.",pide:"La lista nominal de quién entra. Sin ella no tienes a quién capacitar ni a quién expedirle constancia."},
+ {id:"quien",t:"¿Sabes ya, con nombre y apellido, quién entra al programa?",s:"Consejo o administrador único, directivos, funcionarios, la persona Representante Encargada de Cumplimiento (la que registraste ante el SAT como responsable de PLD), y quien atienda público, participe en la identificación o conocimiento del Cliente o Usuaria, envíe Avisos (los reportes que la Actividad Vulnerable manda al SAT) o audite.",f:"Reglas de Carácter General, artículo 39 Bis, primer párrafo",pide:"La lista nominal de quién entra. Sin ella no tienes a quién capacitar ni a quién expedirle constancia."},
  {id:"cuantos",t:"¿Cuántas personas son, en total y por empresa del grupo?",s:"El número decide si te alcanza con una sesión o necesitas varias, y si conviene presencial o remoto.",pide:"El headcount por empresa y por área. Es el primer dato del plan y RH lo tiene a la mano."},
  {id:"puestos",t:"¿Tienes el puesto y la función real de cada uno?",s:"No el puesto del organigrama: lo que de verdad hace. La norma pide que el contenido se adecue a las responsabilidades de cada quien.",pide:"La descripción de puestos vigente. Un cajero y un analista de riesgos no llevan el mismo módulo."},
  {id:"estudios",t:"¿Sabes el nivel de estudios de la gente que vas a capacitar?",s:"Decide el lenguaje, la duración de cada sesión y si funcionan los casos escritos o necesitas video.",pide:"El nivel de escolaridad por área. Un material que nadie entiende no es capacitación, es una constancia vacía."},
- {id:"nuevos",t:"¿Hay proceso para el personal de nuevo ingreso?",s:"Quien vaya a atender público o administrar recursos debe recibir capacitación previa o simultánea a su ingreso. Es el punto donde los dos regímenes dicen casi lo mismo.",pide:"El acuerdo con RH de que nadie entra a esas áreas sin inducción PLD. Se pacta hoy, no en enero."},
+ {id:"nuevos",t:"¿Hay proceso para el personal de nuevo ingreso?",s:"Quien vaya a atender público o administrar recursos debe recibir capacitación previa o simultánea a su ingreso o al inicio de sus actividades en esas áreas, aunque ya trabajara en la empresa. Es el punto donde los dos regímenes dicen casi lo mismo.",f:"Reglas, art. 39 Bis 1, tercer párrafo · Disposiciones art. 115 LIC, 50ª, segundo párrafo",pide:"El acuerdo con RH de que nadie entra a esas áreas sin inducción PLD. Se pacta hoy, no en enero."},
  {id:"recursos",t:"¿Con qué recursos cuentas para impartirla?",s:"Sala, proyector, pizarrón, videollamada, o una mezcla. La norma no te pide plataforma ni modalidad.",pide:"El inventario de lo que hay. Suele haber más de lo que crees y se compra menos de lo que se teme."},
- {id:"capacita",t:"¿Ya sabes quién la va a impartir?",s:"Quien imparta debe contar y acreditar al menos cinco años de experiencia en prevención de lavado de dinero.",pide:"El nombre y cómo acreditará esos cinco años. Es lo que más tarde se resuelve y no se improvisa en diciembre."},
- {id:"evalua",t:"¿Tienes cómo evaluar y expedir constancias?",s:"Sin evaluación de conocimientos no puedes expedir la constancia, y sin constancia no tienes evidencia.",pide:"El formato de evaluación y el de constancia. Y las medidas para quien no apruebe, que van en tu Manual de Políticas Internas."},
- {id:"evidencia",t:"¿Tienes dónde guardar la evidencia diez años?",s:"Programas, talleres, materiales, listas de asistencia, evaluaciones, constancias y cualquier documento que compruebe que sí se dio.",pide:"El repositorio y quién lo cuida. Diez años es más de lo que dura casi cualquier laptop de la empresa."},
- {id:"quiendecide",t:"¿Quién aprueba el programa y el presupuesto?",s:"En banco, el Comité lo aprueba y el Oficial de Cumplimiento define contenido y alcance. En Actividad Vulnerable la Ley no nombra aprobador, pero alguien tiene que firmar.",pide:"La cita en la agenda de esa persona. Es la junta que hay que pedir esta semana, no en 2027."}
+ {id:"capacita",t:"¿Ya sabes quién la va a impartir?",s:"Quien imparta debe contar y acreditar al menos cinco años de experiencia en materia de prevención de lavado de dinero y delitos relacionados a los que se refieren las Reglas — financiamiento al terrorismo incluido. Eso es del lado de la Actividad Vulnerable; en banco no hay requisito de años. Y no tiene que ser externo: si alguien de tu casa los tiene, ya está resuelto.",f:"Reglas, art. 39 Bis, fracción III",pide:"El nombre y cómo acreditará esos cinco años. Es lo que más tarde se resuelve y no se improvisa en diciembre."},
+ {id:"evalua",t:"¿Tienes cómo evaluar y expedir constancias?",s:"Sin evaluación de conocimientos no puedes expedir la constancia, y sin constancia te falta la pieza que acredita que cada persona aprobó.",f:"Reglas, art. 39 Bis 1, segundo párrafo",pide:"El formato de evaluación y el de constancia. Y las medidas para quien no apruebe, que van en tu Manual de Políticas Internas."},
+ {id:"evidencia",t:"¿Tienes dónde guardar la evidencia, y por cuánto tiempo según tu régimen?",s:"Programas, talleres, materiales, listas de asistencia, evaluaciones, constancias y cualquier documento que compruebe que sí se dio. En Actividad Vulnerable, diez años y es obligación; si sólo tienes banco, las Disposiciones no fijan plazo y los cinco años son sana práctica de la Guía de la CNBV.",f:"Reglas, art. 39 Bis 1, primer párrafo",pide:"El repositorio y quién lo cuida. Diez años es más de lo que dura casi cualquier laptop de la empresa."},
+ {id:"quiendecide",t:"¿Quién aprueba el programa y el presupuesto?",s:"En banco, el Comité lo aprueba y el Oficial de Cumplimiento define contenido y alcance — salvo que la Entidad tenga menos de veinticinco personas a su servicio, en cuyo caso no hay Comité y todo recae en el Oficial de Cumplimiento. En Actividad Vulnerable ninguna disposición nombra aprobador, pero las Reglas dejan dos rastros: tu programa va en el Manual de Políticas Internas y el dictamen anual de cumplimiento se presenta al consejo, al administrador único o a la dirección general.",f:"Disposiciones art. 115 LIC, 43ª fr. VII, 47ª fr. VIII y 44ª último párrafo · Reglas, arts. 37 Bis fr. XI y 42",pide:"La cita en la agenda de esa persona. Es la junta que hay que pedir esta semana, no en 2027."}
 ];
 var resp={};
 (function(){
   var c=$("#preguntas");
   PREG.forEach(function(p){
     var d=document.createElement("div");d.className="card";d.style.marginBottom=".6rem";
-    d.innerHTML='<h3>'+p.t+'</h3><p class="sm mut">'+p.s+'</p>'
+    d.innerHTML='<h3>'+p.t+'</h3><p class="sm mut">'+p.s+'</p>'+(p.f?'<span class="fte">'+p.f+'</span>':'')
       +'<div class="tri"><button class="btn gh" data-v="si">Ya lo tengo</button><button class="btn gh" data-v="no">Me falta</button></div>';
     [].forEach.call(d.querySelectorAll("button"),function(b){
       b.addEventListener("click",function(){
@@ -603,18 +638,19 @@ function avance(){
   $("#ringP").textContent=faltan.length?("Te faltan "+faltan.length+" datos. Abajo va tu agenda."):"Tienes los diez datos.";
   var out=$("#salidaLev"),h='<h3>Tu agenda para la junta con RH</h3>';
   if(!faltan.length){
-    h+='<p>Contestaste que ya tienes los diez. Si es cierto y está documentado, ya no estás en el levantamiento: estás listo para armar el programa — que es otra cosa, y es donde se decide si tu capacitación sirve o sólo genera constancias.</p>';
+    h+='<p>Contestaste que ya tienes los diez. Si es cierto y está documentado, terminaste el levantamiento: tienes el insumo completo para sentarte a armar el programa.</p>';
   }else{
     h+='<p>Te faltan <b>'+faltan.length+'</b> de 10. Esto es lo que vas a pedir, en este orden:</p><ol style="margin:0 0 .4rem 1.1rem">';
     faltan.forEach(function(p){h+='<li style="margin-bottom:.4rem">'+p.pide+'</li>';});
     h+='</ol>';
   }
-  h+='<p class="sm" style="margin-bottom:0">Esta página no guarda nada en ningún servidor y no te lo va a poder recordar desde otra computadora. Imprímela o guárdala en PDF y llévatela a la junta.</p>'
+  h+='<p class="sm">Esta página no guarda nada en ningún servidor y no te lo va a poder recordar desde otra computadora. Imprímela o guárdala en PDF y llévatela a la junta.</p>'
+   +'<p class="sm" style="margin-bottom:0">Este material es informativo y de apoyo para diseñar tu capacitación. No es asesoría legal ni un dictamen sobre tu empresa.</p>'
    +'<button class="btn" id="imprime" style="margin-top:.9rem">Imprimir o guardar en PDF</button>';
   out.innerHTML=h;out.style.display="block";
   document.getElementById("imprime").addEventListener("click",function(){
     var f=document.getElementById("pieImp");
-    if(f) f.textContent="Agenda generada el "+new Date().toLocaleDateString("es-MX",{day:"numeric",month:"long",year:"numeric"})+" · PLD/FT sin fronteras regulatorias · Jornada360";
+    if(f) f.textContent="Agenda generada el "+new Date().toLocaleDateString("es-MX",{day:"numeric",month:"long",year:"numeric"})+" · PLD/FT sin fronteras regulatorias · Jornada360 · Material informativo de apoyo. No es asesoría legal ni un dictamen sobre tu empresa.";
     window.print();
   });
   var g=lee()||{};g.levantamiento={total:tot,faltan:faltan.length};guarda(g);
@@ -623,10 +659,12 @@ function avance(){
 /* ---------- 6 · fichas ---------- */
 var FICHAS=[
  {q:"¿Desde cuándo corre el primer periodo anual de capacitación para Actividades Vulnerables?",a:"Del 1 de enero al 31 de diciembre de 2027. Lo fija el Transitorio Séptimo de las Reglas de Carácter General, no la Ley."},
- {q:"¿Cuántos años de experiencia debe acreditar quien imparte capacitación a una Actividad Vulnerable?",a:"Al menos cinco años en prevención de lavado de dinero. Reglas de Carácter General, artículo 39 Bis, fracción III. Es obligación, no recomendación."},
+ {q:"¿Cuántos años de experiencia debe acreditar quien imparte capacitación a una Actividad Vulnerable?",a:"Al menos cinco años en materia de prevención de lavado de dinero y delitos relacionados a los que se refieren las Reglas — financiamiento al terrorismo incluido. Reglas de Carácter General, artículo 39 Bis, fracción III. Es obligación, no recomendación, y aplica a toda la capacitación del artículo."},
  {q:"¿Cuánto tiempo se conserva la evidencia de capacitación en Actividad Vulnerable?",a:"Mínimo diez años: programas, talleres, materiales, listas de asistencia, evaluaciones y constancias. Reglas, artículo 39 Bis 1."},
  {q:"¿Qué se necesita antes de expedir una constancia?",a:"Practicar al participante una evaluación sobre los conocimientos adquiridos, y tener en el Manual de Políticas Internas las medidas para quien no obtenga resultado satisfactorio. Reglas, artículo 39 Bis 1."},
- {q:"¿Cuántas horas anuales de capacitación exige la norma?",a:"Ninguna. Ni la LFPIORPI ni las Reglas fijan horas. Las 20, 30 y 40 vienen de la Guía de la CNBV de 2020, que expresamente no es vinculante."}
+ {q:"¿Cuántas horas anuales de capacitación exige la norma?",a:"Ninguna. Ni la LFPIORPI, ni las Reglas, ni las Disposiciones de bancos fijan horas. Las 20, 30 y 40 vienen de la Guía de la CNBV de 2020, apartado IV.5, que expresamente no es vinculante."},
+ {q:"Tu grupo tiene un banco, una inmobiliaria que es Actividad Vulnerable y tres empresas sin obligación PLD. ¿Cuántos programas necesitas?",a:"Uno solo no cumple con ninguno de los dos regímenes, y tres desde cero es trabajo de más. Lo que funciona es tronco común —nadie entra a atención al público o administración de recursos sin capacitación previa o simultánea— más un módulo por régimen, con evidencia separada para cada uno. Las tres sin obligación entran al tronco común, etiquetado como sana práctica."},
+ {q:"¿Cómo distingues, dentro de tu propio programa, lo que es obligación de lo que es sana práctica?",a:"Por la fuente. Si sale de la LFPIORPI, de las Reglas o de las Disposiciones, es obligación y se cumple. Si sale de una Guía de la CNBV o de un criterio de la industria, es sana práctica: sirve para dimensionar y no se puede exigir ni presupuestar como si fuera ley. Escribe la fuente junto a cada renglón de tu programa."}
 ];
 var fi=0;
 function pintaFicha(){
@@ -643,14 +681,14 @@ pintaFicha();
 /* ---------- 7 · reactivos ---------- */
 var Q=[
  {t:"Una inmobiliaria que realiza Actividad Vulnerable te pregunta cuándo tiene que dar su primera capacitación anual.",
-  o:["Ya debió darla en 2026, porque el Decreto se publicó en 2025","Su primer periodo corre del 1 de enero al 31 de diciembre de 2027","Cuando el SAT se lo requiera por oficio","No tiene obligación: eso es sólo del sector financiero"],c:1,
-  e:"El Transitorio Séptimo de las Reglas lo dice literal. La primera opción es el distractor que más tienta, porque el Transitorio Segundo de la Ley habla del «año siguiente a aquel en que se publique el Decreto»; pero ese párrafo sólo define qué es un periodo anual, y el Tercero difiere la entrada en vigor a lo que digan las Reglas."},
+  o:["Ya debió darla en 2026, porque el Decreto se publicó en 2025","Su primer periodo corre del 1 de enero al 31 de diciembre de 2027","Desde que se publicaron las Reglas, en agosto de 2026","No tiene obligación: eso es sólo del sector financiero"],c:1,
+  e:"El Transitorio Séptimo de las Reglas lo dice literal. La primera opción es el distractor que más tienta, y con razón: el Transitorio Segundo de la Ley, leído solo, sí apunta a 2026, porque fija el inicio del primer periodo en «el 1 de enero del año siguiente a aquel en que se publique el presente Decreto». Lo que la descarta no es que ese párrafo sea una simple definición, sino que el Transitorio Tercero difiere la entrada en vigor de las fracciones VII a XI del artículo 18 a los plazos de las Reglas, y las Reglas fijaron 2027. La tercera confunde la entrada en vigor de la norma con el inicio del periodo anual: el Acuerdo entra en vigor el 30 de noviembre de 2026 y el periodo arranca el 1 de enero de 2027."},
  {t:"Quieren contratar a un capacitador con dos años de experiencia en PLD, muy bien recomendado, para la Actividad Vulnerable del grupo.",
   o:["Sí puede: la norma no pide experiencia mínima","Sí, si tiene certificación de la CNBV","No: debe contar y acreditar al menos cinco años en la materia","Sólo si lo aprueba el Comité"],c:2,
-  e:"Reglas de Carácter General, artículo 39 Bis, fracción III. La certificación tienta porque suena a más, pero la norma no pide certificado: pide años acreditables. Y el Comité es figura del lado financiero, no de esta ecuación."},
- {t:"Una comercializadora del grupo no es Actividad Vulnerable ni entidad financiera.",
+  e:"Reglas de Carácter General, artículo 39 Bis, fracción III. La certificación tienta porque suena a más, pero ese artículo no pide certificado al capacitador: pide años acreditables. Ojo: certificación sí existe en las Reglas —la otorga la UIF, no la CNBV, y dura cinco años (artículo 34 Bis)—, y es obligatoria, pero para el auditor externo independiente (artículo 45, inciso b). Y el Comité es figura del lado financiero, no de esta ecuación."},
+ {t:"La empresa de servicios compartidos del grupo —sólo nómina y contabilidad para las demás— no es Actividad Vulnerable ni entidad financiera.",
   o:["Se le aplica el mismo programa que a la Actividad Vulnerable, por prudencia","Queda fuera: sin obligación no hay nada que hacer","Sensibilización y banderas rojas de su operación, presentado como sana práctica","Debida diligencia completa de cliente, como a un banco"],c:2,
-  e:"No tiene obligación PLD, y decirle que sí la tiene es contaminar regímenes. Pero es la misma tesorería y los mismos proveedores: si el riesgo entra por ahí, entra completo. La primera y la cuarta son el error más caro y está documentado — sobrerregular a quien no le toca produce daño real, y es lo que el GAFI tuvo que corregir en su propia Recomendación 8 para el sector no lucrativo."}
+  e:"No es sujeto obligado, y decirle que lo es sería contaminar regímenes: si algún día alguien revisa tu programa, no vas a poder explicar por qué le exigiste a una empresa algo que la norma no le pide. Pero si es filial de propiedad mayoritaria, el artículo 18, fracción VIII, segundo párrafo de la Ley y el artículo 37 Bis 1 de las Reglas te obligan a extenderle tus políticas centralizadas de cumplimiento. Y es la misma tesorería y los mismos proveedores: si el riesgo entra por ahí, entra completo. La primera y la cuarta son el error más caro, porque parecen prudencia y son lo contrario: gastas presupuesto donde no toca y te quedas sin argumento donde sí."}
 ];
 var aciertos=0,contestadas=0;
 (function(){
@@ -667,13 +705,14 @@ var aciertos=0,contestadas=0;
         if(listo)return;listo=true;contestadas++;
         var j=+b.getAttribute("data-j");if(j===q.c)aciertos++;
         [].forEach.call(d.querySelectorAll(".op"),function(x,k){
-          if(k===q.c)x.classList.add("bien");else if(k===j)x.classList.add("mal");});
+          if(k===q.c){x.classList.add("bien");x.setAttribute("aria-label","Respuesta correcta: "+x.textContent);}
+          else if(k===j){x.classList.add("mal");x.setAttribute("aria-label","Tu respuesta, incorrecta: "+x.textContent);}});
         d.querySelector(".expl").classList.add("on");
         if(contestadas===Q.length){
           var r=$("#quizRes");
           r.innerHTML='<h3>'+aciertos+' de '+Q.length+'</h3><p>'
             +(aciertos>=2?"Distingues bien los dos regímenes. Eso es exactamente lo que te va a salvar de armar un programa de talla única."
-                         :"Regresa al paso 3. Las que se fallan casi siempre son las mismas: el año, las horas y el plazo de resguardo.")
+                         :"Vuelve sobre tres cosas: el año está en el paso 1, las horas en el paso 5 y el plazo de resguardo en el paso 3. Son las tres que casi siempre se fallan.")
             +'</p>';
           r.style.display="block";
           var g=lee()||{};g.quiz={aciertos:aciertos,total:Q.length};guarda(g);
@@ -687,12 +726,15 @@ var aciertos=0,contestadas=0;
 var CHECK=[
  "Tengo por escrito la lista nominal de quién entra al programa, por empresa del grupo.",
  "El contenido está diferenciado por puesto y función, no es el mismo material para todos.",
- "Quien imparte puede acreditar al menos cinco años de experiencia en la materia.",
+ "Si tengo Actividad Vulnerable: quien imparte puede acreditar al menos cinco años de experiencia en la materia. Si sólo tengo entidad financiera, este renglón no me aplica: márcalo.",
  "Aplico una evaluación de conocimientos y de ahí sale la constancia.",
  "Tengo definidas, en el Manual de Políticas Internas, las medidas para quien no aprueba.",
  "Nadie entra a atender público o administrar recursos sin capacitación previa o simultánea.",
- "Guardo la evidencia completa y sé dónde va a estar dentro de diez años.",
- "Sé qué parte de mi programa es obligación y qué parte es sana práctica, y está etiquetado."
+ "Guardo la evidencia completa. Si tengo Actividad Vulnerable, diez años y es obligación; si sólo tengo banco, no hay plazo en las Disposiciones y los cinco años son sana práctica.",
+ "Sé qué parte de mi programa es obligación y qué parte es sana práctica, y está etiquetado.",
+ "Mis programas de capacitación están descritos en mi Manual de Políticas Internas o en mi Manual de Cumplimiento.",
+ "Los temas están alineados con los resultados de mi metodología de evaluación de Riesgos.",
+ "Tengo procedimientos de selección y la declaración firmada del personal que corresponde."
 ];
 (function(){
   var c=$("#check");
@@ -704,9 +746,9 @@ var CHECK=[
 $("#calc").addEventListener("click",function(){
   var n=document.querySelectorAll("#check input:checked").length,tot=CHECK.length;
   var color,titulo,txt,hex;
-  if(n>=7){color="v";titulo="Verde";hex="#3f8f5c";txt="Tu programa ya tiene la forma correcta. Lo que falta no es entender la obligación: es sostenerla año con año, con la evidencia en orden y el contenido actualizado cuando la norma se mueva.";}
-  else if(n>=4){color="a";titulo="Ámbar";hex="#b8892a";txt="Tienes la mitad. Lo que suele faltar aquí no es voluntad: es el plan que amarra quién, qué, cuándo, con qué evidencia y quién responde. Sin ese plan, cada año se vuelve a improvisar.";}
-  else{color="r";titulo="Rojo";hex="#c0503f";txt="Hoy no tendrías cómo comprobar tu capacitación ante un requerimiento. La buena noticia: el primer periodo no ha empezado y el levantamiento ya lo hiciste aquí.";}
+  if(n>=9){color="v";titulo="Verde";hex="#3f8f5c";txt="Con lo que marcaste, tu programa tiene los elementos que la norma nombra. Falta comprobarlo con documentos: este ejercicio se contesta solo, y una revisión no. El siguiente trabajo no es entender la obligación, es sostenerla año con año.";}
+  else if(n>=6){color="a";titulo="Ámbar";hex="#b8892a";txt="Con lo que marcaste, está la mitad de los elementos. Lo que suele faltar en este punto no es voluntad: es el plan que amarra quién, qué, cuándo, con qué evidencia y quién responde.";}
+  else{color="r";titulo="Rojo";hex="#c0503f";txt="Con lo que marcaste, faltan la mayoría de los elementos que en una revisión se piden como evidencia. Si tu obligación es de Actividad Vulnerable, el primer periodo corre del 1 de enero al 31 de diciembre de 2027 y todavía hay margen; si eres entidad financiera, la obligación ya está vigente y el margen no existe.";}
   var pct=n/tot, C=2*Math.PI*46;
   var out=$("#semaforo");
   out.className="res";
@@ -719,14 +761,15 @@ $("#calc").addEventListener("click",function(){
     +'<text x="56" y="56" text-anchor="middle" font-family="Space Grotesk" font-weight="700" font-size="26" fill="#fff">'+n+'</text>'
     +'<text x="56" y="74" text-anchor="middle" font-family="Inter" font-size="12" fill="#c9c3b9">de '+tot+'</text></svg>'
     +'<div style="flex:1;min-width:220px"><h3 style="margin:0 0 .3rem">'+titulo+'</h3><p style="margin:0">'+txt+'</p></div></div>'
-    +'<p class="sm" style="margin:.8rem 0 0">Este resultado se queda en tu navegador. Si abres el curso en otra computadora, no va a estar ahí.</p>';
+    +'<p class="sm" style="margin:.8rem 0 0">Este resultado se queda en tu navegador. Si abres el curso en otra computadora, no va a estar ahí.</p>'
+    +'<p class="sm" style="margin:.6rem 0 0">Este semáforo se calcula con lo que tú marcaste y no sustituye una revisión de tu caso. Es material informativo: no es asesoría legal ni un dictamen sobre tu empresa.</p>';
   out.style.display="block";
-  var g=lee()||{};g.semaforo={color:color,n:n,total:tot,fecha:new Date().toISOString().slice(0,10)};guarda(g);
+  var g=lee()||{};g.semaforo={color:color,n:n,total:tot,fecha:fechaLocalISO()};guarda(g);
 });
 
 /* teclado: flechas entre pasos */
 document.addEventListener("keydown",function(e){
-  if(e.target.matches("input,textarea,button"))return;
+  if(e.target.closest('input,textarea,button,[role="button"],summary,details,[tabindex]'))return;
   if(e.key==="ArrowRight")ir(cur+1);
   if(e.key==="ArrowLeft")ir(cur-1);
 });
