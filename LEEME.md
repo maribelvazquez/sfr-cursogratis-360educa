@@ -1,6 +1,8 @@
 # SFR · Sitio del curso «PLD/FT sin fronteras regulatorias»
 
-Versión **v4** (23-sep-2026). **El sector financiero se divide en cinco grupos, con casos rehechos a partir del Catálogo de tipologías UIF e IMPACTO360 de GMC360.** La v3 (misma fecha) sustituyó «El levantamiento» por «Pulso de Riesgo».
+Versión **v5** (23-sep-2026). **El recorrido queda en orden: Por qué capacitar → Pulso de Riesgo → El taller.** En «Tu siguiente paso» se quitó el bloque del taller con el cupón, que mandaba a la gente directo a comprar sin haber hecho el diagnóstico. Ahora ese tema lleva al diagnóstico (y el botón del pie dice «Pulso de Riesgo →»); el informe del diagnóstico es el que lleva al taller.
+
+Versión v4 (23-sep-2026, no se subió; la v5 la incluye). **El sector financiero se divide en cinco grupos, con casos rehechos a partir del Catálogo de tipologías UIF e IMPACTO360 de GMC360.** La v3 (misma fecha) sustituyó «El levantamiento» por «Pulso de Riesgo».
 
 ### Qué cambió de la v3 a la v4
 

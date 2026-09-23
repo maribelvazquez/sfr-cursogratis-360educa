@@ -924,7 +924,7 @@ const TSECS=[
   <div class="mantra"><span>Conoce</span><span>Sabe hacer</span><span>Sabe qué le toca</span></div>
   <p class="lede">Sólo quien sabe a dónde va sabe qué viento le es favorable. Antes de diseñar tu programa, mide dónde está tu gente hoy.</p>
   <div class="row"><button class="btn" data-mode="pulso">Hacer mi diagnóstico</button><button class="btn ghost" id="exRep">Ver un diagnóstico de ejemplo</button></div>
-  ${tallerHTML(couponNow(),null)}`}
+  <p class="muted small" style="margin-top:14px">Primero el diagnóstico; con él en la mano, el taller te enseña a convertirlo en tu programa 2027.</p>`}
 ];
 function vTaller(){
   const has=S.sector&&S.people&&S.people.length;
@@ -935,7 +935,7 @@ function vTeoria(){
   const i=S.t||0, sec=TSECS[i];
   return `<nav class="tnav" aria-label="Temas">${TSECS.map((t,j)=>`<button data-t="${j}" aria-current="${i===j}">${t.nav}</button>`).join("")}</nav>
   <div class="tsec">${sec.html()}</div>
-  <div class="tfoot no-print">${i>0?`<button class="btn ghost" data-t="${i-1}">← ${TSECS[i-1].nav}</button>`:"<span></span>"}${i<TSECS.length-1?`<button class="btn" data-t="${i+1}">${TSECS[i+1].nav} →</button>`:""}</div>`;
+  <div class="tfoot no-print">${i>0?`<button class="btn ghost" data-t="${i-1}">← ${TSECS[i-1].nav}</button>`:"<span></span>"}${i<TSECS.length-1?`<button class="btn" data-t="${i+1}">${TSECS[i+1].nav} →</button>`:`<button class="btn" data-mode="pulso">Pulso de Riesgo →</button>`}</div>`;
 }
 
 
