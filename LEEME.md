@@ -1,6 +1,13 @@
 # SFR · Sitio del curso «PLD/FT sin fronteras regulatorias»
 
-Versión **v5** (23-sep-2026). **El recorrido queda en orden: Por qué capacitar → Pulso de Riesgo → El taller.** En «Tu siguiente paso» se quitó el bloque del taller con el cupón, que mandaba a la gente directo a comprar sin haber hecho el diagnóstico. Ahora ese tema lleva al diagnóstico (y el botón del pie dice «Pulso de Riesgo →»); el informe del diagnóstico es el que lleva al taller.
+Versión **v6** (23-sep-2026). **El diagnóstico queda completo: cuatro puertas y 17 giros.** Al elegir sector, el usuario escoge primero su puerta —Sector financiero · Actividades vulnerables · No soy sujeto obligado · Grupo mixto— y luego su giro.
+- **Actividades vulnerables, 6 grupos:** a los tres que había (inmobiliario; bienes de alto valor; crédito, tarjetas y juegos) se suman **Fe pública y servicios profesionales** (fr. XI y XII), **Donativos, traslado de valores y comercio exterior** (fr. X, XIII y XIV) y **Activos virtuales** (fr. XVI), con base en el Atlas de riesgo del libro *Zona de Riesgo*.
+- **No soy sujeto obligado, 5 grupos:** Farmacéutica y química · Bebidas, agroindustria y alimentos · Importación, comercio y distribución · Proveedores de gobierno y servicios · Turismo, entretenimiento y eventos. Casos construidos sobre las tipologías UIF e IMPACTO360; no afirman obligaciones legales, hablan de riesgo y de controles.
+- **Grupo mixto:** 8 situaciones en las que el riesgo cruza de una empresa del grupo a otra.
+- Nueva área para el equipo: «Compras y proveedores».
+- En todos los grupos nuevos la respuesta correcta es la más larga en 9 de 72 situaciones.
+
+Versión v5 (23-sep-2026). **El recorrido queda en orden: Por qué capacitar → Pulso de Riesgo → El taller.** En «Tu siguiente paso» se quitó el bloque del taller con el cupón, que mandaba a la gente directo a comprar sin haber hecho el diagnóstico. Ahora ese tema lleva al diagnóstico (y el botón del pie dice «Pulso de Riesgo →»); el informe del diagnóstico es el que lleva al taller.
 
 Versión v4 (23-sep-2026, no se subió; la v5 la incluye). **El sector financiero se divide en cinco grupos, con casos rehechos a partir del Catálogo de tipologías UIF e IMPACTO360 de GMC360.** La v3 (misma fecha) sustituyó «El levantamiento» por «Pulso de Riesgo».
 

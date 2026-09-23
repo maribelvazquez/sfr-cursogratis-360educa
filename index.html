@@ -143,6 +143,14 @@ select,input[type=text]{font:inherit;padding:11px 12px;border-radius:10px;border
 .howto div{display:flex;gap:12px;align-items:flex-start}
 .howto b{font-family:var(--display);background:var(--durazno);color:var(--negro);border-radius:8px;min-width:30px;height:30px;display:grid;place-items:center;font-size:14px}
 .sectors{display:grid;gap:10px}
+.doors{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.door{display:flex;flex-direction:column;gap:4px;text-align:left;background:var(--surface);border:1.5px solid var(--line);border-radius:12px;padding:12px 14px;color:var(--ink)}
+.door:hover{border-color:var(--durazno)}
+.door[aria-pressed="true"]{border-color:var(--durazno-letra);background:var(--accent-soft)}
+.door .t{font-family:var(--display);font-weight:700;font-size:15px}
+.door .s{font-size:13px;color:var(--ink-3)}
+.door-note{margin:2px 0 0}
+@media (max-width:520px){.doors{grid-template-columns:1fr}}
 .sector-grp{font-size:12.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-3);margin:6px 0 -2px}
 .sector{display:flex;gap:12px;align-items:flex-start;text-align:left;background:var(--surface);border:1.5px solid var(--line);border-radius:12px;padding:14px 16px;color:var(--ink)}
 .sector:hover{border-color:var(--durazno)}
@@ -395,6 +403,111 @@ const SECTORS = {
     text:"El titular de una tarjeta la recarga una vez al mes, por montos bajos, desde su propia cuenta bancaria.",
     rule:"Recarga desde cuenta bancaria, con límites bajos y rastreables, es menor riesgo."}
   ]},
+ fepub:{
+  name:"Fe pública y servicios profesionales", sub:"Notarios, corredores, facilitadores, contadores y abogados que operan por su cliente · fr. XI y XII",
+  kind:"av", oc:"la Representante Encargada de Cumplimiento",
+  cases:[
+   {risk:"Empresa recién creada con prisa por escriturar", fr:"XII", flag:true,
+    text:"Llega a la notaría a escriturar la compra de una casa una empresa de dos meses de vida. El representante trae prisa, no negocia nada y el dinero lo transfiere una persona que no aparece en ningún papel.",
+    rule:"Tu pregunta no es «¿quién firma?», es «¿quién manda de verdad aquí?».",
+    mit:"Identificar al Beneficiario Controlador y a quien paga antes de firmar, no después.", ind:"% de escrituras con persona moral con Beneficiario Controlador identificado antes de la firma"},
+   {risk:"Poder amplio e irrevocable a favor de un desconocido", fr:"XII", flag:true,
+    text:"Un señor mayor viene a otorgar un poder irrevocable y sin límites para vender todas sus propiedades, a favor de alguien que conoció hace unas semanas. El acompañante contesta por él a cada pregunta y pide que se firme hoy mismo.",
+    rule:"Un poder sin límite a favor de un extraño es una llave que no sabes quién va a usar.",
+    mit:"Entrevista a solas con el otorgante y registro de su relación con el apoderado antes de otorgar poderes amplios.", ind:"% de poderes irrevocables con relación otorgante-apoderado documentada"},
+   {risk:"Tres empresas y dos países para una sola bodega", fr:"XII", flag:true,
+    text:"Ante la correduría se constituye una sociedad cuyos únicos socios son otras dos empresas, una de ellas extranjera, sólo para comprar una bodega. Nadie sabe decir quién es la persona que manda al final y piden no anexar la lista de accionistas.",
+    rule:"Tu pregunta no es «¿quién firma?», es «¿quién manda de verdad aquí?».",
+    mit:"Pedir la cadena de control hasta la persona física antes de formalizar el acto.", ind:"% de sociedades formalizadas con cadena de control documentada hasta la persona física"},
+   {risk:"Convenio que reparte más de lo que vale el pleito", fr:"XII", flag:true,
+    text:"Como facilitador te piden formalizar un convenio por un pleito entre vecinos casi sin sustancia, en el que una parte «indemniza» a la otra con una suma enorme. El pago lo hará una empresa que no es parte y quieren firmar esta semana.",
+    rule:"Si el convenio mueve más dinero del que el pleito justifica, sospecha.",
+    mit:"Identificar a las partes y a quien paga, y documentar de qué trata el conflicto, antes de formalizar el convenio.", ind:"% de convenios con valor económico con partes y pagador identificados"},
+   {risk:"Te piden dispersar dinero como «marketing»", fr:"XI", flag:true,
+    text:"Llevas la contabilidad de una importadora nueva y además administras su cuenta. Llegan transferencias del extranjero que nada tienen que ver con su giro y el dueño te pide repartirlas a varias empresas como «marketing» y «consultoría».",
+    rule:"Si prestas el membrete, prestas el riesgo.",
+    mit:"Cláusula de origen de fondos en la carta-convenio y revisión de cada entrada contra el giro antes de mover recursos del cliente.", ind:"% de clientes con recursos administrados y origen de fondos documentado"},
+   {risk:"Administrador o accionista «de nombre»", fr:"XI", flag:true,
+    text:"Un cliente le pide al despacho que uno de sus abogados aparezca como administrador único y accionista de una sociedad nueva. «Tú nada más firmas, las decisiones las tomo yo», dice, y no quiere que su nombre salga en ningún documento.",
+    rule:"Si te piden poner tu nombre sin que tú mandes nada, te están usando.",
+    mit:"Declaración de Beneficiario Controlador en el alta de cliente y política de no prestar nombre en sociedades de clientes.", ind:"% de sociedades constituidas o administradas con Beneficiario Controlador declarado"},
+   {risk:"Operación ordinaria · vivienda con crédito", fr:"XII", flag:false,
+    text:"Una pareja escritura su primera vivienda, de interés social, con crédito de su institución de vivienda. El enganche sale de su cuenta de nómina, los dos se identifican y el precio de la escritura coincide con el avalúo.",
+    rule:"Vivienda social con crédito y pagos por banco es menor riesgo: identifica y sigue."},
+   {risk:"Operación ordinaria · contabilidad básica", fr:"XI", flag:false,
+    text:"Una doctora con consultorio propio te contrata para llevar su contabilidad y presentar sus declaraciones. Te entrega sus facturas y estados de cuenta, lo que cobra cuadra con lo que deposita y no te pide manejar su dinero.",
+    rule:"Contabilidad básica y trámites rutinarios son menor riesgo: identifica a tu cliente y trabaja."}
+  ]},
+ especial:{
+  name:"Donativos, traslado de valores y comercio exterior", sub:"Asociaciones que reciben donativos, traslado y custodia de valores, comercio exterior de bienes de valor · fr. X, XIII y XIV",
+  kind:"av", oc:"la Representante Encargada de Cumplimiento",
+  cases:[
+   {risk:"Donativo con instrucción de a quién pagar", fr:"XIII", flag:true,
+    text:"Una fundación recién creada en el extranjero ofrece a tu asociación un donativo muy grande, con una condición: que buena parte se le pague a una empresa proveedora que ellos eligen, ubicada en una zona de conflicto.",
+    rule:"El donativo con condiciones no es donativo, es instrucción.",
+    mit:"Identificar al donante y documentar el destino de los recursos antes de aceptar un donativo condicionado.", ind:"% de donativos condicionados revisados por cumplimiento antes de aceptarse"},
+   {risk:"Donativos sin nombre partidos en muchos chiquitos", fr:"XIII", flag:true,
+    text:"En la misma semana entran a la cuenta de la asociación decenas de depósitos en efectivo sin nombre, todos parecidos y abajo del monto que obliga a identificar. Días después alguien llama para pedir que «se devuelva» una parte a otra cuenta.",
+    rule:"Muchos donativos chiquitos y sin nombre pueden ser uno grande partido.",
+    mit:"Sumar por periodo los donativos en efectivo sin identificar y alertar cuando alguien pide devolverlos a un tercero.", ind:"Tiempo de detección de donativos fraccionados o con devolución solicitada"},
+   {risk:"Efectivo desde un domicilio no declarado", fr:"X", flag:true,
+    text:"Una empresa que siempre opera por banco contrata un traslado urgente de mucho efectivo, desde una casa que no aparece en su expediente hasta una casa de cambio en la frontera. Es vaga sobre el origen y el destino del dinero.",
+    rule:"Si el efectivo sale de donde el cliente nunca opera, pregunta por qué.",
+    mit:"Registrar origen, destino y valor de cada traslado y validarlos contra los domicilios del expediente.", ind:"% de traslados con origen y destino validados contra el expediente"},
+   {risk:"Custodia con «valor desconocido»", fr:"X", flag:true,
+    text:"Un cliente quiere dejar en tu bóveda varias cajas selladas. No quiere declarar qué contienen ni cuánto valen: «ponle valor desconocido y así nos ahorramos el papeleo». Paga la custodia de un año por adelantado.",
+    rule:"Si no te dejan saber qué cargas, esa ya es la respuesta.",
+    mit:"Registrar un valor estimado de lo custodiado y tratar el valor desconocido como marque tu Manual, no como forma de evitar el Aviso.", ind:"% de custodias con valor estimado y contenido registrados"},
+   {risk:"Valor declarado que no cuadra con la mercancía", fr:"XIV", flag:true,
+    text:"Tramitas la importación de un lote de maquinaria usada. El valor que se declara es muy distinto al que esa maquinaria vale en el mercado, y el pago no lo hace el importador sino un tercero desde un país de alto riesgo.",
+    rule:"Si el papel dice un valor y la mercancía vale otro, ahí está el problema.",
+    mit:"Contrastar el valor declarado contra referencias de mercado y conciliar quién paga contra el importador.", ind:"% de operaciones con valor declarado contrastado contra referencia de mercado"},
+   {risk:"Joyas y metales a un país sin relación", fr:"XIV", flag:true,
+    text:"Un cliente nuevo quiere exportar joyas y lingotes a un país donde no tiene clientes, negocio ni domicilio. Prefiere despachar sin agente aduanal y pide que la factura salga a nombre de otra empresa «para simplificar».",
+    rule:"Si la mercancía vale mucho, cabe en una mano y viaja a donde no hay negocio, pregunta.",
+    mit:"Documentar el propósito comercial y el destino, e identificar a quien factura y a quien paga, antes de despachar.", ind:"% de exportaciones de bienes de alto valor con propósito comercial documentado"},
+   {risk:"Operación ordinaria · donativos recurrentes", fr:"XIII", flag:false,
+    text:"Una asociación de apoyo escolar recibe cada mes donativos pequeños, por transferencia, de padres de familia y vecinos identificados. Emite sus recibos y publica en qué gasta cada peso.",
+    rule:"Donativos pequeños y frecuentes de donantes conocidos son menor riesgo."},
+   {risk:"Operación ordinaria · importación documentada", fr:"XIV", flag:false,
+    text:"Un cliente que importa refacciones desde hace años trae un lote de maquinaria con toda su documentación. El valor declarado coincide con la factura del proveedor y el pago sale de su propia cuenta bancaria.",
+    rule:"Bienes de uso común con documentación completa son menor riesgo: no los detengas."}
+  ]},
+ virtual:{
+  name:"Activos virtuales", sub:"Compra, venta, intercambio o custodia de activos virtuales · fr. XVI",
+  kind:"av", oc:"la Representante Encargada de Cumplimiento",
+  cases:[
+   {risk:"Operaciones partidas abajo del monto de Aviso", fr:"XVI", flag:true,
+    text:"Un cliente vende cripto todos los días, siempre por montos un poco abajo del que obliga a presentar Aviso. En la semana ya suma varias veces ese monto. Cuando le preguntas, dice que «así le sale mejor la comisión».",
+    rule:"Muchas operaciones chiquitas del mismo cliente son una grande partida.",
+    mit:"Regla que suma las operaciones de cada cliente en el periodo y alerta el fraccionamiento.", ind:"Tiempo de detección de operaciones fraccionadas por cliente"},
+   {risk:"No quiere identificarse porque «es poquito»", fr:"XVI", flag:true,
+    text:"Un usuario nuevo quiere cambiar una cantidad chica de pesos a cripto y mandarla a una wallet externa. Se niega a subir su identificación: «es poquito, en otras plataformas no me piden nada» y amenaza con irse.",
+    rule:"En cripto, identificar no espera al monto: es desde el primer movimiento.",
+    mit:"Identificación completa desde la primera operación, sin excepción por monto.", ind:"% de operaciones con cliente identificado desde la primera"},
+   {risk:"Cripto que llega sin historia", fr:"XVI", flag:true,
+    text:"Un cliente deposita en la plataforma una cantidad grande de cripto que viene de una wallet no custodiada y pide cambiarla toda a pesos hoy. Cuando le preguntas de dónde la obtuvo, sólo dice «la fui juntando».",
+    rule:"Si el cliente no sabe decir de dónde salió el cripto, tú tampoco lo sabes.",
+    mit:"Revisar el historial de la wallet de origen y pedir soporte del origen antes de liberar el retiro en pesos.", ind:"% de depósitos de wallets externas con origen revisado antes del retiro"},
+   {risk:"Muchos remitentes y conversión inmediata", fr:"XVI", flag:true,
+    text:"La cuenta de una estudiante recibe cada día transferencias en pesos de decenas de personas distintas. En minutos todo se convierte a stablecoin y sale a la misma wallet externa. Su perfil dice «ahorro personal».",
+    rule:"Muchos entran, uno concentra y sale en minutos: eso no es ahorro.",
+    mit:"Alerta por muchos remitentes distintos con conversión y retiro inmediatos a una misma dirección.", ind:"Tiempo entre la alerta de cuenta concentradora y su análisis"},
+   {risk:"Retiro a una dirección ligada a un mezclador", fr:"XVI", flag:true,
+    text:"Un cliente que invierte de vez en cuando pide retirar todo su saldo a una dirección que la herramienta de análisis de cadena marca como ligada a un mezclador. Insiste en que es «su wallet personal» y quiere que salga ya.",
+    rule:"Si la dirección de destino tiene mala fama, el retiro también.",
+    mit:"Revisar las direcciones de destino con análisis de cadena antes de liberar retiros relevantes.", ind:"% de retiros a direcciones marcadas revisados antes de liberarse"},
+   {risk:"«Consultoría» que opera como casa de cambio cripto", fr:"XVI", flag:true,
+    text:"Una empresa que declaró dar «consultoría» abre cuenta y compra y vende cripto a diario con cientos de contrapartes distintas. Su representante no sabe explicar quiénes son sus clientes ni de dónde sale el dinero.",
+    rule:"Si lo que ves no es lo que el cliente declaró, créele a lo que ves.",
+    mit:"Revisión de congruencia entre actividad declarada y operación real, con Beneficiario Controlador identificado.", ind:"% de clientes persona moral con revisión de congruencia documentada"},
+   {risk:"Operación ordinaria · ahorro quincenal", fr:"XVI", flag:false,
+    text:"Un cliente identificado desde que abrió su cuenta compra cada quincena una cantidad pequeña de cripto, con transferencia desde su cuenta de nómina, y la deja en la plataforma como ahorro de largo plazo.",
+    rule:"Cliente identificado, montos bajos y pagos desde su propia cuenta: menor riesgo."},
+   {risk:"Operación ordinaria · venta con origen claro", fr:"XVI", flag:false,
+    text:"Una clienta identificada desde hace dos años vende parte del cripto que compró en esta misma plataforma y pide que los pesos se depositen en su cuenta bancaria, que está a su nombre.",
+    rule:"Si el cripto entró y sale por la misma puerta y con el mismo dueño, es menor riesgo."}
+  ]},
  banca:{
   name:"Banca", sub:"Banca múltiple y de desarrollo, banca digital · Disposiciones del art. 115 de la LIC",
   kind:"sf", oc:"el Oficial de Cumplimiento",
@@ -569,6 +682,216 @@ const SECTORS = {
    {risk:"Operación ordinaria · muchos pagos chicos que sí cuadran", fr:"Perfil congruente", flag:false,
     text:"Una fonda registrada recibe cada día decenas de pagos con tarjeta de entre 80 y 200 pesos, a la hora de la comida, congruentes con lo que declaró vender.",
     rule:"Muchos pagos chicos no son alerta si cuadran con el negocio: el foco rojo es la incongruencia, no el tamaño."}
+  ]},
+ farma:{
+  name:"Farmacéutica y química", sub:"Laboratorios, distribuidoras de medicamentos y químicos, insumos industriales",
+  kind:"no", oc:"quien lleve cumplimiento en tu empresa",
+  cases:[
+   {risk:"Distribuidora nueva que pide reactivos sin decir para qué", fr:"UIF T04 · IMPACTO360 TIP-10", flag:true,
+    text:"Una distribuidora de dos meses pide por correo varias toneladas de un solvente y un reactivo sensibles. Quiere pagar por adelantado, no dice para qué los usa, su domicilio es una oficina y pide entregar en una bodega de otro estado.",
+    rule:"Si no sabes para qué se usa, no sabes a quién le vendes.",
+    mit:"Verificación de uso final, licencias y permisos antes de vender químicos sensibles a un cliente nuevo.", ind:"% de clientes de químicos sensibles con uso final documentado"},
+   {risk:"Proveedor extranjero barato que pide pago a otra empresa", fr:"UIF T04 · IMPACTO360 TIP-10", flag:true,
+    text:"En compras te llega un proveedor asiático que ofrece un principio activo a mitad del precio de mercado. Pide que la transferencia vaya a una empresa distinta, en otro país, y que la factura diga «insumos químicos diversos» sin más detalle.",
+    rule:"Precio de regalo, pago a un tercero y descripción vaga: tres señales en una sola compra.",
+    mit:"Debida diligencia de proveedores extranjeros: identidad, beneficiario final y cuenta de pago a nombre del propio proveedor.", ind:"% de pagos a proveedores extranjeros con cuenta a nombre del mismo proveedor"},
+   {risk:"Farmacia de barrio que compra como cadena y paga con terceros", fr:"UIF T17 y T18 · IMPACTO360 TIP-01", flag:true,
+    text:"Una farmacia de barrio que compraba poco ahora pide cada semana cajas de un medicamento controlado como si fuera cadena. Paga con varios depósitos en efectivo de personas distintas, todos de montos parecidos, a tu cuenta de cobranza.",
+    rule:"Cuando el cliente crece más rápido que su mostrador, pregunta de dónde sale.",
+    mit:"Conciliación de cobranza que identifique pagos en efectivo y de terceros por cliente, con revisión de compras fuera de su perfil.", ind:"% de pagos de terceros identificados y conciliados por cliente"},
+   {risk:"Proveedor de siempre que cambia de cuenta por correo", fr:"UIF T16 · IMPACTO360 TIP-21", flag:true,
+    text:"En tesorería recibes un correo del proveedor de envases de siempre: cambió de banco y pide que el pago de hoy vaya a una cuenta nueva. El correo se ve igual que siempre, pero el dominio tiene una letra distinta y te insisten en que es urgente.",
+    rule:"Cuenta nueva por correo se confirma por un teléfono conocido, nunca por el mismo correo.",
+    mit:"Cambio de datos bancarios de proveedores sólo con confirmación por un canal independiente y doble autorización.", ind:"% de cambios de cuenta de proveedores confirmados por canal independiente"},
+   {risk:"Cliente de maquila que no vende y cobra desde fuera", fr:"UIF T09 y T18 · IMPACTO360 TIP-12", flag:true,
+    text:"Una empresa te pide maquilar un suplemento con su marca. Nunca ha vendido nada, su objeto social abarca desde construcción hasta medicinas y los anticipos llegan de tres empresas en el extranjero que no aparecen en el contrato.",
+    rule:"Si quien paga no es quien contrata, averigua quién manda.",
+    mit:"Identificar al beneficiario final del cliente y aceptar pagos sólo del propio cliente o de terceros justificados y documentados.", ind:"% de clientes de maquila con beneficiario final identificado"},
+   {risk:"Compañero que libera pedidos sin expediente", fr:"IMPACTO360 TIP-30 (sin tipología UIF: riesgo de control interno)", flag:true,
+    text:"Notas que un compañero de ventas libera siempre los pedidos del mismo cliente de químicos sin el expediente completo, fuera de horario y con excepciones que él mismo autoriza. Cuando preguntas, dice que es cliente suyo desde hace años.",
+    rule:"Cuando uno solo concentra las excepciones, el control ya no existe.",
+    mit:"Segregación de funciones: quien vende no autoriza excepciones al expediente, y las excepciones se revisan por persona cada mes.", ind:"Número de excepciones autorizadas por la misma persona al mes"},
+   {risk:"Operación ordinaria · hospital que crece", fr:"Perfil congruente", flag:false,
+    text:"Un hospital privado con el que trabajas hace años duplica su pedido de anestésicos y soluciones. Te avisó que abrió un piso nuevo, lo anunció en su sitio, paga desde su cuenta de siempre y te manda su licencia sanitaria actualizada.",
+    rule:"El crecimiento explicado y documentado es negocio, no alerta."},
+   {risk:"Operación ordinaria · proveedor extranjero conocido", fr:"Perfil congruente", flag:false,
+    text:"Un proveedor asiático con el que compras hace cinco años sube su precio por el tipo de cambio. La factura detalla cada principio activo, el pago va a su propia cuenta de siempre y los certificados de análisis llegan con cada embarque.",
+    rule:"Un proveedor rastreable que sube precio no es sospechoso: es el mercado."}
+  ]},
+ bebidas:{
+  name:"Bebidas, agroindustria y alimentos", sub:"Tequileras y destilados, agroexportadoras, alimentos y consumo",
+  kind:"no", oc:"quien lleve cumplimiento en tu empresa",
+  cases:[
+   {risk:"Socio que trae capital pero no quiere aparecer", fr:"UIF T09 y T18 · IMPACTO360 TIP-12", flag:true,
+    text:"Un inversionista ofrece entrar como socio de la tequilera y financiar la nueva línea de exportación. Quiere aportar una parte en efectivo y otra desde empresas de giros ajenos, y pide que en el acta aparezca un familiar en su lugar.",
+    rule:"El socio que no quiere aparecer es el que más necesitas conocer.",
+    mit:"Debida diligencia de socios e inversionistas: identidad, beneficiario final y origen de los recursos antes de firmar.", ind:"% de nuevos socios o inversionistas con origen de recursos documentado"},
+   {risk:"Importador que paga de más y desde otras empresas", fr:"UIF T03 · IMPACTO360 TIP-08", flag:true,
+    text:"Un importador de otro país pide contenedores de tequila y acepta un precio muy por encima de tu lista sin negociar. Los pagos llegan de varias empresas que no son él, algunas de otros continentes, y pide que la factura diga otro valor.",
+    rule:"Nadie paga de más sin razón: el sobreprecio también viaja.",
+    mit:"Conciliación de cada exportación: precio de lista contra facturado y cobrado, con ordenante del pago igual al cliente.", ind:"% de exportaciones con precio, factura y ordenante conciliados"},
+   {risk:"Fruta fuera de temporada y pago a otra persona", fr:"UIF T03 y T18 · IMPACTO360 TIP-19", flag:true,
+    text:"Un acopiador te vende aguacate en plena temporada baja, en volúmenes que su zona no produce en esas fechas. Pide que parte del pago vaya a la cuenta de otra persona y te ofrece descuento si le pagas el resto en efectivo.",
+    rule:"Si la cosecha no cuadra con el calendario, la fruta no es lo único que se mueve.",
+    mit:"Validar que el volumen del proveedor cuadre con su superficie y temporada, y pagar sólo a cuentas a su nombre.", ind:"% de pagos a productores hechos a cuentas a su nombre"},
+   {risk:"Distribuidor que paga con cuentas de desconocidos", fr:"IMPACTO360 TIP-26 (sin tipología UIF específica)", flag:true,
+    text:"Un distribuidor de abarrotes paga sus pedidos de botanas con transferencias de cuentas de personas que no conoces, cada semana distintas. Cuando le preguntas, dice que son «socios» y pide que la factura salga a su nombre de todos modos.",
+    rule:"Si paga otro, pregunta por qué; si nadie sabe explicarlo, detente.",
+    mit:"Política de pagos de terceros: sólo con justificación documentada y conciliación del ordenante contra el cliente.", ind:"% de cobranza recibida de terceros con justificación documentada"},
+   {risk:"Videollamada del director que pide un pago secreto", fr:"UIF T16 · IMPACTO360 TIP-21", flag:true,
+    text:"Te llama por videollamada el director general, con su voz y su cara, desde un número nuevo. Dice que está cerrando la compra de un predio de agave y que hoy necesitas transferir un anticipo a una cuenta que te manda por mensaje, sin avisar a nadie.",
+    rule:"Urgencia más secreto es la firma del fraude: confirma por otro canal.",
+    mit:"Toda instrucción de pago fuera de proceso se confirma por un canal independiente y requiere doble firma.", ind:"% de instrucciones de pago urgentes confirmadas por canal independiente"},
+   {risk:"Contratista de jornaleros que cobra por todos", fr:"UIF T13 y T14 · IMPACTO360 TIP-28", flag:true,
+    text:"En RH, un contratista que trae cuadrillas de jornaleros para la cosecha pide que el pago de todos se deposite en una sola cuenta suya. Los trabajadores no traen identificación, él guarda sus documentos y viven en un predio que él controla.",
+    rule:"Si alguien cobra por otros y guarda sus papeles, no es un contratista cualquiera.",
+    mit:"Pago de nómina a cuentas individuales de cada trabajador, con identificación verificada y revisión de sus condiciones de alojamiento.", ind:"% de jornaleros eventuales pagados en cuenta propia"},
+   {risk:"Operación ordinaria · pedido de fin de año", fr:"Perfil congruente", flag:false,
+    text:"Una cadena de autoservicio a la que le vendes hace años triplica su pedido de tequila para diciembre, como cada temporada. La orden llega por su portal de proveedores y paga a treinta días desde su cuenta de siempre.",
+    rule:"La temporada que se repite cada año no es alerta: conocer al cliente es saber cuándo no preocuparse."},
+   {risk:"Operación ordinaria · cosecha que sí cuadra", fr:"Perfil congruente", flag:false,
+    text:"Un productor de agave que te vende hace años entrega una cosecha grande al llegar a la madurez de su plantación. El volumen cuadra con las hectáreas que tiene registradas, factura a su nombre y cobra en su propia cuenta.",
+    rule:"Volumen que cuadra con la tierra y pago a su titular: eso es un proveedor sano."}
+  ]},
+ comercio:{
+  name:"Importación, comercio y distribución", sub:"Importadoras, comercializadoras, mayoristas, combustibles y lubricantes, logística",
+  kind:"no", oc:"quien lleve cumplimiento en tu empresa",
+  cases:[
+   {risk:"Cliente que ofrece pagarle a tu proveedor en el extranjero", fr:"UIF T03 · IMPACTO360 TIP-08", flag:true,
+    text:"Un cliente mayorista te propone un trato: en lugar de pagarte a ti, él le paga en dólares a tu proveedor en Asia, desde empresas de otro país, y tú le entregas la mercancía aquí. Dice que así los dos se ahorran la comisión cambiaria.",
+    rule:"Si a tu proveedor le paga un desconocido, tu mercancía se volvió su vehículo.",
+    mit:"Pagos a proveedores y cobros a clientes sólo entre las partes del contrato, sin compensaciones con terceros.", ind:"% de operaciones de comercio exterior sin pagos de terceros"},
+   {risk:"Lubricante barato que en realidad es combustible", fr:"UIF T03 · IMPACTO360 TIP-09", flag:true,
+    text:"Un proveedor te ofrece «aceite lubricante» importado en ferrotanques a un precio muy por debajo del mercado. El certificado dice lubricante, pero te comenta que en realidad es combustible y que tus estaciones clientes podrán venderlo con buen margen.",
+    rule:"Si el precio sólo cuadra sin pagar impuestos, ese negocio no es tuyo.",
+    mit:"Verificar que descripción, fracción arancelaria y precio correspondan al producto físico, con análisis o certificado cotejado.", ind:"% de compras de combustibles y lubricantes con certificado de calidad cotejado"},
+   {risk:"Exportación con transbordo hacia un país sancionado", fr:"IMPACTO360 TIP-11 (sin tipología UIF específica)", flag:true,
+    text:"Una comercializadora de meses de creada te compra fertilizante y refacciones industriales «para Centroamérica». Pide que los documentos salgan a nombre de otra empresa y que la mercancía se transborde en un puerto intermedio rumbo a un país con sanciones.",
+    rule:"La mercancía llega a donde va, no a donde dice la factura.",
+    mit:"Revisión de clientes, destinos y transbordos contra listas de sanciones, con destino final documentado.", ind:"% de exportaciones con destino final y listas de sanciones verificados"},
+   {risk:"Equipo sensible sin usuario final", fr:"IMPACTO360 TIP-29 (sin tipología UIF específica)", flag:true,
+    text:"Un intermediario pide cotización de drones, cámaras térmicas y controladores electrónicos sin detalle técnico. No dice quién los usará, insiste en pagar por adelantado desde un tercer país y cambia dos veces el domicilio de entrega.",
+    rule:"Lo que sirve para dos cosas se vende sabiendo para cuál.",
+    mit:"Verificación de uso y usuario final para bienes de doble uso, con declaración firmada y revisión de listas.", ind:"% de ventas de bienes sensibles con usuario final verificado"},
+   {risk:"Cliente de fletes con mucho dinero y poca carga", fr:"UIF T09 y T18 · IMPACTO360 TIP-12", flag:true,
+    text:"En logística tienes un cliente que paga puntual fletes caros, pero muchos viajes salen casi vacíos o con carga que nadie revisa. Cambia seguido de razón social para facturar y los pagos llegan de empresas de giros que no tienen que ver.",
+    rule:"Mucho dinero y poca mercancía: la carga importante es otra.",
+    mit:"Conciliar pagos, cartas porte y carga real por cliente, y aceptar pagos sólo del cliente contratante.", ind:"% de viajes con carta porte y carga conciliadas contra el pago"},
+   {risk:"Comprador que impone a un proveedor caro", fr:"IMPACTO360 TIP-30 (sin tipología UIF: riesgo de control interno)", flag:true,
+    text:"Un comprador de tu área insiste en asignar todos los pedidos a un proveedor nuevo que cobra más caro que los de siempre. Él mismo dio de alta su cuenta bancaria, sin visita ni expediente, y se molesta cuando alguien propone cotizar con otros.",
+    rule:"Quien da de alta al proveedor no debe ser quien le compra.",
+    mit:"Alta de proveedores por un área distinta a compras, con expediente, visita y cotizaciones comparativas.", ind:"% de proveedores dados de alta con expediente completo por área independiente"},
+   {risk:"Operación ordinaria · importación de siempre", fr:"Perfil congruente", flag:false,
+    text:"Importas contenedores de refacciones de tu proveedor asiático de hace años. El pago va de tu cuenta a la suya, la factura detalla piezas y precios de lista, y el agente aduanal clasifica la mercancía igual que en los embarques anteriores.",
+    rule:"Lo que se repite, se paga entre las partes y se documenta igual no necesita frenarse."},
+   {risk:"Operación ordinaria · cliente que paga por su filial", fr:"Perfil congruente", flag:false,
+    text:"Un cliente corporativo te avisa por escrito que su filial pagará las facturas de este trimestre. La filial aparece en su organigrama y en su información pública, te manda el contrato de servicios compartidos y paga desde su propia cuenta.",
+    rule:"Un tercero que paga con razón documentada no es foco rojo: el foco rojo es el que nadie explica."}
+  ]},
+ gobierno:{
+  name:"Proveedores de gobierno y servicios", sub:"Proveedores y contratistas del sector público, consultoría, universidades y servicios profesionales no vulnerables",
+  kind:"no", oc:"quien lleve cumplimiento en tu empresa",
+  cases:[
+   {risk:"Convenio público que se subcontrata casi completo", fr:"UIF T11 y T12 · IMPACTO360 TIP-12", flag:true,
+    text:"Tu universidad firma un convenio con una dependencia para un estudio. El funcionario que lo gestionó pide que casi todo el dinero se subcontrate con tres empresas que él recomienda, recién creadas y sin personal, y que ellas redacten el entregable.",
+    rule:"Si tú firmas y otros hacen todo, el que responde eres tú.",
+    mit:"Validar capacidad operativa, expediente y beneficiario final de todo subcontratista antes de pagarle con recursos de un contrato público.", ind:"% de subcontratistas de contratos públicos con capacidad operativa verificada"},
+   {risk:"Funcionario que sugiere contratar a un familiar", fr:"UIF T08 · IMPACTO360 TIP-15", flag:true,
+    text:"Ganaste una licitación estatal y el funcionario del área usuaria te sugiere, para que los pagos «fluyan», contratar como asesora a la empresa de un familiar suyo. Te pasa la cuenta y dice que la factura puede ser por «consultoría estratégica».",
+    rule:"La consultoría que nadie entrega es un pago con otro nombre.",
+    mit:"Revisar vínculos con funcionarios en proveedores y asesores, y exigir entregables verificables de toda consultoría.", ind:"% de asesores con entregables verificados y vínculos con funcionarios revisados"},
+   {risk:"Exfuncionario que quiere ser socio y cobrar fuera", fr:"UIF T10 · IMPACTO360 TIP-15", flag:true,
+    text:"Un exfuncionario que dejó hace meses la dependencia que más te contrata quiere asociarse con tu consultora. Promete traer contratos de su antigua área y pide que su parte se pague a una empresa en el extranjero a nombre de su esposa.",
+    rule:"Quien vende su influencia de ayer te hace socio de su riesgo.",
+    mit:"Debida diligencia reforzada a socios y asesores que fueron servidores públicos, con revisión de conflictos de interés y del destino de sus pagos.", ind:"% de relaciones con exservidores públicos revisadas por cumplimiento"},
+   {risk:"Colegiatura pagada de más por un tercero", fr:"IMPACTO360 TIP-26 (sin tipología UIF específica)", flag:true,
+    text:"En cobranza de la universidad, una empresa sin relación con el alumno paga por adelantado cuatro años de colegiatura, más de lo que cuestan. Semanas después pide que la diferencia se devuelva a otra cuenta porque el alumno «se dio de baja».",
+    rule:"Pagar de más para pedir devolución es de los trucos más viejos para mover dinero.",
+    mit:"Devoluciones sólo a la cuenta de origen y previa revisión; pagos de terceros con justificación documentada.", ind:"% de devoluciones hechas a la misma cuenta de origen"},
+   {risk:"Depósito «por error» que piden devolver a otra cuenta", fr:"UIF T16 · IMPACTO360 TIP-21", flag:true,
+    text:"Recibes un depósito grande con concepto de pago de un contrato público que aún no facturas, desde una cuenta que no es de la tesorería de la dependencia. Al día siguiente te llaman para pedir que devuelvas «el error» a otra cuenta.",
+    rule:"Un depósito equivocado se devuelve a su origen, nunca a la cuenta que te dicten.",
+    mit:"Protocolo de pagos no identificados: conciliar ordenante contra contrato y devolver sólo a la cuenta de origen tras revisión.", ind:"% de depósitos no identificados conciliados antes de cualquier devolución"},
+   {risk:"Gestor sin contrato que «destraba» pagos", fr:"IMPACTO360 TIP-30 (sin tipología UIF: riesgo de control interno)", flag:true,
+    text:"El gerente de cuentas de gobierno pide a tesorería pagar cada mes a un «gestor de trámites» sin contrato ni entregables, con cargo a gastos varios. Dice que sin él no salen los pagos de la dependencia y que mejor no preguntes.",
+    rule:"El pago que nadie quiere explicar es el que más explicaciones te va a costar.",
+    mit:"Ningún pago sin contrato, entregable y autorización de un área distinta a quien lo solicita.", ind:"% de pagos a intermediarios con contrato y entregable"},
+   {risk:"Operación ordinaria · subcontratación prevista", fr:"Perfil congruente", flag:false,
+    text:"Tu consultora gana un contrato público y subcontrata el levantamiento de campo con una encuestadora que trabaja contigo hace años. Estaba prevista en la propuesta, tiene personal y oficinas, y entrega sus bases de datos con cada factura.",
+    rule:"Subcontratar con quien tiene capacidad y entrega no es alerta: es operar."},
+   {risk:"Operación ordinaria · beca pagada por la empresa", fr:"Perfil congruente", flag:false,
+    text:"Una empresa paga la colegiatura de un empleado suyo que estudia una maestría en tu universidad. Te manda la carta de su programa de becas, el alumno está en su nómina y el pago llega cada semestre desde la cuenta de la empresa.",
+    rule:"Un tercero que paga con razón y papeles claros no necesita frenarse."}
+  ]},
+ turismo:{
+  name:"Turismo, entretenimiento y eventos", sub:"Hoteles, agencias de viaje, transporte, espectáculos, eventos e influencers",
+  kind:"no", oc:"quien lleve cumplimiento en tu empresa",
+  cases:[
+   {risk:"Huésped que habla por otras y guarda sus papeles", fr:"UIF T13 y T14 · IMPACTO360 TIP-28", flag:true,
+    text:"En recepción, un hombre paga en efectivo varias habitaciones por semanas para mujeres jóvenes que no traen identificación. Él guarda sus documentos, habla por ellas y cada noche suben muchos visitantes distintos.",
+    rule:"Quien habla por otras y guarda sus papeles no es un huésped más.",
+    mit:"Registro con identificación de cada huésped y protocolo de detección de posibles víctimas que recepción conozca.", ind:"% del personal de recepción capacitado en el protocolo de detección"},
+   {risk:"Paquetes pagados por terceros y reembolso a una empresa", fr:"IMPACTO360 TIP-26 (sin tipología UIF específica)", flag:true,
+    text:"En la agencia, un cliente compra paquetes caros a nombre de varias personas con depósitos en efectivo y tarjetas de terceros. A los pocos días cancela todo y pide que el reembolso se transfiera a una sola cuenta a nombre de una empresa.",
+    rule:"El reembolso regresa por donde entró el dinero, nunca por otra puerta.",
+    mit:"Reembolsos sólo al mismo medio y titular que pagó, con revisión de cancelaciones masivas.", ind:"% de reembolsos devueltos al mismo medio y titular de pago"},
+   {risk:"Patrocinador nuevo al que no le importan las métricas", fr:"UIF T18 · IMPACTO360 TIP-18", flag:true,
+    text:"Una empresa recién creada quiere patrocinar tu festival con mucho más de lo que pagan marcas grandes, sin pedir métricas ni menciones. Pide que parte del patrocinio se te regrese como «servicios de producción» facturados por otra empresa.",
+    rule:"Cuando al patrocinador no le importan los números, le importa otra cosa.",
+    mit:"Debida diligencia de patrocinadores: identidad, beneficiario final, origen del recurso y precio acorde al mercado.", ind:"% de patrocinios con expediente del patrocinador completo"},
+   {risk:"Bar concesionado que vende más de lo que cabe", fr:"UIF T17 y T18 · IMPACTO360 TIP-16", flag:true,
+    text:"En tu hotel, el concesionario del bar reporta ventas en efectivo muy por encima de lo que permite la ocupación: noches con pocos huéspedes registra caja de temporada alta, y pide que el hotel le pague su parte por transferencia.",
+    rule:"Si la caja vende más de lo que cabe en el lugar, el efectivo viene de otro lado.",
+    mit:"Conciliar ventas de concesionarios contra ocupación, afluencia y medios de pago, con arqueos sorpresa.", ind:"% de concesiones con ventas conciliadas contra ocupación"},
+   {risk:"Promotor que compra casi toda la taquilla en efectivo", fr:"UIF T18 · IMPACTO360 TIP-18", flag:true,
+    text:"Un promotor quiere comprar de golpe casi toda la taquilla de tu concierto con depósitos en efectivo de varias personas. No le interesan los mejores lugares y pide que, si el evento se cancela, el reembolso vaya a la cuenta de su empresa.",
+    rule:"Al que no le importa el asiento le importa el comprobante.",
+    mit:"Límites y revisión de compras masivas de boletos, con reembolso sólo al mismo medio y titular que pagó.", ind:"% de compras masivas de boletos revisadas antes de confirmarse"},
+   {risk:"Intermediario que compra boletos a la frontera para otros", fr:"UIF T13 y T14 · IMPACTO360 TIP-28", flag:true,
+    text:"En la terminal, el mismo intermediario compra cada semana decenas de boletos a la frontera para personas distintas, siempre en efectivo. Los pasajeros casi no hablan, no llevan equipaje y él les da sus identificaciones justo antes de abordar.",
+    rule:"Si uno paga y controla el viaje de muchos, mira a los que viajan.",
+    mit:"Protocolo en taquilla para compras repetidas a nombre de terceros hacia zonas de tránsito, con registro y escalamiento.", ind:"% de compras repetidas a nombre de terceros registradas y revisadas"},
+   {risk:"Operación ordinaria · convención de cada año", fr:"Perfil congruente", flag:false,
+    text:"Una empresa reserva cuarenta habitaciones para su convención anual, como cada año. Te manda la lista de huéspedes con su identificación, paga el anticipo desde su cuenta y pide que las facturas salgan a su nombre.",
+    rule:"Cliente recurrente, lista clara y pago desde su cuenta: atiéndelo bien."},
+   {risk:"Operación ordinaria · patrocinio con entregables", fr:"Perfil congruente", flag:false,
+    text:"Una marca de bebidas patrocina tu festival por tercer año. El monto va acorde a lo que pagó antes, el contrato detalla menciones y entregables, te pide reporte de asistencia y alcance, y paga desde su propia cuenta.",
+    rule:"El patrocinador que pide números y paga desde su cuenta es el que quieres."}
+  ]},
+ mixto:{
+  name:"Grupo mixto", sub:"Grupos que combinan entidades financieras, actividades vulnerables y empresas no reguladas",
+  kind:"mix", oc:"el área de cumplimiento del grupo",
+  cases:[
+   {risk:"El mismo cliente con dos historias", fr:"Financiera + inmobiliaria · IMPACTO360 TIP-12", flag:true,
+    text:"En la inmobiliaria del grupo, un comprador declara que es comerciante de granos. Al revisar, ves que en la SOFOM del mismo grupo declaró ser empleado con sueldo fijo, y ahora quiere pagar en efectivo el enganche de dos locales.",
+    rule:"Un cliente, una sola historia: si en cada empresa del grupo cuenta otra, ninguna es cierta.",
+    mit:"Consulta de expediente entre empresas del grupo antes de operar con clientes compartidos, como marque tu Manual.", ind:"% de clientes compartidos con información congruente entre empresas"},
+   {risk:"Rechazado en una empresa, bienvenido en otra", fr:"Financiera + agencia de autos · IMPACTO360 TIP-30", flag:true,
+    text:"La casa de cambio del grupo dejó de atender a un cliente por operaciones que no supo explicar. Una semana después llega a la agencia de autos del grupo a comprar una camioneta de contado y pide que nadie «de allá» se entere.",
+    rule:"El riesgo no se queda en la empresa que lo detectó: camina por todo el grupo.",
+    mit:"Lista interna de clientes con relación terminada por riesgo, consultable por todas las empresas del grupo.", ind:"% de clientes de alto riesgo consultados antes de operar en otra empresa del grupo"},
+   {risk:"«Ya lo identificó la otra empresa»", fr:"Financiera + joyería · IMPACTO360 TIP-14", flag:true,
+    text:"Una empresa extranjera quiere comprar joyería de alto valor. El vendedor dice que no hace falta pedirle nada: «ya es cliente del banco del grupo, allá la tienen identificada». Nadie sabe quién es el dueño real.",
+    rule:"Que otra empresa del grupo conozca al cliente no te quita la tarea: cada régimen pide su propio expediente.",
+    mit:"Cada empresa integra su expediente con su propio régimen, aunque se apoye en información del grupo.", ind:"% de expedientes completos en la empresa que opera, no en la de al lado"},
+   {risk:"El dinero da la vuelta dentro del grupo", fr:"Constructora + servicios + financiera · UIF T18 · IMPACTO360 TIP-12", flag:true,
+    text:"Un cliente paga a la empresa de servicios del grupo por una «consultoría» que nadie entregó. Días después pide que ese dinero se aplique como enganche en la constructora y que el resto se lo preste la SOFOM del grupo.",
+    rule:"Si el dinero da la vuelta dentro del grupo, el grupo es el que lo está lavando.",
+    mit:"Revisión de operaciones de un mismo cliente que cruzan varias empresas del grupo en poco tiempo.", ind:"% de clientes con operaciones cruzadas entre empresas revisados"},
+   {risk:"El socio que nadie ve en ninguna empresa", fr:"Arrendadora + inmobiliaria · UIF T09 · IMPACTO360 TIP-14", flag:true,
+    text:"Una sociedad renta maquinaria en la arrendadora del grupo y compra una bodega en la inmobiliaria. En cada empresa cambió de accionistas y apoderado, y en las dos llama la misma persona que no aparece en ningún papel.",
+    rule:"Tu pregunta no es «¿quién firma?», es «¿quién manda de verdad aquí?».",
+    mit:"Identificar al Beneficiario Controlador y cruzarlo entre las empresas del grupo que atienden a la misma sociedad.", ind:"% de personas morales compartidas con Beneficiario Controlador identificado y cruzado"},
+   {risk:"El proveedor del grupo que cobra de todos lados", fr:"Empresa no regulada + financiera · IMPACTO360 TIP-30", flag:true,
+    text:"La comercializadora del grupo, que no es sujeto obligado, paga a un proveedor nuevo que también cobra comisiones de la SOFOM por «traer clientes». Los clientes que trae pagan sus créditos con depósitos de terceros.",
+    rule:"La empresa que no reporta también puede ser la puerta de entrada del grupo.",
+    mit:"Debida diligencia de proveedores e intermediarios compartidos por las empresas del grupo.", ind:"% de proveedores e intermediarios compartidos con expediente y revisión de riesgo"},
+   {risk:"Operación ordinaria · cliente de años en dos empresas", fr:"Perfil congruente", flag:false,
+    text:"Un cliente con cuenta desde hace años en la financiera del grupo compra una casa en la inmobiliaria, con crédito hipotecario y enganche desde su propia cuenta. Lo que declaró coincide en las dos empresas.",
+    rule:"Cliente con una sola historia y pagos rastreables es menor riesgo: atiéndelo sin trabas."},
+   {risk:"Operación ordinaria · servicio entre empresas del grupo", fr:"Perfil congruente", flag:false,
+    text:"La empresa de servicios del grupo cobra cada mes a la agencia de autos por la nómina y la contabilidad, con contrato, factura y un monto que no cambia desde hace dos años.",
+    rule:"Un servicio intragrupo con contrato, factura y monto estable no es alerta."}
   ]}
 };
 
@@ -604,6 +927,36 @@ const CASE_OPTS = {
   {A:"Proceso las recargas: la empresa es cliente desde hace tiempo.",B:"Pido a la empresa la lista de trabajadores con su firma de recibido.",C:"Anoto las tarjetas y el patrón, y lo reporto a cumplimiento.",D:"Le digo a la empresa que está simulando nómina y cancelo el contrato."},
   {A:"Aplico los pagos como siempre: el crédito va al corriente.",B:"Le pido que actualice sus comprobantes de ingresos cada mes.",C:"Reporto la cuenta a cumplimiento porque maneja montos constantes.",D:"Le propongo pagar en efectivo en sucursal para ahorrar comisiones."},
   {A:"Aplico la recarga: es el titular y viene de su propia cuenta.",B:"Le pido que me explique para qué usa la tarjeta.",C:"Aviso a cumplimiento cada vez que recarga.",D:"Le bloqueo la tarjeta hasta que venga a sucursal."}
+ ],
+ fepub:[
+  {A:"Firmo: el acta de la empresa está en regla y el precio ya está pagado.",B:"Pido el acta constitutiva y la identificación del representante, y firmamos.",C:"Registro quién paga y quién está detrás de la empresa, y lo turno a cumplimiento.",D:"Le digo al representante que la operación huele a lavado y me niego a escriturarla."},
+  {A:"Otorgo el poder: el señor está en su derecho de nombrar a quien quiera.",B:"Le pido al señor que firme una carta diciendo que otorga el poder por voluntad propia.",C:"Hablo a solas con el otorgante, anoto lo que vi y lo escalo a cumplimiento.",D:"Le digo al acompañante que parece que se quiere aprovechar y suspendo el acto."},
+  {A:"Formalizo la sociedad: las dos empresas socias existen y traen sus papeles.",B:"Pido que me manden el acta de la empresa extranjera y, si llega, formalizo.",C:"Documento la estructura, pido saber quién manda al final y aviso a cumplimiento.",D:"Les digo que esa estructura sólo sirve para esconder dinero y no la formalizo."},
+  {A:"Formalizo el convenio: las partes están de acuerdo y eso es lo que importa.",B:"Pido una carta de la empresa que paga explicando por qué cubre la indemnización.",C:"Identifico a las partes y a quien paga, anoto lo que no cuadra y lo escalo.",D:"Les digo que el convenio parece simulado para mover dinero y me retiro del caso."},
+  {A:"Hago las transferencias: el dinero es del cliente y él decide en qué gastarlo.",B:"Le pido las facturas de marketing y consultoría antes de mandar cada pago.",C:"Detengo la dispersión, documento lo que no cuadra con el giro y lo escalo.",D:"Le digo al dueño que me está usando para lavar dinero y renuncio a la cuenta."},
+  {A:"Acepto: es un servicio corporativo común y el cliente paga bien por él.",B:"Acepto si el cliente firma una carta que me libere de lo que haga la sociedad.",C:"No presto el nombre; registro quién pidió qué y lo turno a cumplimiento.",D:"Le digo al cliente que eso es de prestanombres y que ya no lo atendemos."},
+  {A:"Integro el expediente de siempre y seguimos con la escritura.",B:"Pido estados de cuenta de seis meses más antes de agendar la firma.",C:"La reporto a cumplimiento porque es una compraventa de inmueble.",D:"Le digo que su operación requiere una revisión especial y la detengo."},
+  {A:"Integro su expediente como cliente y empiezo con la contabilidad.",B:"Le pido que me justifique cada depósito antes de hacer la declaración.",C:"La reporto a cumplimiento porque maneja ingresos en efectivo por consulta.",D:"Le pido que me deje manejar su cuenta para tener más control."}
+ ],
+ especial:[
+  {A:"Acepto el donativo: la causa necesita recursos y la fundación es seria.",B:"Pido a la fundación una carta que explique por qué hay que pagarle a esa empresa.",C:"Documento la condición y quién dona, y lo escalo antes de aceptar el donativo.",D:"Le digo a la fundación que eso parece financiamiento ilícito y la rechazo."},
+  {A:"Nada: son donativos chicos y la gente puede donar sin dar su nombre.",B:"Le pido a quien llamó que mande una carta con los datos de la cuenta a devolver.",C:"Sumo los depósitos, anoto la petición de devolución y lo reporto a cumplimiento.",D:"Le digo a quien llamó que eso es fraccionar dinero y que no devolvemos nada."},
+  {A:"Hago el traslado: es cliente de años y el servicio ya está pagado.",B:"Le pido que dé de alta el nuevo domicilio en su expediente y hago el traslado como siempre.",C:"Anoto origen, destino y valor, lo comparo con el expediente y aviso a cumplimiento.",D:"Le digo al cliente que ese efectivo es sospechoso y cancelo el servicio."},
+  {A:"Recibo las cajas: lo que el cliente guarde es asunto suyo.",B:"Le pido que me firme una carta donde diga que el contenido es legal.",C:"No lo dejo como valor desconocido; registro lo que sé y aviso a cumplimiento.",D:"Le digo que si no quiere decir qué trae es porque esconde algo y no le recibo nada."},
+  {A:"Sigo con el trámite: el valor lo declara el importador, no yo.",B:"Le pido al importador una carta que explique por qué paga un tercero.",C:"Documento la diferencia de valor y quién paga, y lo escalo a cumplimiento.",D:"Le digo al importador que está subvaluando para lavar dinero y abandono su trámite."},
+  {A:"Preparo el despacho: el cliente trae la mercancía y el pago completo.",B:"Pido la identificación del representante de la otra empresa y despacho.",C:"Anoto destino, propósito y quién factura, y lo turno a cumplimiento.",D:"Le digo que mandar oro así es contrabando y no le tomo el trámite."},
+  {A:"Registro los donativos y emito los recibos como cada mes.",B:"Pido a cada donante un comprobante de sus ingresos para el expediente.",C:"Reporto a cumplimiento todos los donativos que entren en el mes.",D:"Le pido a la asociación que mejor reciba los donativos en efectivo."},
+  {A:"Integro la documentación de siempre y sigo con el despacho.",B:"Le pido estados financieros dictaminados antes de despachar el lote.",C:"Reporto la importación a cumplimiento porque es maquinaria.",D:"Detengo el lote hasta que me explique por qué trae maquinaria."}
+ ],
+ virtual:[
+  {A:"Proceso cada venta: ninguna llega al monto de Aviso y el cliente está identificado.",B:"Le pido que junte sus ventas en una sola a la semana para no dar lata.",C:"Sumo sus operaciones del periodo, anoto el patrón y aviso a cumplimiento.",D:"Le digo que está partiendo operaciones para esconderse y le cierro la cuenta."},
+  {A:"La proceso: por un monto tan chico no vale la pena perder al cliente.",B:"Le dejo operar esta vez y le pido que suba su identificación después.",C:"No opero sin identificarlo; anoto su negativa y lo reporto a cumplimiento.",D:"Le digo que si no se identifica es porque trae dinero sucio y lo bloqueo."},
+  {A:"Libero el retiro: el cripto ya está en su cuenta y es suyo.",B:"Le pido una carta firmada donde declare que el cripto es suyo y de origen lícito.",C:"Reviso el historial de la wallet, anoto lo que dijo y lo escalo a cumplimiento.",D:"Le digo que su cripto parece de origen ilícito y le congelo el saldo."},
+  {A:"Nada: son pagos de personas y la cuenta está verificada.",B:"Le escribo a la titular para que me explique quiénes le mandan dinero.",C:"Documento remitentes, conversiones y la wallet destino, y lo reporto.",D:"Le aviso a la titular que su cuenta está siendo investigada por lavado."},
+  {A:"Libero el retiro: el saldo es del cliente y él elige a dónde lo manda.",B:"Le pido que me mande captura de su wallet para comprobar que es suya.",C:"Retengo el retiro, anoto la alerta de la dirección y aviso a cumplimiento.",D:"Le digo que su wallet está ligada a lavado y le cierro la cuenta hoy mismo."},
+  {A:"Nada: es un cliente corporativo que mueve mucho volumen y deja comisión.",B:"Le pido que actualice su actividad económica a compraventa de cripto.",C:"Documento lo que no cuadra con lo declarado y lo turno a cumplimiento.",D:"Le digo al representante que opera una casa de cambio pirata y lo doy de baja."},
+  {A:"Proceso la compra como cada quincena.",B:"Le pido que me compruebe sus ingresos antes de cada compra.",C:"Reporto a cumplimiento sus compras porque son recurrentes.",D:"Le congelo la cuenta hasta que explique para qué ahorra en cripto."},
+  {A:"Proceso la venta y deposito los pesos en su cuenta.",B:"Le pido que me explique para qué quiere los pesos antes de depositar.",C:"Reporto la venta a cumplimiento por ser un retiro a banco.",D:"Retengo el depósito hasta que venga a validar su identidad otra vez."}
  ],
  banca:[
   {A:"Le pago el retiro: la transferencia ya está abonada, pasó los filtros y es su dinero.",B:"Le pido la factura del servicio y, si la trae, le entrego el efectivo.",C:"Registro el patrón de entrada y salida y lo reporto de inmediato a cumplimiento.",D:"Le digo que esa transferencia parece de lavado y le bloqueo la cuenta."},
@@ -654,6 +1007,66 @@ const CASE_OPTS = {
   {A:"Dejo pasar la transferencia: el dinero ya está en su cuenta.",B:"Le pido al titular que explique de dónde vienen las transferencias.",C:"Detengo la salida conforme al procedimiento y lo escalo a cumplimiento.",D:"Le escribo al titular que sabemos que el dinero es robado."},
   {A:"Nada: sigue operando como siempre.",B:"Le pido que me justifique sus ingresos este mes.",C:"Reporto la cuenta a cumplimiento por usarla cada mes.",D:"Le bajo el límite de fondeo por precaución."},
   {A:"Nada: los pagos cuadran con su negocio.",B:"Le pido que me mande sus ventas diarias para cotejarlas.",C:"Reporto la cuenta a cumplimiento por recibir muchos pagos.",D:"Le suspendo la terminal hasta que explique el volumen."}
+ ],
+ farma:[
+  {A:"Le vendo: paga por adelantado, el químico se vende a la industria y un cliente nuevo que paga así no representa riesgo de cobranza.",B:"Le pido una carta firmada donde declare para qué usará el producto y, con eso, surto el pedido.",C:"Documento el pedido, el domicilio y la entrega en otro estado, y lo escalo a quien lleve cumplimiento.",D:"Le contesto que su pedido parece para fabricar droga y que no le vamos a vender nada."},
+  {A:"Aprovecho el precio: bajar el costo de los insumos es justo lo que me piden en compras y el proveedor ya mandó muestras.",B:"Le pido una carta que explique por qué el pago va a otra empresa y cierro la compra.",C:"Documento el precio, la cuenta de pago y la descripción, y lo escalo a cumplimiento antes de pagar.",D:"Le escribo al proveedor que su oferta parece contrabando o lavado y lo bloqueo del padrón."},
+  {A:"Surto los pedidos: la farmacia creció, paga completo y a tiempo, y a cobranza no le importa quién hace el depósito.",B:"Le pido al dueño que me mande sus ventas del mes y una carta que explique quiénes depositan.",C:"Documento el aumento y los depósitos de terceros, y lo escalo a quien lleve cumplimiento.",D:"Le digo al dueño que sus pagos parecen de lavado y le suspendo el crédito."},
+  {A:"Hago el pago a la cuenta nueva: es el proveedor de siempre, el correo trae su firma y el pago es urgente.",B:"Le respondo al mismo correo pidiendo la carta del banco con la cuenta nueva y, si llega, pago.",C:"No pago, documento el correo y lo escalo a cumplimiento; confirmo con el proveedor por su teléfono conocido.",D:"Le contesto al correo que sé que es un fraude y que lo vamos a denunciar."},
+  {A:"Acepto el proyecto: es un cliente nuevo que paga por adelantado y la maquila es justo el negocio que queremos crecer.",B:"Le pido que agregue al contrato a las empresas que pagan y sigo con la maquila.",C:"Documento quién contrata, quién paga y el objeto social, y lo escalo a cumplimiento.",D:"Le digo al cliente que su empresa parece fachada y rechazo el proyecto."},
+  {A:"Nada: es su cliente, lo conoce mejor que nadie y el cliente siempre paga completo.",B:"Le pido a mi compañero que complete el expediente esta semana y lo dejo en sus manos.",C:"Anoto fechas, pedidos y excepciones, y lo platico con quien lleve cumplimiento o con la dirección.",D:"Le reclamo frente al equipo que está encubriendo a un cliente sucio y lo acuso con el cliente."},
+  {A:"Surto el pedido como siempre: el aumento está explicado y documentado.",B:"Le pido al hospital sus estados financieros antes de surtir el pedido más grande.",C:"Reporto el pedido a cumplimiento por el aumento de volumen de medicamentos.",D:"Detengo el pedido hasta que el hospital justifique por escrito el aumento."},
+  {A:"Pago como siempre: el aumento viene del tipo de cambio y todo está documentado.",B:"Le pido al proveedor una carta que justifique el aumento de precio antes de pagar.",C:"Reporto la compra a cumplimiento por el cambio de precio de un proveedor extranjero.",D:"Suspendo las compras a ese proveedor hasta revisar todo su expediente de nuevo."}
+ ],
+ bebidas:[
+  {A:"Lo acepto: el capital nos hace falta para exportar y quién aparezca en el acta es un tema de su familia, no nuestro.",B:"Le pido una carta donde declare de dónde viene el dinero y firmo la entrada como socio.",C:"Documento la propuesta, el efectivo y el prestanombres, y lo escalo a la dirección y a cumplimiento.",D:"Le digo al inversionista que eso suena a lavado y que no lo queremos cerca de la empresa."},
+  {A:"Cierro la venta: paga más que nadie, es un mercado que queremos abrir y la forma de pago es asunto suyo.",B:"Le pido una carta que explique por qué pagan otras empresas y facturo lo que me pide.",C:"Documento el precio, los pagadores y la factura que pide, y lo escalo a cumplimiento antes de embarcar.",D:"Le escribo al importador que su operación parece lavado y cancelo el pedido."},
+  {A:"Le compro: la fruta está buena, el precio conviene y en temporada baja es difícil conseguir volumen.",B:"Le pido una carta de la otra persona autorizando el pago a su cuenta y le compro.",C:"Documento el volumen, la temporada y la cuenta de pago, y lo escalo a cumplimiento antes de pagar.",D:"Le digo al acopiador que su fruta parece de origen dudoso y lo saco de nuestros proveedores."},
+  {A:"Sigo surtiendo: el pedido se paga completo cada semana y cómo se organice con sus socios es asunto suyo.",B:"Le pido una lista de sus «socios» con copia de identificación y sigo facturando.",C:"Documento los pagos de terceros y lo que me dijo, y lo escalo a quien lleve cumplimiento.",D:"Le digo al distribuidor que sus pagos parecen de lavado y le devuelvo los depósitos."},
+  {A:"Hago la transferencia: es el director, lo estoy viendo en pantalla y me pidió discreción por la negociación.",B:"Le pido que me mande por mensaje una autorización firmada y hago el pago.",C:"No transfiero, documento la llamada y la cuenta, y lo escalo a la dirección por su canal de siempre y a cumplimiento.",D:"Le contesto al número que sé que es un fraude y que lo voy a denunciar."},
+  {A:"Pago como me pide: así se trabaja con cuadrillas en la cosecha y él se encarga de repartir a cada quien.",B:"Le pido una lista firmada con los nombres de los jornaleros y le deposito todo a él.",C:"Documento lo que vi y lo escalo a la dirección y a cumplimiento, sin comentarlo con el contratista.",D:"Le digo al contratista que eso parece trata y que se lleve a su gente del predio."},
+  {A:"Surto el pedido como cada diciembre: el cliente y el aumento son los de siempre.",B:"Le pido al cliente una carta que explique el aumento antes de surtir el pedido.",C:"Reporto el pedido a cumplimiento por ser mucho más grande que el de otros meses.",D:"Surto sólo una parte del pedido hasta que el cliente justifique el volumen."},
+  {A:"Le compro y le pago como siempre: el volumen cuadra con su plantación.",B:"Le pido constancia de sus hectáreas registradas antes de recibir la cosecha.",C:"Reporto la compra a cumplimiento por el volumen tan grande de agave.",D:"Le compro sólo una parte hasta que demuestre de dónde salió tanto agave."}
+ ],
+ comercio:[
+  {A:"Acepto: me ahorro la conversión, mi proveedor recibe su pago y el cliente se lleva su mercancía; todos ganan.",B:"Le pido una carta que explique la operación y la firma de mi proveedor, y lo hago así.",C:"Documento la propuesta y quién pagaría, y lo escalo a quien lleve cumplimiento sin cerrar el trato.",D:"Le digo al cliente que eso es lavado de dinero y le cancelo la línea de crédito."},
+  {A:"Compro el lote: el certificado dice lubricante y lo que haga después mi cliente con el producto no es mi problema.",B:"Le pido al proveedor un segundo certificado que confirme que es lubricante y compro.",C:"Documento la oferta y lo que me dijo del producto, y lo escalo a cumplimiento sin comprar.",D:"Le digo al proveedor que eso es huachicol y que lo voy a denunciar."},
+  {A:"Vendo: es un cliente que paga, el destino que declaró es Centroamérica y el transbordo es cosa de su naviera.",B:"Le pido una carta que declare el destino final y facturo a nombre de la otra empresa.",C:"Documento destino, transbordo y nombres, y lo escalo a cumplimiento antes de facturar.",D:"Le digo al cliente que está violando sanciones internacionales y lo bloqueo."},
+  {A:"Cotizo: son productos de venta comercial, el cliente paga por adelantado y no me toca preguntar para qué los quiere.",B:"Le pido una carta donde declare el uso de los equipos y envío la cotización.",C:"Documento la solicitud, el pago y los cambios de domicilio, y lo escalo a cumplimiento.",D:"Le contesto al intermediario que su pedido parece para uso militar y no le vendo."},
+  {A:"Nada: paga puntual y bien, y si los camiones salen vacíos es su decisión y su dinero.",B:"Le pido que me mande el acta de cada razón social nueva y sigo haciendo los viajes.",C:"Documento viajes, carga y pagadores, y lo escalo a quien lleve cumplimiento.",D:"Le digo al cliente que su operación parece fachada y le cancelo el servicio."},
+  {A:"Nada: el comprador conoce el mercado y si eligió a ese proveedor sus razones tendrá.",B:"Le pido al comprador que junte el expediente del proveedor y sigo con los pedidos.",C:"Documento precios, altas y pedidos, y lo platico con quien lleve cumplimiento o con la dirección.",D:"Le reclamo al comprador frente a todos que está haciendo negocio con el proveedor."},
+  {A:"Pago y libero el embarque como siempre: todo cuadra con lo anterior.",B:"Le pido al agente aduanal una carta que confirme la clasificación antes de pagar.",C:"Reporto la importación a cumplimiento por ser de un proveedor asiático.",D:"Retengo el embarque hasta revisar de nuevo al proveedor y al agente aduanal."},
+  {A:"Acepto el pago de la filial: está avisado, documentado y viene de su propia cuenta.",B:"Le pido además una carta del director del cliente autorizando el pago de la filial.",C:"Reporto a cumplimiento que un tercero pagará las facturas del cliente.",D:"Rechazo los pagos de la filial: sólo acepto pagos del cliente que factura."}
+ ],
+ gobierno:[
+  {A:"Lo acepto: el convenio ya está firmado, el funcionario conoce el proyecto y subcontratar es algo normal en estos estudios.",B:"Le pido al funcionario una carta que respalde la recomendación y subcontrato a las tres empresas.",C:"Documento la petición y las empresas, y lo escalo a la dirección y a cumplimiento antes de pagar.",D:"Le digo al funcionario que eso parece desvío de recursos y que no lo vamos a hacer."},
+  {A:"Contrato a la asesora: es parte de cómo funcionan estos contratos y el costo ya está dentro del margen.",B:"Le pido a la empresa del familiar un contrato y una propuesta de trabajo, y la contrato.",C:"Documento la sugerencia y la cuenta, y lo escalo a la dirección y a cumplimiento sin contratar.",D:"Le digo al funcionario que eso es corrupción y que lo voy a exhibir."},
+  {A:"Lo acepto: conoce la dependencia, trae contratos y la forma en que cobre su parte es decisión suya.",B:"Le pido una carta de no conflicto de interés y lo integro como socio.",C:"Documento la propuesta y el destino de los pagos, y lo escalo a la dirección y a cumplimiento.",D:"Le digo al exfuncionario que suena a tráfico de influencias y lo rechazo."},
+  {A:"Devuelvo la diferencia a la cuenta que me indican: el alumno se dio de baja y el dinero no es de la universidad.",B:"Le pido una carta firmada con la cuenta para la devolución y la hago.",C:"Documento el pago, la baja y la cuenta nueva, y lo escalo a cumplimiento antes de devolver.",D:"Le digo a la empresa que esto parece lavado y retengo todo el dinero."},
+  {A:"Devuelvo el dinero a la cuenta que me indican: no es nuestro y retenerlo sólo nos traería problemas.",B:"Le pido a quien llamó un oficio con la cuenta de devolución y hago la transferencia.",C:"No devuelvo nada, documento el depósito y la llamada, y lo escalo a cumplimiento.",D:"Le digo a quien llamó que sé que es un fraude y que lo voy a denunciar."},
+  {A:"Hago el pago: el gerente conoce la cuenta y sin esos pagos no cobramos a la dependencia.",B:"Le pido al gerente que el gestor mande una factura y, con eso, pago cada mes.",C:"Documento las solicitudes y los pagos, y lo platico con la dirección y con cumplimiento.",D:"Le digo al gerente frente a su equipo que está pagando sobornos."},
+  {A:"Pago a la encuestadora como siempre: está prevista, tiene capacidad y entrega.",B:"Le pido a la encuestadora una carta que confirme su personal antes de pagar.",C:"Reporto la subcontratación a cumplimiento por ser un contrato de gobierno.",D:"Suspendo la subcontratación hasta revisar de nuevo el expediente completo."},
+  {A:"Aplico el pago como cada semestre: la beca está documentada.",B:"Le pido a la empresa un contrato firmado del programa de becas antes de aplicar el pago.",C:"Reporto el pago a cumplimiento porque lo hace un tercero y no el alumno.",D:"Rechazo el pago: la colegiatura sólo la puede pagar el alumno."}
+ ],
+ turismo:[
+  {A:"Les doy las habitaciones: pagó por adelantado, el hotel necesita ocupación y quién visita a los huéspedes no es asunto de recepción.",B:"Le pido al señor que me deje copia de una identificación suya y registro todo a su nombre.",C:"Documento lo que vi y lo escalo a la gerencia y a cumplimiento, sin comentarlo con él.",D:"Le digo al señor que eso parece trata y que se vayan del hotel."},
+  {A:"Hago el reembolso a la cuenta que me pide: el cliente canceló dentro de la política y el dinero es suyo.",B:"Le pido una carta firmada que explique la cuenta de la empresa y hago el reembolso.",C:"Documento pagos, cancelación y cuenta de destino, y lo escalo a cumplimiento antes de reembolsar.",D:"Le digo al cliente que esto parece lavado y retengo todo el dinero."},
+  {A:"Lo acepto: es un patrocinio grande para el festival y lo que pague la otra empresa por producción es su asunto.",B:"Le pido al patrocinador un contrato con la otra empresa y acepto el patrocinio.",C:"Documento el monto, la empresa y el regreso que pide, y lo escalo a cumplimiento.",D:"Le digo al patrocinador que eso suena a lavado y lo rechazo."},
+  {A:"Le pago su parte como siempre: más ventas del bar son buenas noticias para el hotel y para la concesión.",B:"Le pido al concesionario sus cortes de caja firmados y le pago lo que reporta.",C:"Documento ventas contra ocupación y lo escalo a la gerencia y a cumplimiento.",D:"Le digo al concesionario que sus ventas parecen infladas y le cancelo la concesión."},
+  {A:"Le vendo la taquilla: es venta asegurada, el promotor paga completo y así nos quitamos riesgo del evento.",B:"Le pido una carta que explique quiénes depositan y le vendo los boletos.",C:"Documento los depósitos y la cuenta de reembolso, y lo escalo a cumplimiento antes de vender.",D:"Le digo al promotor que su compra parece lavado y no le vendo nada."},
+  {A:"Le vendo los boletos: paga completo, en efectivo es legal y a quién le compra boletos es asunto suyo.",B:"Le pido las identificaciones de los pasajeros y le vendo los boletos como siempre.",C:"Registro las compras y lo que vi, y lo escalo a mi jefe y a cumplimiento sin comentarlo con él.",D:"Le digo al intermediario que parece tráfico de personas y no le vendo nada."},
+  {A:"Confirmo la reserva como cada año: todo está en orden.",B:"Le pido a la empresa sus estados financieros antes de confirmar la reserva.",C:"Reporto la reserva a cumplimiento por ser de muchas habitaciones.",D:"Pido el pago total por adelantado antes de apartar cualquier habitación."},
+  {A:"Firmo el patrocinio como cada año: está claro y documentado.",B:"Le pido a la marca una carta del origen de sus recursos antes de firmar.",C:"Reporto el patrocinio a cumplimiento por ser de una marca de bebidas.",D:"Congelo el patrocinio hasta revisar de nuevo a la marca completa."}
+ ],
+ mixto:[
+  {A:"Recibo el enganche: aquí declaró que es comerciante y eso es lo que cuenta.",B:"Le pido que me explique por qué en la SOFOM dijo otra cosa, lo anoto en su expediente y sigo.",C:"Anoto las dos versiones y lo escalo a cumplimiento del grupo antes de recibir.",D:"Le digo que mintió en la SOFOM y que no le vendemos nada en el grupo."},
+  {A:"Le vendo la camioneta: aquí no tenemos ningún problema con él y paga de contado.",B:"Le pido comprobante de ingresos y una identificación y, si los trae, cierro la venta.",C:"Registro lo que pidió y lo escalo a cumplimiento del grupo antes de venderle.",D:"Le digo que sé que la casa de cambio lo dio de baja y no le vendo."},
+  {A:"Le vendo: el banco del grupo ya lo revisó y confío en su expediente.",B:"Le pido al banco del grupo una copia del expediente y, si me la mandan, le vendo.",C:"Integro el expediente de la joyería, pido al dueño real y lo escalo si no aparece.",D:"Le digo que su empresa parece fachada y cancelo la venta."},
+  {A:"Aplico el enganche y turno el crédito: todo se queda en casa.",B:"Le pido la factura de la consultoría y el contrato y, si los trae, aplico el enganche.",C:"Documento el recorrido del dinero entre empresas y lo escalo a cumplimiento del grupo.",D:"Le digo que está usando al grupo para lavar y cancelo todo."},
+  {A:"Atiendo a la sociedad: en cada empresa trae sus papeles en regla.",B:"Le pido al apoderado una carta con el nombre del dueño y la guardo.",C:"Anoto los cambios y a la persona que llama, y lo escalo a cumplimiento del grupo.",D:"Le digo a quien llama que sabemos que él manda y que no lo atenderemos."},
+  {A:"Pago al proveedor: aquí no somos sujeto obligado y la SOFOM tiene sus propios controles.",B:"Le pido al proveedor su constancia fiscal y su contrato con la SOFOM, y sigo pagándole.",C:"Documento su doble papel y los pagos de terceros, y lo escalo a cumplimiento del grupo.",D:"Le aviso al proveedor que sus clientes están bajo investigación."},
+  {A:"Atiendo la compra como cualquier otra, con su expediente de la inmobiliaria.",B:"Le pido estados de cuenta de un año y una carta de su empleador antes de avanzar con la compra.",C:"Lo escalo a cumplimiento del grupo porque es cliente de dos empresas.",D:"Le pido que mejor compre sin crédito para no mezclar empresas."},
+  {A:"Pago la factura del mes como siempre.",B:"Pido que me justifiquen el monto de la nómina cada mes antes de pagar.",C:"Reporto el pago a cumplimiento porque es entre empresas del grupo.",D:"Suspendo los pagos intragrupo hasta que auditoría los revise."}
  ]
 };
 
@@ -678,7 +1091,13 @@ const LEADER_Q = [
   read:["El canal existe y funciona: la capacitación puede apoyarse en él.","Un canal que no se usa es señal de miedo o de desconocimiento. Hay que enseñarlo con casos.","Aunque tu gente vea el foco rojo, no tiene a dónde llevarlo."]}
 ];
 
-const AREAS = ["Dirección u órgano de administración","Ventas y atención a clientes","Caja, tesorería y cobranza","Operaciones y expedientes","Crédito y originación","Cumplimiento","Auditoría o control interno","Otra área"];
+const DOORS = [
+ ["sf","Sector financiero","Bancos, crédito, valores, pagos y fintech","Supervisado por la CNBV: tu programa de capacitación ya es obligatorio."],
+ ["av","Actividades vulnerables","Los giros del artículo 17 de la LFPIORPI","Tu primer año de capacitación obligatoria es 2027."],
+ ["no","No soy sujeto obligado","Empresas que no reportan, pero pueden ser usadas","No reportas a la autoridad, pero te pueden usar para lavar dinero, y eso cuesta cuentas bancarias, clientes y reputación. Revisa también que ninguna de tus operaciones caiga en el artículo 17."],
+ ["mix","Grupo mixto","Tu grupo combina varios de los anteriores","Situaciones en las que el riesgo cruza de una empresa del grupo a otra. Es el corazón de «sin fronteras»."]
+];
+const AREAS = ["Dirección u órgano de administración","Ventas y atención a clientes","Caja, tesorería y cobranza","Operaciones y expedientes","Crédito y originación","Compras y proveedores","Cumplimiento","Auditoría o control interno","Otra área"];
 const LEVELS = ["Operativo","Mando medio","Directivo"];
 const AREA_MUST = {
  "Dirección u órgano de administración":"Decidir con base en el riesgo: no rechazar negocio sano, no alertar al cliente y asignar recursos al control.",
@@ -686,6 +1105,7 @@ const AREA_MUST = {
  "Caja, tesorería y cobranza":"Detectar efectivo, pagos de terceros y fraccionamiento en el momento del cobro.",
  "Operaciones y expedientes":"Integrar origen de fondos y beneficiario controlador antes del acto, no después.",
  "Crédito y originación":"Revisar propósito, garantía y origen de los pagos, incluidos los anticipados.",
+ "Compras y proveedores":"Saber a quién le compras y a quién le pagas: proveedor real, cuenta propia y precio que cuadre con el mercado.",
  "Cumplimiento":"Analizar, documentar y decidir con oportunidad; convertir cada caso en aprendizaje para las áreas.",
  "Auditoría o control interno":"Evaluar si los controles funcionan con indicadores de efectividad, no sólo con evidencia de existencia.",
  "Otra área":"Saber qué le toca ver, a quién avisar y qué no hacer frente al cliente."
@@ -695,7 +1115,7 @@ const AREA_MUST = {
 const KEY="pulso360_v1";
 let S = Object.assign(fresh(), load()||{}); S.tq=S.tq||{};
 if(S.sector&&!SECTORS[S.sector]){S.sector=null;S.people=[];S.run=null;S.view="inicio"} /* sector retirado (p. ej. «fin» antes de la v4) */
-function fresh(){return {mode:"teoria", t:0, tq:{}, sector:null, org:"", leader:{pred:70}, people:[], view:"inicio", run:null, confirmReset:false}}
+function fresh(){return {mode:"teoria", t:0, tq:{}, sector:null, door:null, org:"", leader:{pred:70}, people:[], view:"inicio", run:null, confirmReset:false}}
 function load(){try{const r=localStorage.getItem(KEY);return r?JSON.parse(r):null}catch(e){return null}}
 function save(){try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}}
 function set(p){Object.assign(S,p);save();render()}
@@ -720,8 +1140,11 @@ function render(){
 
 function vInicio(){
   const btn=([k,s])=>`<button class="sector" data-sector="${k}" aria-pressed="${S.sector===k}"><span class="dot"></span><span><span class="t">${s.name}</span><br><span class="s">${s.sub}</span></span></button>`;
-  const grp=(kind,lbl)=>`<p class="sector-grp">${lbl}</p>`+Object.entries(SECTORS).filter(([k,s])=>s.kind===kind).map(btn).join("");
-  const secs=grp("av","Actividades vulnerables")+grp("sf","Sector financiero");
+  const door=S.door||(S.sector&&SECTORS[S.sector]?SECTORS[S.sector].kind:null);
+  const doors=DOORS.map(([k,t,s])=>`<button class="door" data-door="${k}" aria-pressed="${door===k}"><span class="t">${t}</span><span class="s">${s}</span></button>`).join("");
+  const dnote=door?DOORS.find(d=>d[0]===door)[3]:"";
+  const list=door&&door!=="mix"?`<p class="sector-grp">Ahora elige tu giro</p>`+Object.entries(SECTORS).filter(([k,s])=>s.kind===door).map(btn).join(""):"";
+  const secs=`<div class="doors">${doors}</div>${dnote?`<p class="muted small door-note">${dnote}</p>`:""}${list}`;
   return `<div class="hero">
     <div>
       <p class="eyebrow">Diagnóstico de sensibilidad al riesgo</p>
@@ -1119,6 +1542,7 @@ function bind(){
   const ex=$("#exRep"); if(ex) ex.onclick=()=>loadDemo(true);
   const ex2=$("#exRep2"); if(ex2) ex2.onclick=()=>loadDemo(true);
   document.querySelectorAll("[data-go2]").forEach(b=>b.onclick=()=>set({view:b.dataset.go2}));
+  document.querySelectorAll("[data-door]").forEach(b=>b.onclick=()=>{const d=b.dataset.door;S.door=d;const o=$("#org");if(o)S.org=o.value;if(d==="mix")S.sector="mixto";else if(S.sector&&SECTORS[S.sector].kind!==d)S.sector=null;save();render()});
   document.querySelectorAll("[data-sector]").forEach(b=>b.onclick=()=>{S.sector=b.dataset.sector;const o=$("#org");if(o)S.org=o.value;save();render()});
   const org=$("#org"); if(org) org.oninput=()=>{S.org=org.value;save()};
   const st=$("#start"); if(st) st.onclick=()=>set({view:"lider"});
