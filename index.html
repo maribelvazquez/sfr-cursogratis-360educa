@@ -143,6 +143,7 @@ select,input[type=text]{font:inherit;padding:11px 12px;border-radius:10px;border
 .howto div{display:flex;gap:12px;align-items:flex-start}
 .howto b{font-family:var(--display);background:var(--durazno);color:var(--negro);border-radius:8px;min-width:30px;height:30px;display:grid;place-items:center;font-size:14px}
 .sectors{display:grid;gap:10px}
+.sector-grp{font-size:12.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-3);margin:6px 0 -2px}
 .sector{display:flex;gap:12px;align-items:flex-start;text-align:left;background:var(--surface);border:1.5px solid var(--line);border-radius:12px;padding:14px 16px;color:var(--ink)}
 .sector:hover{border-color:var(--durazno)}
 .sector[aria-pressed="true"]{border-color:var(--durazno-letra);background:var(--accent-soft)}
@@ -394,40 +395,180 @@ const SECTORS = {
     text:"El titular de una tarjeta la recarga una vez al mes, por montos bajos, desde su propia cuenta bancaria.",
     rule:"Recarga desde cuenta bancaria, con límites bajos y rastreables, es menor riesgo."}
   ]},
- fin:{
-  name:"Entidades financieras", sub:"Bancos, SOFOM, casas de bolsa, transmisores, centros cambiarios y demás supervisadas",
+ banca:{
+  name:"Banca", sub:"Banca múltiple y de desarrollo, banca digital · Disposiciones del art. 115 de la LIC",
   kind:"sf", oc:"el Oficial de Cumplimiento",
   cases:[
-   {risk:"Fraccionamiento y cuenta de paso", fr:"Perfil transaccional", flag:true,
-    text:"Un cliente que declaró ser empleado con sueldo modesto recibe en un mes decenas de depósitos en efectivo por montos parecidos, en distintas sucursales, y los transfiere al extranjero al día siguiente.",
+   {risk:"Cuenta nueva que sólo sirve de paso", fr:"UIF T16 · IMPACTO360 TIP-02", flag:true,
+    text:"Un joven abrió hace tres semanas una cuenta básica con depósito mínimo. Hoy le llega una transferencia internacional con el concepto «pago de factura por servicios», veinte veces lo que declaró ganar al mes, y en ventanilla pide retirarla toda en efectivo.",
     rule:"Si el dinero sólo pasa por la cuenta, la cuenta es el instrumento.",
-    mit:"Alerta de perfil transaccional que cruza efectivo fraccionado con salida inmediata.", ind:"% de alertas de fraccionamiento dictaminadas en plazo"},
-   {risk:"Empresa sin sustancia económica", fr:"Factor cliente", flag:true,
-    text:"Una empresa recién constituida abre cuenta. El apoderado no sabe explicar el giro, el domicilio es una oficina virtual y espera recibir millones desde el primer mes.",
-    rule:"Si nadie puede explicar el negocio, el negocio no es el que te dicen.",
-    mit:"Visita o validación de sustancia económica antes de activar productos de alto flujo.", ind:"% de personas morales de alto riesgo con sustancia verificada"},
-   {risk:"Pregunta por el umbral de reporte", fr:"Factor cliente", flag:true,
-    text:"Al abrir una inversión, el cliente pregunta a partir de qué monto «se avisa a la autoridad» y pide que su operación quede por debajo.",
-    rule:"Quien pregunta cómo no ser visto ya te dijo algo.",
-    mit:"Reporte interno inmediato de conductas de evasión, con registro de lo dicho.", ind:"% de reportes internos por conducta atendidos en plazo"},
-   {risk:"Coincidencia con Lista de Personas Bloqueadas", fr:"Listas", flag:true,
-    text:"Al capturar a un nuevo cliente, el sistema marca una coincidencia parcial de nombre y fecha de nacimiento con la Lista de Personas Bloqueadas. El cliente tiene prisa.",
-    rule:"Una coincidencia no se resuelve en la ventanilla.",
-    mit:"Suspensión de la captura y escalamiento a cumplimiento para validar la coincidencia.", ind:"Tiempo de resolución de coincidencias en listas"},
-   {risk:"PEP con movimientos fuera de perfil", fr:"Factor cliente", flag:true,
-    text:"Un funcionario público de alto nivel abre cuenta a nombre de un familiar. Los depósitos no corresponden a la actividad declarada del familiar.",
+    mit:"Alerta de cuenta nueva con entrada atípica y salida inmediata, escalada a cumplimiento el mismo día.", ind:"% de cuentas nuevas con patrón de paso analizadas en plazo"},
+   {risk:"Depósitos partidos entre sucursales", fr:"UIF T17 · IMPACTO360 TIP-01", flag:true,
+    text:"Una persona deposita efectivo a una cuenta que no es suya, por un monto casi idéntico al de ayer. En el sistema ves que esta semana hizo lo mismo en otras dos sucursales, siempre a la misma cuenta.",
+    rule:"Muchos depósitos parecidos no son casualidad: son una cifra partida.",
+    mit:"Regla de monitoreo que suma el efectivo por cuenta destino entre sucursales y días.", ind:"Tiempo de detección de fraccionamiento entre sucursales"},
+   {risk:"Empresa nueva que se ostenta como financiera", fr:"UIF T01 · IMPACTO360 TIP-24", flag:true,
+    text:"Una empresa de dos meses, con capital mínimo, declaró «servicios administrativos». Su cuenta recibe cientos de depósitos chicos de personas con el concepto «abono préstamo» y cada día sale casi todo al extranjero.",
+    rule:"Si lo que ves no es lo que el cliente declaró, créele a lo que ves.",
+    mit:"Revisión de congruencia entre actividad declarada y comportamiento de la cuenta en sus primeros meses.", ind:"% de personas morales nuevas con revisión de congruencia documentada"},
+   {risk:"Familiar de un funcionario con depósitos fuera de perfil", fr:"UIF T08 · IMPACTO360 TIP-15", flag:true,
+    text:"La hermana de un secretario de gobierno estatal en funciones abre una cuenta. Declaró ser maestra, pero los depósitos no cuadran con ese ingreso, y quien llama para dar instrucciones es él.",
     rule:"El riesgo del cargo no se queda en el cargo: viaja con la familia.",
-    mit:"Debida diligencia reforzada y aprobación de nivel directivo para PEP y sus relacionados.", ind:"% de PEP y relacionados con debida diligencia reforzada vigente"},
-   {risk:"Terceros sin relación que fondean la cuenta", fr:"Factor producto/canal", flag:true,
-    text:"La cuenta de un comerciante recibe transferencias de decenas de personas sin relación comercial aparente, y el saldo se retira casi completo en efectivo.",
-    rule:"Si el dinero sólo pasa por la cuenta, la cuenta es el instrumento.",
-    mit:"Monitoreo de concentración de terceros y retiro inmediato en efectivo.", ind:"% de cuentas con patrón de embudo revisadas"},
-   {risk:"Operación ordinaria · nómina", fr:"Perfil transaccional", flag:false,
+    mit:"Identificar a los relacionados con personas políticamente expuestas y aplicarles la debida diligencia que marque tu Manual.", ind:"% de relacionados con PEP identificados y con expediente reforzado"},
+   {risk:"Cuenta embudo con dispersión el mismo día", fr:"UIF T13 y T14 · IMPACTO360 TIP-06 y TIP-28", flag:true,
+    text:"La cuenta personal de una mujer de 22 años recibe a diario transferencias de decenas de personas, con conceptos como «hospedaje» o «servicio». En pocas horas todo sale a tres cuentas en una ciudad fronteriza.",
+    rule:"Muchos entran, uno concentra, muchos salen: eso es un embudo, no un negocio.",
+    mit:"Monitoreo de concentración de originadores sin relación y dispersión en el mismo día.", ind:"% de cuentas con patrón de embudo analizadas en plazo"},
+   {risk:"Donativos en efectivo que terminan en una inmobiliaria", fr:"UIF T06 · IMPACTO360 TIP-27", flag:true,
+    text:"Una asociación religiosa pequeña deposita cada semana donativos en efectivo muy por encima de lo que su tamaño explica, y transfiere casi todo a una inmobiliaria cuyo socio es el mismo representante.",
+    rule:"Una causa noble también necesita un origen que se pueda explicar.",
+    mit:"Expediente de la asociación con fuente de sus donativos y destino de los recursos, revisado contra su objeto.", ind:"% de asociaciones con origen y destino de recursos documentados"},
+   {risk:"Operación ordinaria · nómina", fr:"Perfil congruente", flag:false,
     text:"Un cliente recibe su nómina cada quincena y paga sus servicios por domiciliación. Sus movimientos son los mismos desde hace años.",
     rule:"Perfil estable y rastreable: no lo castigues."},
-   {risk:"Operación ordinaria · temporada alta", fr:"Perfil transaccional", flag:false,
+   {risk:"Operación ordinaria · temporada alta", fr:"Perfil congruente", flag:false,
     text:"Una empresa con diez años de relación aumenta sus flujos en diciembre, como cada año, y el aumento coincide con sus estados financieros.",
     rule:"Un cambio explicado y recurrente no es una alerta: conocer al cliente es también saber cuándo no preocuparse."}
+  ]},
+ crednb:{
+  name:"Crédito no bancario y ahorro popular", sub:"SOFOM, SOFIPO, sociedades cooperativas de ahorro y préstamo, uniones de crédito",
+  kind:"sf", oc:"el Oficial de Cumplimiento",
+  cases:[
+   {risk:"Liquidación anticipada con efectivo de terceros", fr:"UIF T17 · IMPACTO360 TIP-01", flag:true,
+    text:"Un acreditado liquida a los tres meses un crédito que tenía a tres años. El dinero llega en varios depósitos en efectivo hechos por personas distintas. No pide descuento ni pregunta por los intereses.",
+    rule:"A quien no le importa cuánto le cobras de interés, le importa otra cosa.",
+    mit:"Documentar el origen de los recursos con que se liquida un crédito, no sólo con que se otorgó.", ind:"% de liquidaciones anticipadas con origen de recursos documentado"},
+   {risk:"Expediente demasiado perfecto", fr:"IMPACTO360 TIP-23 (sin tipología UIF específica)", flag:true,
+    text:"Llega en línea una solicitud de crédito empresarial impecable: estados financieros sin un solo altibajo, un sitio web creado el mes pasado y una videollamada de validación en la que el solicitante casi no parpadea.",
+    rule:"El expediente perfecto es la alerta.",
+    mit:"Verificar que el negocio existe (proveedores, clientes y domicilio comprobables) antes de dispersar.", ind:"% de créditos remotos con verificación de existencia antes de dispersar"},
+   {risk:"El crédito se desvía a un tercero desconocido", fr:"UIF T03 y T18 · IMPACTO360 TIP-19", flag:true,
+    text:"Un productor con crédito de avío pide que el dinero se deposite directo a un proveedor que no aparece en su plan de siembra. Es fuera de temporada y el proveedor no tiene relación con el campo.",
+    rule:"Si el dinero se aparta del destino del crédito, pregunta a dónde va de verdad.",
+    mit:"Dispersar sólo a proveedores identificados y congruentes con el destino del crédito.", ind:"% de dispersiones a terceros con proveedor identificado"},
+   {risk:"Socia que no sabe de quién es el dinero", fr:"UIF T17 y T18 · IMPACTO360 TIP-02", flag:true,
+    text:"En la cuenta de ahorro de una socia jubilada entran cada semana depósitos de personas que ella dice no conocer. Retira todo en efectivo el mismo día: «es para un sobrino que me lo pidió».",
+    rule:"Cuando el titular no sabe de quién es el dinero, el dinero no es suyo.",
+    mit:"Alerta de depósitos de terceros sin relación con retiro inmediato en efectivo.", ind:"% de cuentas de ahorro con patrón de paso analizadas en plazo"},
+   {risk:"Préstamo garantizado con su propio efectivo", fr:"Tipología clásica · préstamo de regreso", flag:true,
+    text:"Un solicitante deja en garantía un depósito en efectivo por el mismo monto del crédito que pide. No le interesa la tasa; lo que quiere es un contrato de crédito a su nombre.",
+    rule:"Nadie pide prestado lo que ya tiene, salvo que necesite explicar de dónde lo sacó.",
+    mit:"Revisar el propósito de todo crédito garantizado con efectivo del propio acreditado.", ind:"% de créditos con garantía líquida con propósito documentado"},
+   {risk:"Garantía en el extranjero y prisa por el dinero", fr:"UIF T09 · IMPACTO360 TIP-14", flag:true,
+    text:"Un solicitante ofrece como garantía un inmueble en otro país, a nombre de una sociedad de la que no explica su relación. No le importan la tasa ni las condiciones: sólo quiere el dinero esta semana.",
+    rule:"A quien no le importa cuánto le cobras de interés, le importa otra cosa.",
+    mit:"Verificar la garantía, su titular real y el propósito del crédito antes de otorgarlo.", ind:"% de créditos con garantía y propósito verificados"},
+   {risk:"Operación ordinaria · crédito domiciliado", fr:"Perfil congruente", flag:false,
+    text:"Un acreditado paga su crédito en mensualidades por domiciliación desde su cuenta de nómina, sin atrasos desde hace dos años.",
+    rule:"Crédito con pagos rastreables y constantes es menor riesgo."},
+   {risk:"Operación ordinaria · pago al cierre de cosecha", fr:"Perfil congruente", flag:false,
+    text:"Un productor paga su crédito de avío al terminar la cosecha, con una transferencia desde la cuenta donde le deposita el comprador de su grano.",
+    rule:"La temporada explicada no es una alerta: conocer al cliente es saber cuándo no preocuparse."}
+  ]},
+ valores:{
+  name:"Valores e inversión", sub:"Casas de bolsa, fondos de inversión y sus distribuidoras, asesores en inversiones",
+  kind:"sf", oc:"el Oficial de Cumplimiento",
+  cases:[
+   {risk:"No se sabe quién manda en la sociedad", fr:"UIF T09 · IMPACTO360 TIP-14", flag:true,
+    text:"Abre contrato una sociedad extranjera cuyo único accionista es otra sociedad extranjera. El apoderado mexicano no sabe, o no quiere decir, quién está detrás, y pide invertir todo en cuanto se abra.",
+    rule:"El acta constitutiva está completa. La pregunta es quién manda.",
+    mit:"Identificar al Beneficiario Controlador persona física antes de operar el contrato.", ind:"% de contratos de personas morales con Beneficiario Controlador identificado antes de operar"},
+   {risk:"Entra, no invierte y sale a un tercero", fr:"UIF T18 · IMPACTO360 TIP-12", flag:true,
+    text:"Un cliente deposita una suma alta, compra y vende el mismo día con pérdida, y pide transferir todo a la cuenta de una empresa que no tiene nada que ver con él.",
+    rule:"Al que no le importa ganar, le importa mover.",
+    mit:"Alerta de depósitos que salen sin inversión real o con pérdida sin lógica, sobre todo hacia terceros.", ind:"% de solicitudes de retiro a terceros analizadas antes de ejecutarse"},
+   {risk:"Exfuncionario que ya no aparece como PEP", fr:"UIF T10 · IMPACTO360 TIP-15", flag:true,
+    text:"Un cliente de banca patrimonial dejó hace un año un cargo alto en gobierno. En el sistema ya no aparece marcado como persona políticamente expuesta, y hoy aporta una cantidad que su sueldo público no explica.",
+    rule:"El riesgo no termina cuando termina el cargo.",
+    mit:"Revisar con criterio de riesgo antes de desmarcar a un exfuncionario, no sólo por la fecha de salida del cargo.", ind:"% de desmarcas de PEP con revisión documentada"},
+   {risk:"Pregunta por el umbral de aviso", fr:"UIF T17 · IMPACTO360 TIP-01", flag:true,
+    text:"Al abrir su contrato, el cliente pregunta a partir de qué monto «se avisa a la autoridad» y pide dividir su aportación en varios depósitos más chicos.",
+    rule:"Quien pregunta cómo no ser visto ya te dijo algo.",
+    mit:"Reporte interno inmediato de conductas de evasión, con registro de lo que dijo el cliente.", ind:"% de reportes internos por conducta atendidos en plazo"},
+   {risk:"Despacho que invierte dinero de clientes sin nombre", fr:"UIF T05 · IMPACTO360 TIP-13", flag:true,
+    text:"Un despacho de abogados abre un contrato a su nombre para «invertir fondos de clientes». No quiere decir quiénes son esos clientes: «es secreto profesional».",
+    rule:"La cuenta es del despacho; el dinero, de alguien que nunca aparece.",
+    mit:"Identificar a los dueños reales de los recursos que se invierten por cuenta de terceros.", ind:"% de contratos de terceros con dueños de los recursos identificados"},
+   {risk:"Excepciones que siempre llevan el mismo nombre", fr:"IMPACTO360 TIP-30 (riesgo de control)", flag:true,
+    text:"El promotor con mejores resultados te pide, otra vez, que no le actualices el expediente a sus tres clientes más grandes «porque se molestan y se van a la competencia».",
+    rule:"Una excepción que se repite con el mismo nombre ya no es excepción.",
+    mit:"Ninguna excepción al expediente sin autorización registrada; revisar quién las concentra.", ind:"Excepciones al expediente por promotor y por cliente"},
+   {risk:"Operación ordinaria · ahorro domiciliado", fr:"Perfil congruente", flag:false,
+    text:"Una clienta invierte cada mes la misma cantidad en un fondo, por domiciliación desde su cuenta de nómina, desde hace cuatro años.",
+    rule:"Ahorro constante y rastreable es menor riesgo: no lo frenes."},
+   {risk:"Operación ordinaria · retiro para comprar casa", fr:"Perfil congruente", flag:false,
+    text:"Un cliente de muchos años vende su posición y transfiere el dinero a su propia cuenta bancaria. Te comenta que es el enganche de una casa.",
+    rule:"Retiro a su propia cuenta, con motivo explicado, es menor riesgo."}
+  ]},
+ pagos:{
+  name:"Pagos y cambios", sub:"Transmisores de dinero, centros cambiarios y casas de cambio",
+  kind:"sf", oc:"el Oficial de Cumplimiento",
+  cases:[
+   {risk:"Muchos remitentes, un solo beneficiario", fr:"UIF T17 · IMPACTO360 TIP-01", flag:true,
+    text:"En una semana, doce personas distintas envían dinero a la misma persona en otra ciudad, por montos parecidos y siempre un poco abajo del mismo límite. Varias llegaron juntas en el mismo coche.",
+    rule:"Muchos envíos parecidos no son casualidad: son una cifra partida.",
+    mit:"Regla que agrupa envíos por beneficiario, sin importar quién los manda.", ind:"Tiempo de detección de envíos fraccionados hacia un mismo beneficiario"},
+   {risk:"Cambio de dólares partido en varias operaciones", fr:"UIF T17 · IMPACTO360 TIP-01", flag:true,
+    text:"Un cliente llega casi todos los días a cambiar dólares en efectivo, en billetes de baja denominación, y pide que la operación se parta en varias para que «no le salgan tantos papeles».",
+    rule:"Si el cliente te pide partir la operación, ya te dijo por qué.",
+    mit:"Acumular las operaciones del mismo cliente en el periodo y escalar la estructuración.", ind:"% de clientes recurrentes con operaciones acumuladas revisadas"},
+   {risk:"Envío al extranjero sin datos del beneficiario", fr:"UIF T17 · IMPACTO360 TIP-07", flag:true,
+    text:"Te piden un envío chico a otro país. El cliente no sabe el nombre completo del beneficiario, sólo trae un número de cuenta, y dice que «así se lo pidieron».",
+    rule:"La información del beneficiario no se pierde por error: se pierde a propósito.",
+    mit:"Recabar los datos completos de quien envía y de quien recibe antes de enviar, como marque tu Manual.", ind:"% de envíos internacionales con datos completos de ordenante y beneficiario"},
+   {risk:"Alguien contesta por el cliente", fr:"UIF T13 y T14 · IMPACTO360 TIP-28", flag:true,
+    text:"Una persona envía cada semana dinero a beneficiarios distintos en una ciudad de la frontera sur. Siempre la acompaña alguien que habla por ella, trae su identificación y le dice qué contestar.",
+    rule:"Si alguien contesta por el cliente, pregúntate quién es el cliente.",
+    mit:"Registrar al acompañante que controla la operación y escalar el patrón de envíos a zonas de tránsito.", ind:"% de alertas de envíos a corredores de tránsito analizadas en plazo"},
+   {risk:"Coincidencia con la Lista de Personas Bloqueadas", fr:"Listas", flag:true,
+    text:"Al pagar un envío, el sistema marca una coincidencia parcial del nombre y la fecha de nacimiento del beneficiario con la Lista de Personas Bloqueadas. El beneficiario trae identificación y tiene prisa.",
+    rule:"Una coincidencia no se resuelve en la ventanilla.",
+    mit:"Detener el pago y escalar a cumplimiento para validar la coincidencia.", ind:"Tiempo de resolución de coincidencias en listas"},
+   {risk:"La compañera que atiende a los mismos por fuera de turno", fr:"IMPACTO360 TIP-30 (riesgo de control)", flag:true,
+    text:"Una compañera atiende siempre al mismo grupo de clientes, casi siempre después de su horario, y registra envíos a nombre de personas que nunca ves formadas en la fila.",
+    rule:"Ninguna tipología funciona sin alguien adentro que la deje pasar.",
+    mit:"Revisar operaciones fuera de horario y concentración de clientes por operador.", ind:"Operaciones fuera de horario por operador, revisadas cada mes"},
+   {risk:"Operación ordinaria · remesa familiar", fr:"Perfil congruente", flag:false,
+    text:"Una señora recibe cada mes, desde hace años, un envío de su hijo que trabaja en Estados Unidos, por un monto parecido y siempre del mismo remitente.",
+    rule:"Remesa familiar constante, del mismo remitente, es menor riesgo: no la castigues."},
+   {risk:"Operación ordinaria · cambio para un viaje", fr:"Perfil congruente", flag:false,
+    text:"Una pareja identificada cambia una cantidad moderada de pesos a dólares una semana antes de su viaje de vacaciones, y te muestra sus boletos.",
+    rule:"Cambio moderado con motivo claro es menor riesgo: atiéndelo sin trabas."}
+  ]},
+ itf:{
+  name:"Tecnología financiera (ITF)", sub:"Instituciones de fondos de pago electrónico y de financiamiento colectivo",
+  kind:"sf", oc:"el Oficial de Cumplimiento",
+  cases:[
+   {risk:"Diez cuentas, un mismo teléfono", fr:"UIF T17 y T18 · IMPACTO360 TIP-02", flag:true,
+    text:"En dos días se abrieron diez cuentas a nombres distintos desde el mismo teléfono. Todas reciben dinero de varias personas y lo mandan a la misma cuenta.",
+    rule:"Diez clientes con el mismo teléfono son un solo cliente.",
+    mit:"Alerta de cuentas que comparten dispositivo, teléfono, correo o domicilio.", ind:"% de grupos de cuentas vinculadas analizados en plazo"},
+   {risk:"Miles de pagos diminutos a una persona", fr:"UIF T18 · IMPACTO360 TIP-03", flag:true,
+    text:"La cuenta de una persona recibe cada día miles de pagos de entre 150 y 250 pesos, de usuarios distintos, con conceptos como «recarga» o «propina». Dice que vende «contenido digital».",
+    rule:"Diez mil operaciones de doscientos pesos pesan lo mismo que una de dos millones.",
+    mit:"Monitoreo de alta frecuencia y monto bajo contra la actividad declarada.", ind:"% de cuentas de alta frecuencia con actividad verificada"},
+   {risk:"De la cuenta directo a cripto", fr:"UIF T02 · IMPACTO360 TIP-05", flag:true,
+    text:"Un usuario que declaró ser estudiante recibe dinero de muchas personas y en minutos lo manda a una plataforma de activos virtuales. Si le preguntan, dice que hace «compraventa entre particulares».",
+    rule:"Si su negocio es cambiar cripto, tiene que poder explicar con quién.",
+    mit:"Alerta de salidas recurrentes a plataformas de activos virtuales sin relación con el perfil declarado.", ind:"% de alertas de salida a activos virtuales analizadas en plazo"},
+   {risk:"Cobros de una «financiera» que amenaza", fr:"UIF T01 · IMPACTO360 TIP-24", flag:true,
+    text:"La cuenta de una empresa recibe cientos de pagos chicos con el concepto «abono préstamo». Se anuncia como «financiera», no la encuentras en ningún registro y varios usuarios se quejan de cobranza con amenazas.",
+    rule:"Una «financiera» que cobra con amenazas no es tu cliente: es tu riesgo.",
+    mit:"Validar la autorización o registro de todo cliente que se ostente como otorgante de crédito.", ind:"% de clientes otorgantes de crédito con registro validado"},
+   {risk:"El que invierte y el que recibe son el mismo", fr:"UIF T18 · IMPACTO360 TIP-12", flag:true,
+    text:"En la plataforma, un solo inversionista aporta, desde las cuentas de cinco familiares, casi todo el capital de un proyecto de una empresa que él mismo dirige.",
+    rule:"Si el que invierte y el que recibe son el mismo, no es inversión: es un circuito.",
+    mit:"Cruzar inversionistas y solicitantes por vínculos familiares, de control o de domicilio.", ind:"% de proyectos con cruce de vínculos antes de publicarse"},
+   {risk:"Dinero robado que llega a una cuenta nueva", fr:"UIF T15 y T16 · IMPACTO360 TIP-22", flag:true,
+    text:"Una cuenta abierta ayer recibe transferencias de tres personas que al rato reportan que ellas no las hicieron. El titular ya está intentando mandar todo a otra cuenta.",
+    rule:"Si el dinero llega por un robo, la cuenta que lo recibe es parte del robo.",
+    mit:"Conectar las reclamaciones de fraude con el monitoreo de la cuenta que recibió.", ind:"Tiempo entre la reclamación y la revisión de la cuenta receptora"},
+   {risk:"Operación ordinaria · pago de servicios", fr:"Perfil congruente", flag:false,
+    text:"Un usuario fondea su cuenta una vez al mes desde su propia cuenta bancaria y con ella paga su luz, su teléfono y sus compras en línea.",
+    rule:"Fondeo desde su propia cuenta y pagos de consumo es menor riesgo."},
+   {risk:"Operación ordinaria · muchos pagos chicos que sí cuadran", fr:"Perfil congruente", flag:false,
+    text:"Una fonda registrada recibe cada día decenas de pagos con tarjeta de entre 80 y 200 pesos, a la hora de la comida, congruentes con lo que declaró vender.",
+    rule:"Muchos pagos chicos no son alerta si cuadran con el negocio: el foco rojo es la incongruencia, no el tamaño."}
   ]}
 };
 
@@ -464,15 +605,55 @@ const CASE_OPTS = {
   {A:"Aplico los pagos como siempre: el crédito va al corriente.",B:"Le pido que actualice sus comprobantes de ingresos cada mes.",C:"Reporto la cuenta a cumplimiento porque maneja montos constantes.",D:"Le propongo pagar en efectivo en sucursal para ahorrar comisiones."},
   {A:"Aplico la recarga: es el titular y viene de su propia cuenta.",B:"Le pido que me explique para qué usa la tarjeta.",C:"Aviso a cumplimiento cada vez que recarga.",D:"Le bloqueo la tarjeta hasta que venga a sucursal."}
  ],
- fin:[
-  {A:"Nada: los depósitos son pequeños y las transferencias están autorizadas.",B:"Le pido que actualice sus ingresos y ajusto su perfil transaccional.",C:"Documento depósitos, sucursales y destino, y lo reporto al Oficial de Cumplimiento.",D:"Le llamo para decirle que su cuenta se ve como de lavado y la bloqueo."},
-  {A:"Abro la cuenta: la documentación legal está completa.",B:"Pido más documentos de la empresa y, si los trae, la abro.",C:"Anoto lo que no cuadra y lo turno a cumplimiento antes de activar productos.",D:"Le digo al apoderado que parece empresa fachada y no la abro."},
-  {A:"Le explico el umbral y cómo dividir la inversión.",B:"Le digo que no sé y sigo con la apertura normal.",C:"Registro lo que preguntó y lo reporto de inmediato a cumplimiento.",D:"Le advierto que esa pregunta lo hace sospechoso ante la autoridad."},
-  {A:"Descarto la coincidencia: es un nombre común y el cliente tiene prisa.",B:"Le pido otra identificación y, si no coincide la foto, continúo.",C:"Suspendo la captura y lo escalo a cumplimiento para validar.",D:"Le digo que aparece en la lista de bloqueados y le niego el servicio."},
-  {A:"Abro la cuenta: el titular es el familiar, no el funcionario.",B:"Pido al familiar que justifique los depósitos con un escrito.",C:"Lo clasifico como relacionado con PEP y lo escalo a cumplimiento.",D:"Le digo al funcionario que no abrimos cuentas a políticos."},
-  {A:"Nada: son transferencias de clientes de su negocio.",B:"Le pido que me mande sus facturas del mes y las archivo.",C:"Documento el patrón de terceros y retiros, y lo reporto a cumplimiento.",D:"Le aviso al comerciante que su cuenta está en investigación."},
+ banca:[
+  {A:"Le pago el retiro: la transferencia ya está abonada, pasó los filtros y es su dinero.",B:"Le pido la factura del servicio y, si la trae, le entrego el efectivo.",C:"Registro el patrón de entrada y salida y lo reporto de inmediato a cumplimiento.",D:"Le digo que esa transferencia parece de lavado y le bloqueo la cuenta."},
+  {A:"Recibo el depósito: cualquiera puede depositar a una cuenta ajena.",B:"Le pregunto para qué es el dinero y a quién se lo deposita, y lo anoto en el comprobante.",C:"Registro depositante, montos y sucursales, y lo reporto a cumplimiento.",D:"Le digo que está fraccionando para no ser reportado y no le recibo."},
+  {A:"Nada: la cuenta tiene mucho movimiento, pero la empresa está al corriente.",B:"Le pido que actualice su actividad económica y ajusto su perfil.",C:"Documento lo que no cuadra con lo declarado y lo turno a cumplimiento.",D:"Le llamo al representante para decirle que parece una financiera pirata."},
+  {A:"Abro la cuenta: la titular es ella, no el funcionario.",B:"Le pido a ella un escrito que explique de dónde vienen los depósitos.",C:"La marco como relacionada con PEP y la escalo a cumplimiento.",D:"Le digo al funcionario que no podemos abrir cuentas a su familia."},
+  {A:"Nada: son pagos de clientes y la titular no tiene antecedentes.",B:"Le pido a la titular que me mande comprobantes de los servicios que cobra y los archivo.",C:"Documento el patrón de entradas y salidas y lo reporto a cumplimiento.",D:"Le aviso a la titular que su cuenta está en investigación."},
+  {A:"Recibo los depósitos: los donativos en efectivo son normales en su giro.",B:"Le pido al representante recibos de donativos y los archivo.",C:"Documento montos, destino y el vínculo con la inmobiliaria, y lo escalo.",D:"Le digo al representante que eso parece lavado y cierro la cuenta."},
   {A:"Nada: sigo atendiendo la cuenta como siempre.",B:"Le pido que actualice su expediente completo este mes.",C:"Reporto la cuenta a cumplimiento por tener movimientos recurrentes.",D:"Le reduzco los límites de la cuenta por precaución."},
   {A:"Nada: el aumento es el de cada año y está soportado.",B:"Le pido estados financieros dictaminados antes de liberar los flujos.",C:"Reporto el aumento a cumplimiento como operación inusual.",D:"Congelo la cuenta hasta que la empresa explique el aumento."}
+ ],
+ crednb:[
+  {A:"Aplico el pago y libero la garantía: el crédito quedó liquidado.",B:"Le pido al acreditado una carta que diga de dónde sacó el dinero.",C:"Documento quién depositó y cuánto, y lo reporto a cumplimiento.",D:"Le digo que pagar así es sospechoso y le regreso los depósitos."},
+  {A:"Lo autorizo: el expediente está completo y el sistema lo aprobó.",B:"Le pido dos estados de cuenta más y una identificación extra y, si los manda, lo autorizo.",C:"Detengo la dispersión, anoto lo que no cuadra y lo escalo a cumplimiento.",D:"Le escribo que su expediente parece falso y rechazo la solicitud."},
+  {A:"Deposito al proveedor: el crédito es del productor y él decide.",B:"Le pido la factura del proveedor y, si la trae, dispongo el crédito.",C:"Detengo la disposición, anoto el desvío y lo turno a cumplimiento.",D:"Le digo que eso parece un desvío ilegal y le cancelo el crédito."},
+  {A:"Le pago el retiro: la cuenta es suya, el dinero ya está ahí y es una socia de años.",B:"Le pido que me traiga al sobrino para identificarlo.",C:"Registro los depósitos y los retiros, y lo reporto a cumplimiento.",D:"Le digo que están usando su cuenta para lavar y se la cierro."},
+  {A:"Otorgo el crédito: está garantizado al cien por ciento.",B:"Le pido un comprobante de ingresos y, si lo trae, lo otorgo.",C:"Anoto el propósito que dio y la garantía, y lo escalo a cumplimiento.",D:"Le digo que no tiene sentido lo que pide y rechazo la solicitud."},
+  {A:"Autorizo el crédito: la garantía cubre el monto.",B:"Le pido el avalúo del inmueble y los papeles de la sociedad y, si los trae, lo autorizo.",C:"Detengo la autorización, anoto lo que no cuadra y aviso a cumplimiento.",D:"Le digo que su solicitud es sospechosa y la rechazo."},
+  {A:"Aplico los pagos como siempre: el crédito va al corriente.",B:"Le pido que actualice sus comprobantes de ingresos cada mes.",C:"Reporto la cuenta a cumplimiento porque paga montos constantes.",D:"Le propongo pagar en efectivo en sucursal para ahorrar comisiones."},
+  {A:"Aplico el pago: es la temporada y viene de su propia cuenta.",B:"Le pido la factura de venta del grano antes de aplicarlo.",C:"Lo reporto a cumplimiento porque es un pago de monto alto.",D:"Retengo el pago hasta que explique por qué no pagó mensualmente."}
+ ],
+ valores:[
+  {A:"Abro el contrato: el acta y el poder están en regla.",B:"Le pido al apoderado una carta que diga quién es el dueño.",C:"No opero hasta identificar al dueño real y lo escalo a cumplimiento.",D:"Le digo que parece una estructura para esconder dinero y lo rechazo."},
+  {A:"Ejecuto la transferencia: es su dinero y puede moverlo.",B:"Le pido una carta con la relación que tiene con esa empresa.",C:"Anoto el patrón de entrada y salida y lo reporto a cumplimiento.",D:"Le digo que su forma de operar es de lavado y le cancelo el contrato."},
+  {A:"Recibo la aportación: ya no es PEP según el sistema.",B:"Le pido un comprobante de dónde salió el dinero, lo archivo y aplico la aportación.",C:"Anoto su cargo anterior y lo escalo a cumplimiento antes de aplicarla.",D:"Le digo que por su pasado político no puedo recibir su dinero."},
+  {A:"Le explico el monto de aviso y cómo dividir su aportación.",B:"Le digo que no sé y sigo con la apertura normal.",C:"Registro lo que preguntó y lo reporto de inmediato a cumplimiento.",D:"Le advierto que esa pregunta lo hace sospechoso ante la autoridad."},
+  {A:"Abro el contrato: el despacho es el titular y está identificado.",B:"Le pido una carta donde el despacho se haga responsable de los fondos.",C:"No acepto fondos de terceros sin identificar y lo escalo a cumplimiento.",D:"Le digo que su despacho parece fachada y rechazo el contrato."},
+  {A:"Se lo dejo pasar: son sus clientes y él los conoce.",B:"Le pido que me firme un correo donde asume la responsabilidad por sus clientes.",C:"Registro las excepciones que ha pedido y lo reporto a cumplimiento.",D:"Les escribo a los clientes que su expediente está bajo revisión."},
+  {A:"Aplico la aportación como cada mes.",B:"Le pido que me justifique su ingreso antes de aplicarla.",C:"Reporto la cuenta a cumplimiento porque aporta cada mes.",D:"Suspendo la domiciliación hasta que actualice su expediente."},
+  {A:"Ejecuto la venta y la transferencia a su cuenta.",B:"Le pido la promesa de compraventa de la casa antes de transferir.",C:"Lo reporto a cumplimiento por ser un retiro de monto alto.",D:"Retengo el retiro hasta que venga a firmar en persona."}
+ ],
+ pagos:[
+  {A:"Hago los envíos: cada uno está abajo del límite y trae identificación.",B:"Les pregunto qué relación tienen con el beneficiario y lo anoto.",C:"Registro remitentes, montos y beneficiario, y lo reporto a cumplimiento.",D:"Les digo que están partiendo el envío y no les mando nada."},
+  {A:"Le parto la operación: es su derecho y el cliente siempre regresa.",B:"Le pido que traiga comprobante de ingresos para seguir cambiándole.",C:"Hago una sola operación, anoto el patrón y lo reporto a cumplimiento.",D:"Le digo que parece lavado y ya no le cambio dólares."},
+  {A:"Lo envío: el monto es chico y la cuenta destino existe.",B:"Le pido que llame a quien se lo pidió, me consiga el nombre completo y lo envío.",C:"No lo envío sin los datos completos, anoto lo ocurrido y aviso a cumplimiento.",D:"Le digo que esos envíos sin nombre son de delincuentes y lo corro."},
+  {A:"Hago el envío: la clienta trae su identificación y el dinero.",B:"Le pido al acompañante que se retire y atiendo a la clienta sola.",C:"Registro al acompañante y el patrón, y lo reporto a cumplimiento.",D:"Le digo al acompañante que sospecho de él y no hago el envío."},
+  {A:"Pago el envío: es coincidencia parcial y el nombre es común.",B:"Le pido otra identificación y, si la foto no coincide con la de la lista, le pago.",C:"Detengo el pago y lo escalo a cumplimiento para validar la coincidencia.",D:"Le digo que aparece en la lista de bloqueados y le niego el pago."},
+  {A:"Nada: si atiende fuera de turno es porque trabaja de más.",B:"Le pido a mi compañera que no vuelva a atender fuera de horario.",C:"Anoto lo que he visto y lo reporto a cumplimiento por el canal interno.",D:"Les digo a sus clientes que los envíos están en revisión."},
+  {A:"Le pago el envío como cada mes.",B:"Le pido que me explique a qué se dedica su hijo.",C:"Reporto el envío a cumplimiento porque llega cada mes.",D:"Le pido que su hijo le mande por banco en lugar de aquí."},
+  {A:"Les hago el cambio y les deseo buen viaje.",B:"Les pido estados de cuenta antes de hacer el cambio.",C:"Reporto el cambio a cumplimiento porque son dólares.",D:"Les digo que sólo puedo cambiarles la mitad."}
+ ],
+ itf:[
+  {A:"Nada: cada cuenta tiene su propio titular e identificación.",B:"Le pido a cada titular que confirme su teléfono por correo.",C:"Documento el vínculo entre las cuentas y lo reporto a cumplimiento.",D:"Les mando un aviso a las diez cuentas de que están en investigación."},
+  {A:"Nada: son montos chicos y su actividad los explica.",B:"Le pido que me mande capturas de su contenido y las archivo.",C:"Documento el volumen contra lo declarado y lo reporto a cumplimiento.",D:"Le escribo que su cuenta parece de lavado y la suspendo."},
+  {A:"Nada: comprar cripto es legal y su dinero es suyo.",B:"Le pido que me mande sus comprobantes de compraventa con cada contraparte y los archivo.",C:"Documento las entradas de terceros y las salidas, y lo reporto a cumplimiento.",D:"Le aviso que sus operaciones parecen ilícitas y le cierro la cuenta."},
+  {A:"Nada: recibir pagos de sus clientes es su negocio.",B:"Le pido a la empresa su contrato tipo de préstamo y lo archivo.",C:"Documento los pagos y las quejas, y lo escalo a cumplimiento.",D:"Le escribo a la empresa que sabemos que es una financiera pirata."},
+  {A:"Publico el proyecto: el capital ya está completo.",B:"Le pido al inversionista una carta que explique su relación con la empresa y la anexo.",C:"Documento el vínculo entre inversionista y empresa y lo escalo a cumplimiento.",D:"Le digo al inversionista que eso es fraude y bloqueo su cuenta."},
+  {A:"Dejo pasar la transferencia: el dinero ya está en su cuenta.",B:"Le pido al titular que explique de dónde vienen las transferencias.",C:"Detengo la salida conforme al procedimiento y lo escalo a cumplimiento.",D:"Le escribo al titular que sabemos que el dinero es robado."},
+  {A:"Nada: sigue operando como siempre.",B:"Le pido que me justifique sus ingresos este mes.",C:"Reporto la cuenta a cumplimiento por usarla cada mes.",D:"Le bajo el límite de fondeo por precaución."},
+  {A:"Nada: los pagos cuadran con su negocio.",B:"Le pido que me mande sus ventas diarias para cotejarlas.",C:"Reporto la cuenta a cumplimiento por recibir muchos pagos.",D:"Le suspendo la terminal hasta que explique el volumen."}
  ]
 };
 
@@ -513,6 +694,7 @@ const AREA_MUST = {
 /* ============ ESTADO ============ */
 const KEY="pulso360_v1";
 let S = Object.assign(fresh(), load()||{}); S.tq=S.tq||{};
+if(S.sector&&!SECTORS[S.sector]){S.sector=null;S.people=[];S.run=null;S.view="inicio"} /* sector retirado (p. ej. «fin» antes de la v4) */
 function fresh(){return {mode:"teoria", t:0, tq:{}, sector:null, org:"", leader:{pred:70}, people:[], view:"inicio", run:null, confirmReset:false}}
 function load(){try{const r=localStorage.getItem(KEY);return r?JSON.parse(r):null}catch(e){return null}}
 function save(){try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}}
@@ -537,7 +719,9 @@ function render(){
 }
 
 function vInicio(){
-  const secs=Object.entries(SECTORS).map(([k,s])=>`<button class="sector" data-sector="${k}" aria-pressed="${S.sector===k}"><span class="dot"></span><span><span class="t">${s.name}</span><br><span class="s">${s.sub}</span></span></button>`).join("");
+  const btn=([k,s])=>`<button class="sector" data-sector="${k}" aria-pressed="${S.sector===k}"><span class="dot"></span><span><span class="t">${s.name}</span><br><span class="s">${s.sub}</span></span></button>`;
+  const grp=(kind,lbl)=>`<p class="sector-grp">${lbl}</p>`+Object.entries(SECTORS).filter(([k,s])=>s.kind===kind).map(btn).join("");
+  const secs=grp("av","Actividades vulnerables")+grp("sf","Sector financiero");
   return `<div class="hero">
     <div>
       <p class="eyebrow">Diagnóstico de sensibilidad al riesgo</p>
@@ -545,7 +729,7 @@ function vInicio(){
       <p class="lede">En 15 minutos sabes qué riesgos de tu sector ve tu gente, cuáles se le pasan y qué tiene que aprender cada área en 2027.</p>
       <div class="howto">
         <div><b>1</b><span><strong>Tú contestas</strong> seis preguntas sobre cómo lideras hoy el aprendizaje y predices cuánto acertará tu equipo.</span></div>
-        <div><b>2</b><span><strong>Cinco personas de áreas distintas</strong> resuelven ocho situaciones reales de tu sector. Es anónimo: sólo se registra área y nivel.</span></div>
+        <div><b>2</b><span><strong>Cinco personas de áreas distintas</strong> resuelven ocho situaciones típicas de tu sector. Es anónimo: sólo se registra área y nivel.</span></div>
         <div><b>3</b><span><strong>Recibes tu diagnóstico</strong>: qué riesgos reconocen, dónde está la brecha, qué debe aprender cada área y tus prioridades 2027.</span></div>
       </div>
     </div>
@@ -917,7 +1101,7 @@ function vInforme(){
 
     ${tallerHTML(coupon,A)}
 
-    <p class="foot">Situaciones ${sec.kind==="av"?"tomadas de los casos ilustrativos del Atlas de Riesgo por fracción (Maribel Vázquez Menchaca, GMC360)":"tipo de la práctica de GMC360"}; los mitigantes e indicadores son criterio de la casa, calibrable a tu matriz de riesgo. Con ${S.people.length} personas, este diagnóstico es orientativo, no estadístico: sirve para decidir por dónde empezar. 360Educa · GMC360.</p>
+    <p class="foot">Situaciones ${sec.kind==="av"?"tomadas de los casos ilustrativos del Atlas de Riesgo por fracción (Maribel Vázquez Menchaca, GMC360)":"construidas sobre las tipologías publicadas por la UIF y las tipologías emergentes IMPACTO360 (GMC360), que son lectura de la firma y no catálogo de autoridad. Encajar con una tipología es señal para investigar o reportar, nunca prueba de delito"}; los mitigantes e indicadores son criterio de la casa, calibrable a tu matriz de riesgo. Con ${S.people.length} personas, este diagnóstico es orientativo, no estadístico: sirve para decidir por dónde empezar. 360Educa · GMC360.</p>
   </div>`;
 }
 

@@ -1,6 +1,18 @@
 # SFR · Sitio del curso «PLD/FT sin fronteras regulatorias»
 
-Versión **v3** (23-sep-2026). Cambia la herramienta del curso: **«El levantamiento» se sustituye por «Pulso de Riesgo»**, que presenta el webinar del 23 de septiembre.
+Versión **v4** (23-sep-2026). **El sector financiero se divide en cinco grupos, con casos rehechos a partir del Catálogo de tipologías UIF e IMPACTO360 de GMC360.** La v3 (misma fecha) sustituyó «El levantamiento» por «Pulso de Riesgo».
+
+### Qué cambió de la v3 a la v4
+
+- **«Entidades financieras» (un solo juego de casos, redactado sin fuente) se retira** y en su lugar hay cinco grupos, de 8 situaciones cada uno (6 focos rojos y 2 operaciones sanas): **Banca** · **Crédito no bancario y ahorro popular** (SOFOM, SOFIPO, SOCAP, uniones de crédito) · **Valores e inversión** (casas de bolsa, fondos y distribuidoras, asesores en inversiones) · **Pagos y cambios** (transmisores, centros cambiarios, casas de cambio) · **Tecnología financiera (ITF)**.
+- Cada foco rojo lleva en el campo `fr` su clave de tipología: la oficial de la UIF (T01–T18) y la IMPACTO360 que le corresponde (TIP-01 a TIP-30), según la columna de correspondencia del catálogo. Las IMPACTO360 son lectura de la firma, no catálogo de autoridad. Las operaciones sanas llevan «Perfil congruente».
+- El pie del informe cita la fuente y dice: «Encajar con una tipología es señal para investigar o reportar, nunca prueba de delito».
+- El selector de sector agrupa los botones en «Actividades vulnerables» y «Sector financiero».
+- Si el navegador de alguien guardó el sector retirado (`fin`), la herramienta lo limpia y lo manda al inicio, en vez de romperse.
+- En el inicio, «situaciones reales» pasa a «situaciones típicas», para no contradecir la leyenda de que son ilustrativas.
+- En los grupos financieros, la respuesta correcta es la más larga en 7 de 40 situaciones (18 %); el límite del método es 30 %.
+
+**Pendiente (punto 3 del plan):** reorganizar la entrada en cuatro puertas (sector financiero · actividades vulnerables en 6 grupos · no obligados · grupo mixto). Seguros, fianzas y afores no están en ningún grupo financiero.
 
 | Capítulo | Dirección | Archivo | Estado |
 |---|---|---|---|
@@ -17,7 +29,7 @@ Sitio estático, sin compilación: se edita el archivo, se sube a GitHub (rama p
 ## Qué hay dentro de Pulso de Riesgo
 
 - **Por qué capacitar:** siete temas con piezas interactivas (capacidades, líneas de defensa, roles, la norma, cumplir o blindar, 2027).
-- **Pulso de Riesgo:** el líder predice y se autoevalúa; cinco personas resuelven ocho situaciones de su sector; sale un informe imprimible. Casos de actividades vulnerables tomados del Atlas de Riesgo (Maribel Vázquez Menchaca, GMC360). Casos de entidades financieras pendientes de rehacer con la fuente de Maribel.
+- **Pulso de Riesgo:** el líder predice y se autoevalúa; cinco personas resuelven ocho situaciones de su sector; sale un informe imprimible. Casos de actividades vulnerables tomados del Atlas de Riesgo (Maribel Vázquez Menchaca, GMC360). Casos de sector financiero construidos sobre el Catálogo de tipologías UIF e IMPACTO360 (GMC360, 23-sep-2026).
 - **El taller:** las tres sesiones, lo que se llevan, cupón automático según la fecha y ligas de inscripción.
 - Las respuestas se guardan sólo en el navegador de quien la usa (localStorage, llave `pulso360_v1`).
 
