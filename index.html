@@ -1,0 +1,975 @@
+<title>Pulso de Riesgo 360</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap">
+<style>
+:root{
+  --durazno:#ffb59d; --durazno-letra:#d9663f; --coral:#ff8361; --taller:#4a86d8;
+  --negro:#1b1b1e; --gris:#4d4d4d; --oscuro:#393e41; --crema:#faf5ec;
+  --bg:#faf5ec; --surface:#ffffff; --surface-2:#f3ebdd; --ink:#1b1b1e; --ink-2:#4d4d4d; --ink-3:#6e6a64;
+  --line:#e6dccb; --accent:#ff8361; --accent-ink:#1b1b1e; --accent-soft:#ffe6dd; --eyebrow:#d9663f;
+  --rojo:#d9455f; --rojo-soft:#fbe4e8; --ambar:#a8740f; --ambar-fill:#e0a034; --ambar-soft:#fbf0d8; --ok:#2f9e93; --ok-soft:#dff1ef;
+  --shadow:0 1px 2px rgba(27,27,30,.06),0 6px 24px rgba(27,27,30,.06);
+  --display:"Space Grotesk",ui-sans-serif,system-ui,-apple-system,"Segoe UI",Arial,sans-serif;
+  --body:"Inter",ui-sans-serif,system-ui,-apple-system,"Segoe UI",Arial,sans-serif;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    color-scheme:dark;
+    --bg:#1b1b1e; --surface:#26292b; --surface-2:#393e41; --ink:#f4efe6; --ink-2:#d6d0c6; --ink-3:#a39d93;
+    --line:#43494c; --accent-soft:#4a2e26; --eyebrow:#ffb59d;
+    --rojo:#f07a8e; --rojo-soft:#46262d; --ambar:#e0a034; --ambar-soft:#3d3222; --ok:#5cc4b8; --ok-soft:#1f3a37;
+    --shadow:0 1px 2px rgba(0,0,0,.3),0 6px 24px rgba(0,0,0,.25);
+  }
+}
+:root[data-theme="dark"]{
+  color-scheme:dark;
+  --bg:#1b1b1e; --surface:#26292b; --surface-2:#393e41; --ink:#f4efe6; --ink-2:#d6d0c6; --ink-3:#a39d93;
+  --line:#43494c; --accent-soft:#4a2e26; --eyebrow:#ffb59d;
+  --rojo:#f07a8e; --rojo-soft:#46262d; --ambar:#e0a034; --ambar-soft:#3d3222; --ok:#5cc4b8; --ok-soft:#1f3a37;
+  --shadow:0 1px 2px rgba(0,0,0,.3),0 6px 24px rgba(0,0,0,.25);
+}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+html,body{background:var(--bg)}
+body{font-family:var(--body);color:var(--ink);font-size:17px;line-height:1.5;margin:0}
+.wrap{max-width:980px;margin:0 auto;padding-inline:20px;padding-block:0 64px}
+h1,h2,h3,h4{font-family:var(--display);text-wrap:balance;margin:0;line-height:1.15;color:var(--ink)}
+h1{font-size:clamp(28px,4.6vw,44px);font-weight:800;letter-spacing:-.02em}
+h2{font-size:clamp(22px,3vw,28px);font-weight:700;letter-spacing:-.01em}
+h3{font-size:19px;font-weight:700}
+p{margin:0}
+.eyebrow{font-family:var(--display);font-size:12px;letter-spacing:.14em;text-transform:uppercase;font-weight:600;color:var(--eyebrow)}
+.muted{color:var(--ink-3)}
+.small{font-size:14.5px}
+button{font:inherit;cursor:pointer}
+:focus-visible{outline:3px solid var(--coral);outline-offset:2px}
+
+/* top bar */
+.bar{position:sticky;top:env(safe-area-inset-top,0px);z-index:10;background:color-mix(in srgb,var(--bg) 88%,transparent);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+.bar-in{max-width:980px;margin:0 auto;padding:10px 20px;display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+.brand{display:flex;align-items:center;gap:10px;font-family:var(--display);font-weight:700;font-size:15px;margin-right:auto}
+.pulse{width:28px;height:28px;border-radius:8px;background:var(--negro);display:grid;place-items:center}
+.pulse svg{display:block}
+.steps{display:flex;gap:6px;flex-wrap:wrap}
+.step{border:1px solid var(--line);background:var(--surface);color:var(--ink-2);padding:7px 12px;border-radius:999px;font-size:14px;font-weight:600;display:flex;gap:7px;align-items:center}
+.step .n{width:20px;height:20px;border-radius:50%;display:grid;place-items:center;font-size:12px;background:var(--surface-2);color:var(--ink-2);font-family:var(--display)}
+.step[aria-current="true"]{background:var(--negro);color:#fff;border-color:var(--negro)}
+.step[aria-current="true"] .n{background:var(--durazno);color:var(--negro)}
+:root[data-theme="dark"] .step[aria-current="true"]{background:var(--durazno);color:var(--negro);border-color:var(--durazno)}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .step[aria-current="true"]{background:var(--durazno);color:var(--negro);border-color:var(--durazno)}}
+
+.modes{display:flex;background:var(--surface-2);border-radius:12px;padding:4px;gap:4px}
+.mode{border:0;background:transparent;color:var(--ink-2);padding:8px 14px;border-radius:9px;font-family:var(--display);font-weight:600;font-size:14.5px}
+.mode[aria-current="true"]{background:var(--surface);color:var(--ink);box-shadow:var(--shadow)}
+.mode-taller{background:var(--taller)!important;color:#fff!important}
+.mode-taller[aria-current="true"]{outline:2px solid var(--taller);outline-offset:2px}
+.bar-in{row-gap:10px}
+/* teoría */
+.tnav{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:22px}
+.tnav button{border:1px solid var(--line);background:var(--surface);color:var(--ink-2);border-radius:999px;padding:6px 12px;font-size:14px;font-weight:600}
+.tnav button[aria-current="true"]{background:var(--durazno);border-color:var(--durazno);color:var(--negro)}
+.tsec{display:flex;flex-direction:column;gap:20px}
+.tsec .lede{font-size:19px;color:var(--ink-2);max-width:60ch}
+.threats{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px}
+.threat{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:18px;display:flex;flex-direction:column;gap:8px}
+.threat .when{font-family:var(--display);font-weight:700;font-size:13px;letter-spacing:.06em;text-transform:uppercase;color:var(--eyebrow)}
+.callout{background:var(--oscuro);color:#fff;border-radius:14px;padding:20px 22px;font-size:18px;line-height:1.5}
+.callout b{color:var(--durazno)}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{background:var(--surface);border:1px solid var(--line);border-radius:999px;padding:8px 14px;font-weight:600}
+.chip{font:inherit;font-weight:600;color:var(--ink);cursor:pointer}
+.chip:hover{border-color:var(--durazno)}
+.chip[aria-pressed="true"]{background:var(--durazno);border-color:var(--durazno);color:var(--negro)}
+.skillcard{display:grid;gap:10px}
+.sk{display:grid;grid-template-columns:150px 1fr;gap:12px;align-items:baseline}
+.skl{font-family:var(--display);font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--eyebrow)}
+@media (max-width:560px){.sk{grid-template-columns:1fr;gap:2px}}
+.lines{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+@media (max-width:700px){.lines{grid-template-columns:1fr}}
+.linebtn{text-align:left;border:1.5px solid var(--line);background:var(--surface);color:var(--ink);border-radius:14px;padding:16px;display:flex;flex-direction:column;gap:4px}
+.linebtn .ln{font-family:var(--display);font-weight:700;font-size:28px;color:var(--eyebrow)}
+.linebtn[aria-pressed="true"]{border-color:var(--durazno-letra);background:var(--accent-soft)}
+.reveal{background:var(--surface);border:1px solid var(--line);border-left:4px solid var(--durazno);border-radius:12px;padding:16px 18px}
+.quote{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:18px;display:flex;flex-direction:column;gap:8px}
+.quote q{font-style:italic;font-size:16.5px;line-height:1.55}
+.quote .src{font-size:13.5px;color:var(--ink-3);font-weight:600}
+.tl{display:grid;gap:10px}
+.tl div{display:grid;grid-template-columns:130px 1fr;gap:14px;align-items:baseline;padding:12px 0;border-top:1px solid var(--line)}
+.tl b{font-family:var(--display);font-variant-numeric:tabular-nums}
+@media (max-width:520px){.tl div{grid-template-columns:1fr;gap:2px}}
+.mantra{font-family:var(--display);font-weight:700;font-size:clamp(24px,4vw,36px);letter-spacing:-.01em;display:flex;flex-wrap:wrap;gap:10px 18px}
+.mantra span{background:var(--durazno);color:var(--negro);border-radius:12px;padding:6px 14px}
+.tfoot{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-top:8px}
+
+.taller{display:flex;flex-direction:column;gap:14px}
+.taller-head{background:var(--oscuro);color:#fff;border-radius:18px;padding:28px;display:grid;grid-template-columns:1.5fr 1fr;gap:24px;align-items:center}
+@media (max-width:760px){.taller-head{grid-template-columns:1fr}}
+.taller-head h2{color:#fff}
+.taller-head .coupon{border:2px dashed var(--durazno);border-radius:14px;padding:16px;text-align:center}
+.taller-head .coupon .code{font-family:var(--display);font-weight:700;font-size:24px;color:var(--durazno);letter-spacing:.04em}
+.sessions{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+@media (max-width:820px){.sessions{grid-template-columns:1fr}}
+.session{background:var(--surface);border:1px solid var(--line);border-top:4px solid var(--taller);border-radius:14px;padding:18px;display:flex;flex-direction:column;gap:10px}
+.snum{background:var(--taller);color:#fff;font-family:var(--display);font-weight:700;border-radius:10px;min-width:40px;height:40px;display:grid;place-items:center;font-size:18px}
+.taller-foot{display:flex;justify-content:space-between;align-items:center;gap:14px;flex-wrap:wrap}
+a.btn{text-decoration:none;display:inline-block}
+.btn.tbtn{background:var(--taller);color:#fff}
+@media print{.taller-head{background:#393e41!important;-webkit-print-color-adjust:exact;print-color-adjust:exact}.snum{-webkit-print-color-adjust:exact;print-color-adjust:exact}.session{break-inside:avoid}}
+.legal{border-top:1px solid var(--line);background:var(--surface-2)}
+.legal-in{max-width:980px;margin:0 auto;padding:20px 20px 28px;display:grid;gap:8px;font-size:13px;color:var(--ink-3);line-height:1.5}
+.legal strong{color:var(--ink-2)}
+
+/* generic */
+.view{padding-top:32px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:24px;box-shadow:var(--shadow)}
+.stack{display:flex;flex-direction:column;gap:16px}
+.row{display:flex;gap:12px;flex-wrap:wrap;align-items:center}
+.btn{border:0;border-radius:10px;padding:12px 18px;font-weight:700;font-family:var(--display);font-size:15px;background:var(--accent);color:var(--accent-ink)}
+.btn:hover{filter:brightness(1.05)}
+.btn[disabled]{opacity:.45;cursor:not-allowed}
+.btn.ghost{background:transparent;color:var(--ink);border:1px solid var(--line)}
+.btn.dark{background:var(--negro);color:#fff}
+.btn.link{background:none;color:var(--ink-3);padding:6px 4px;font-weight:600;text-decoration:underline;text-underline-offset:3px}
+label.f{display:flex;flex-direction:column;gap:6px;font-weight:600;font-size:15px}
+select,input[type=text]{font:inherit;padding:11px 12px;border-radius:10px;border:1px solid var(--line);background:var(--surface);color:var(--ink);min-width:0;width:100%}
+.grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px}
+
+/* intro */
+.hero{display:grid;grid-template-columns:1.3fr 1fr;gap:28px;align-items:center}
+@media (max-width:760px){.hero{grid-template-columns:1fr}}
+.hero p.lede{font-size:19px;color:var(--ink-2);margin-top:14px;max-width:34em}
+.howto{display:grid;gap:10px;margin-top:22px}
+.howto div{display:flex;gap:12px;align-items:flex-start}
+.howto b{font-family:var(--display);background:var(--durazno);color:var(--negro);border-radius:8px;min-width:30px;height:30px;display:grid;place-items:center;font-size:14px}
+.sectors{display:grid;gap:10px}
+.sector{display:flex;gap:12px;align-items:flex-start;text-align:left;background:var(--surface);border:1.5px solid var(--line);border-radius:12px;padding:14px 16px;color:var(--ink)}
+.sector:hover{border-color:var(--durazno)}
+.sector[aria-pressed="true"]{border-color:var(--durazno-letra);background:var(--accent-soft)}
+.sector .t{font-family:var(--display);font-weight:700;font-size:15.5px}
+.sector .s{font-size:14px;color:var(--ink-3)}
+.dot{width:12px;height:12px;border-radius:50%;margin-top:5px;flex:none;border:2px solid var(--ink-3)}
+.sector[aria-pressed="true"] .dot{background:var(--durazno-letra);border-color:var(--durazno-letra)}
+
+/* leader */
+.q{padding:18px 0;border-top:1px solid var(--line)}
+.q:first-of-type{border-top:0}
+.q h4{font-family:var(--body);font-size:17.5px;font-weight:700;margin-bottom:10px}
+.opts{display:grid;gap:8px}
+.opt{display:flex;gap:10px;align-items:flex-start;text-align:left;border:1.5px solid var(--line);background:var(--surface);color:var(--ink);border-radius:10px;padding:10px 12px;font-size:16px}
+.opt:hover{border-color:var(--durazno)}
+.opt[aria-pressed="true"]{border-color:var(--durazno-letra);background:var(--accent-soft)}
+.opt .dot{margin-top:4px}
+.opt[aria-pressed="true"] .dot{background:var(--durazno-letra);border-color:var(--durazno-letra)}
+.slider{display:flex;gap:16px;align-items:center}
+.slider input{flex:1;accent-color:var(--durazno-letra)}
+.slider output{font-family:var(--display);font-weight:800;font-size:28px;min-width:3.2em;text-align:right;font-variant-numeric:tabular-nums}
+
+/* team */
+.people{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:12px}
+.person{border:1px solid var(--line);border-radius:12px;padding:14px;background:var(--surface);display:flex;flex-direction:column;gap:4px;min-height:108px}
+.person .pid{font-family:var(--display);font-weight:800;font-size:22px}
+.person.empty{border-style:dashed;background:transparent;color:var(--ink-3);justify-content:center;align-items:center;text-align:center}
+.tag{display:inline-block;font-size:12px;font-weight:700;letter-spacing:.04em;padding:3px 8px;border-radius:999px;background:var(--surface-2);color:var(--ink-2)}
+.tag.demo{background:var(--ambar-soft);color:var(--ambar)}
+
+/* case runner */
+.runner{max-width:760px;margin:0 auto}
+.prog{height:6px;background:var(--surface-2);border-radius:99px;overflow:hidden;margin:10px 0 22px}
+.prog i{display:block;height:100%;background:var(--durazno);border-radius:99px;transition:width .3s}
+.case-text{font-family:var(--display);font-size:clamp(20px,2.6vw,25px);line-height:1.4;font-weight:600;letter-spacing:-.01em}
+.case-q{margin-top:18px;font-weight:700;color:var(--ink-2)}
+.answers{display:grid;gap:10px;margin-top:12px}
+.answers .opt{font-size:17px;padding:14px 16px}
+.answers .opt .k{font-family:var(--display);font-weight:800;color:var(--ink-3);min-width:1.3em}
+
+/* report */
+.report{display:flex;flex-direction:column;gap:28px}
+.rhead{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;align-items:flex-end;border-bottom:3px solid var(--durazno);padding-bottom:16px}
+.kpis{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+@media (max-width:760px){.kpis{grid-template-columns:1fr}}
+.kpi{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:18px}
+.kpi .big{font-family:var(--display);font-weight:800;font-size:46px;line-height:1;font-variant-numeric:tabular-nums;margin-top:8px}
+.kpi .big small{font-size:18px;color:var(--ink-3);font-weight:600}
+.kpi.hot{background:var(--oscuro);color:#fff;border-color:var(--oscuro)}
+.kpi.hot .eyebrow{color:var(--durazno)}
+.kpi.hot .muted{color:#b9c2bd}
+.gapbar{position:relative;height:14px;border-radius:99px;background:linear-gradient(90deg,#d9455f 0%,#e0a034 50%,#2f9e93 100%);margin:34px 0 30px;opacity:.9}
+.mark{position:absolute;top:-6px;width:3px;height:26px;background:var(--ink);transform:translateX(-50%)}
+.mark span{position:absolute;left:50%;transform:translateX(-50%);white-space:nowrap;font-size:13px;font-weight:700}
+.mark.real span{top:-24px}
+.mark.pred span{bottom:-24px}
+.mark.pred{background:var(--ink-3)}
+.lectura p{font-size:18px;line-height:1.6;max-width:62ch}
+.lectura p+p{margin-top:12px}
+.lectura b{color:var(--ink)}
+.tablewrap{overflow-x:auto}
+table{width:100%;border-collapse:collapse;font-size:15.5px}
+th{background:var(--durazno);color:var(--negro);text-align:left;font-family:var(--display);font-size:13px;letter-spacing:.04em;text-transform:uppercase;padding:10px 12px}
+td{padding:12px;border-bottom:1px solid var(--line);vertical-align:top}
+td.num{font-variant-numeric:tabular-nums;font-weight:700;white-space:nowrap}
+.sem{display:inline-flex;align-items:center;gap:6px;font-weight:700;font-size:13px;padding:4px 10px;border-radius:999px;white-space:nowrap}
+.sem.r{background:var(--rojo-soft);color:var(--rojo)} .sem.a{background:var(--ambar-soft);color:var(--ambar)} .sem.v{background:var(--ok-soft);color:var(--ok)}
+.sem::before{content:"";width:8px;height:8px;border-radius:50%;background:currentColor}
+.rule{font-style:italic;color:var(--ink-2)}
+.stackbar{display:flex;height:34px;border-radius:8px;overflow:hidden;margin-top:12px}
+.stackbar div{display:grid;place-items:center;color:#fff;font-weight:700;font-size:13px;min-width:0}
+.legend{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px;margin-top:14px}
+.legend div{display:flex;gap:10px;align-items:flex-start;font-size:15px}
+.legend i{width:14px;height:14px;border-radius:4px;flex:none;margin-top:4px}
+.areas{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:14px}
+.area{border:1px solid var(--line);border-radius:14px;padding:18px;background:var(--surface);display:flex;flex-direction:column;gap:10px}
+.area ul{margin:0;padding-left:18px;display:grid;gap:8px;font-size:15.5px}
+.area .must{font-weight:600}
+.leader-row{display:grid;grid-template-columns:1fr 1.2fr;gap:14px;padding:14px 0;border-top:1px solid var(--line)}
+@media (max-width:700px){.leader-row{grid-template-columns:1fr}}
+.prios{display:grid;gap:12px;counter-reset:p}
+.prio{display:grid;grid-template-columns:44px 1fr;gap:14px;align-items:start;background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:16px}
+.prio .pn{font-family:var(--display);font-weight:700;font-size:20px;background:var(--durazno);color:var(--negro);border-radius:10px;width:40px;height:40px;display:grid;place-items:center;line-height:1}
+.cta{background:var(--oscuro);color:#fff;border-radius:18px;padding:28px;display:grid;grid-template-columns:1.4fr 1fr;gap:24px;align-items:center}
+@media (max-width:760px){.cta{grid-template-columns:1fr}}
+.cta h2{color:#fff}
+.cta p{color:#cfd6d2}
+.cta .coupon{border:2px dashed var(--durazno);border-radius:14px;padding:16px;text-align:center}
+.cta .coupon .code{font-family:var(--display);font-weight:700;font-size:24px;color:var(--durazno);letter-spacing:.04em}
+.cta a{color:#fff;background:var(--taller);text-decoration:none;display:inline-block;padding:12px 18px;border-radius:10px;font-family:var(--display);font-weight:700;margin-top:14px}
+.foot{font-size:13.5px;color:var(--ink-3);border-top:1px solid var(--line);padding-top:14px}
+.confirm{background:var(--rojo-soft);border:1px solid var(--rojo);border-radius:12px;padding:14px;display:flex;gap:12px;align-items:center;flex-wrap:wrap}
+.toast{position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--negro);color:#fff;padding:12px 18px;border-radius:10px;font-weight:600;box-shadow:var(--shadow);z-index:30}
+.pop{animation:pop .45s ease-out both}
+@keyframes pop{from{transform:translateY(8px);opacity:.3}to{transform:none;opacity:1}}
+@media (prefers-reduced-motion:reduce){.pop{animation:none}.prog i{transition:none}}
+
+@media print{
+  .bar,.no-print,.toast{display:none!important}
+  body,html{background:#fff}
+  :root{--bg:#fff;--surface:#fff;--ink:#1b1b1e;--ink-2:#4d4d4d;--ink-3:#6f7672;--line:#d4dbd6;--shadow:none}
+  .wrap{max-width:none;padding:0}
+  .view{padding-top:0}
+  .kpi.hot,.cta{background:#393e41!important;color:#fff!important;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  th,.sem,.stackbar div,.gapbar,.legend i{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  .area,.prio,.kpi,section{break-inside:avoid}
+}
+</style>
+
+<header class="bar">
+  <div class="bar-in">
+    <div class="brand"><span class="pulse" aria-hidden="true"><svg width="20" height="14" viewBox="0 0 20 14"><polyline points="1,8 5,8 7,2 10,13 13,5 15,8 19,8" fill="none" stroke="#ffb59d" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/></svg></span>PLD/FT sin fronteras <span class="muted small" style="font-weight:500">· 360Educa</span></div>
+    <nav class="modes" aria-label="Secciones">
+      <button class="mode" data-mode="teoria">Por qué capacitar</button>
+      <button class="mode" data-mode="pulso">Pulso de Riesgo</button>
+      <button class="mode mode-taller" data-mode="taller">El taller</button>
+    </nav>
+    <nav class="steps" id="steps" aria-label="Pasos">
+      <button class="step" data-go="inicio"><span class="n">0</span>Inicio</button>
+      <button class="step" data-go="lider"><span class="n">1</span>Tu mirada</button>
+      <button class="step" data-go="equipo"><span class="n">2</span>Tu equipo</button>
+      <button class="step" data-go="informe"><span class="n">3</span>Diagnóstico</button>
+    </nav>
+  </div>
+</header>
+
+<main class="wrap" id="app"></main>
+<footer class="legal"><div class="legal-in">
+  <p><strong>© 2026 360Educa · GMC360.</strong> Material de capacitación con fines exclusivamente educativos. No constituye asesoría legal, fiscal ni de cumplimiento para un caso concreto: cada organización debe analizar su situación con base en la normativa que le aplique y, en su caso, con su propio asesor.</p>
+  <p>Las situaciones del diagnóstico son ilustrativas y no corresponden a clientes ni expedientes reales. El diagnóstico es orientativo, no una auditoría ni una opinión sobre el cumplimiento de tu organización. Tus respuestas se guardan sólo en este navegador: 360Educa no las recibe ni las almacena.</p>
+</div></footer>
+<div class="toast" id="toast" hidden></div>
+
+<script>
+/* ============ CONTENIDO ============ */
+const OPTS = {
+  A:"La proceso normal: no veo nada fuera de lo común.",
+  B:"Pido documentos adicionales y, si los entrega, la proceso.",
+  C:"Anoto lo que vi y lo reporto a cumplimiento sin avisar al cliente.",
+  D:"Le explico al cliente que parece sospechosa y la rechazo."
+};
+const SCORE_FLAG = {A:0,B:.5,C:1,D:.25};
+const SCORE_CLEAN = {A:1,B:.75,C:.25,D:0};
+const ORDERS = ["ABCD","BDAC","CABD","DCBA","ACDB","BCAD","CDAB","DABC"];
+
+const SECTORS = {
+ inmob:{
+  name:"Inmobiliario", sub:"Construcción, desarrollo, intermediación y renta de inmuebles · fr. V, V Bis y XV",
+  kind:"av", oc:"la Representante Encargada de Cumplimiento",
+  cases:[
+   {risk:"Empresa reciente con prisa por cerrar", fr:"V", flag:true,
+    text:"Un comprador quiere una casa de lujo. Paga el enganche en efectivo y el resto desde la cuenta de una empresa creada hace un mes en otro estado. No regatea y quiere firmar ya.",
+    rule:"No basta saber quién firma; necesitas saber de dónde salió el dinero.",
+    mit:"Verificar al Beneficiario Controlador antes de protocolizar, no después.", ind:"% de compradores persona moral con Beneficiario Controlador identificado antes del acto"},
+   {risk:"Renta adelantada en efectivo arriba del valor", fr:"XV", flag:true,
+    text:"Un inquilino te paga doce meses de renta por adelantado y en efectivo, por un local que vale mucho menos de lo que está pagando.",
+    rule:"Si te pagan más renta de la que vale el lugar, no es generosidad.",
+    mit:"Más de 3 meses adelantados en efectivo activa debida diligencia reforzada; referencia de mercado en el expediente.", ind:"% de pagos adelantados mayores a 3 meses con debida diligencia reforzada documentada"},
+   {risk:"Paga un tercero sin relación", fr:"V", flag:true,
+    text:"El enganche de un departamento llega desde la cuenta de una persona que no es el comprador. Cuando le preguntas, el comprador dice que es «un conocido que le está ayudando».",
+    rule:"No basta saber quién firma; necesitas saber de dónde salió el dinero.",
+    mit:"Formato obligatorio de origen de fondos cuando quien paga no es el titular de la operación.", ind:"% de expedientes con formato de origen de fondos lleno cuando aplica"},
+   {risk:"Escriturar por debajo del valor real", fr:"V", flag:true,
+    text:"El comprador te pide escriturar muy por debajo del precio pactado: «la diferencia te la doy aparte, como siempre se hace».",
+    rule:"No basta saber quién firma; necesitas saber de dónde salió el dinero.",
+    mit:"Referencia de valor (avalúo o mercado) en el expediente y alerta cuando el precio escriturado se aparta de ella.", ind:"% de operaciones con referencia de valor documentada"},
+   {risk:"Inversionistas sin identificar en preventa", fr:"V Bis", flag:true,
+    text:"En una preventa, cinco «inversionistas» aportan para un mismo departamento. Sólo uno da la cara; los demás no quieren entregar datos y prefieren que todo quede a su nombre.",
+    rule:"No basta saber quién firma; necesitas saber de dónde salió el dinero.",
+    mit:"Identificar a cada aportante y al Beneficiario Controlador antes de recibir recursos del Desarrollo Inmobiliario.", ind:"% de aportantes identificados antes de recibir recursos"},
+   {risk:"La renta la paga alguien distinto al inquilino", fr:"XV", flag:true,
+    text:"La renta de una bodega la paga, cada mes y en efectivo, una empresa que no aparece en el contrato. El inquilino dice que «es de un socio».",
+    rule:"Si te pagan más renta de la que vale el lugar, no es generosidad.",
+    mit:"Registrar en el contrato quién paga y el origen de los recursos cuando no es el arrendatario.", ind:"% de contratos con pagador distinto documentado"},
+   {risk:"Operación ordinaria · crédito bancario", fr:"V", flag:false,
+    text:"Una pareja compra su vivienda con crédito hipotecario de un banco. El enganche lo transfieren desde su cuenta de nómina y la escritura refleja el precio pactado.",
+    rule:"El semáforo también sirve para dejar pasar lo sano: vivienda con crédito y pagos rastreables es menor riesgo."},
+   {risk:"Operación ordinaria · renta con contrato", fr:"XV", flag:false,
+    text:"Un local de bajo valor se renta con contrato firmado. El inquilino paga cada mes por transferencia desde su propia cuenta.",
+    rule:"Renta de bajo valor, con contrato y pagos por banco, es menor riesgo: no la castigues."}
+  ]},
+ alto:{
+  name:"Bienes de alto valor", sub:"Joyería, relojes, arte, vehículos y blindaje · fr. VI, VII, VIII y IX",
+  kind:"av", oc:"la Representante Encargada de Cumplimiento",
+  cases:[
+   {risk:"Compras repetidas justo abajo del umbral", fr:"VI", flag:true,
+    text:"Un cliente entra cada semana y compra relojes por montos siempre un poco abajo del que te obliga a reportar. Paga en efectivo y no le interesa el modelo, sólo el valor.",
+    rule:"Si el cliente pelea por NO identificarse, el problema es el cliente, no tu trámite.",
+    mit:"Alerta sobre clientes ya identificados cuyas operaciones se repiten justo abajo del umbral de Aviso en 6 meses.", ind:"Alertas de estructuración generadas vs. resueltas a tiempo"},
+   {risk:"Varios vehículos a nombre de terceros", fr:"VIII", flag:true,
+    text:"Alguien compra tres camionetas de lujo en un mes, paga en efectivo y pide que dos queden a nombre de personas distintas a quien trae el dinero.",
+    rule:"Si el cliente trae el efectivo en una mochila, esa venta no te conviene.",
+    mit:"Registrar en contrato el origen del dinero y a nombre de quién queda el bien.", ind:"% de ventas con origen de fondos y titular distintos, documentados"},
+   {risk:"Obra sin procedencia, pago del extranjero", fr:"VII", flag:true,
+    text:"Te ofrecen vender un cuadro «de colección» del que nadie tiene papeles de quién fue su dueño, y el comprador paga desde una cuenta en el extranjero.",
+    rule:"Si nadie puede decir de quién era antes la obra, sospecha.",
+    mit:"Documento de procedencia obligatorio antes de aceptar consignación o compra.", ind:"% de piezas de arte con procedencia documentada"},
+   {risk:"Blindaje urgente y rechazo a identificarse", fr:"IX", flag:true,
+    text:"Un cliente quiere blindar dos camionetas de inmediato, paga todo en efectivo y se molesta cuando le pides una identificación.",
+    rule:"Identifica a quién le blindas y quién paga.",
+    mit:"Identificación del cliente y de quien paga antes de iniciar el trabajo.", ind:"% de servicios de blindaje con cliente y pagador identificados"},
+   {risk:"Envío a otro país sin razón clara", fr:"VI", flag:true,
+    text:"Una clienta compra una pieza de joyería de alto valor, no pregunta por el diseño y pide que se la envíen a otro país donde no tiene domicilio ni negocio.",
+    rule:"Si el cliente pelea por NO identificarse, el problema es el cliente, no tu trámite.",
+    mit:"Cuestionario de propósito y destino cuando el bien sale del país sin relación aparente con el cliente.", ind:"% de envíos internacionales con propósito documentado"},
+   {risk:"Muchas transferencias chiquitas de cuentas distintas", fr:"VIII", flag:true,
+    text:"Un auto se liquida con quince transferencias pequeñas desde cuentas de personas distintas. Al comprador no le importa el precio ni el modelo, sólo cerrar hoy.",
+    rule:"Si el cliente trae el efectivo en una mochila, esa venta no te conviene.",
+    mit:"Conciliar cada pago contra el titular y documentar a los terceros pagadores.", ind:"% de ventas con pagos de terceros conciliados y documentados"},
+   {risk:"Operación ordinaria · crédito automotriz", fr:"VIII", flag:false,
+    text:"Un cliente compra un auto económico con crédito automotriz de un banco. El enganche lo transfiere desde su propia cuenta.",
+    rule:"Vehículo económico con crédito formal y pago bancario es menor riesgo."},
+   {risk:"Operación ordinaria · venta facturada", fr:"VI", flag:false,
+    text:"Una clienta identificada compra una joya con factura a su nombre y paga con su propia tarjeta bancaria.",
+    rule:"Venta con factura y pago por banco es menor riesgo: no ahuyentes al cliente sano."}
+  ]},
+ credito:{
+  name:"Crédito, tarjetas y juegos", sub:"Préstamos no bancarios, prepagadas, cheques de viajero y juegos con apuesta · fr. I a IV",
+  kind:"av", oc:"la Representante Encargada de Cumplimiento",
+  cases:[
+   {risk:"Préstamo de regreso: liquidación anticipada", fr:"IV", flag:true,
+    text:"Un cliente liquida completo, a los dos meses y en efectivo, un préstamo que tenía a tres años. No pide descuento ni pregunta por intereses.",
+    rule:"A quien no le importa cuánto le cobras de interés, le importa otra cosa.",
+    mit:"Documentar el origen del dinero con que se paga el crédito, no sólo con que se otorgó.", ind:"% de liquidaciones anticipadas con origen de fondos documentado"},
+   {risk:"Recargas de varias personas a una tarjeta", fr:"II", flag:true,
+    text:"En el sistema ves que una misma tarjeta prepagada recibe recargas en efectivo de varias personas distintas, en ciudades diferentes, durante la misma semana.",
+    rule:"Muchas recargas chiquitas a una misma tarjeta no es casualidad, es una bandera.",
+    mit:"Alerta por patrón de recarga múltiple o partida a la misma tarjeta o titular.", ind:"Tiempo de detección de patrones de dispersión"},
+   {risk:"Fichas sin juego y cobro como premio", fr:"I", flag:true,
+    text:"Un cliente compra muchísimas fichas, apuesta poquito y al rato pide cobrar casi todo como «premio», con comprobante a su nombre.",
+    rule:"El que apuesta poco pero mueve mucho efectivo no vino a jugar.",
+    mit:"Registrar compra de fichas y cobro de premios con identificación, cruzado contra el historial de juego.", ind:"% de premios altos con historial de juego consistente"},
+   {risk:"Monto que no cuadra con el perfil", fr:"III", flag:true,
+    text:"Una persona compra cheques de viajero por montos altos varias veces en pocos días, los liquida en efectivo y no quiere dar sus datos. Declaró ser empleada con sueldo modesto.",
+    rule:"Si el monto no cuadra con lo que el cliente hace para vivir, pregunta.",
+    mit:"Cuestionario de perfil económico al identificar, revisado contra el monto operado.", ind:"% de operaciones con perfil económico documentado"},
+   {risk:"Garantía en el extranjero y desinterés en la tasa", fr:"IV", flag:true,
+    text:"Un solicitante ofrece como garantía un inmueble en otro país con el que no tiene relación aparente. No le importan la tasa ni las condiciones: sólo quiere el dinero esta semana.",
+    rule:"A quien no le importa cuánto le cobras de interés, le importa otra cosa.",
+    mit:"Verificar la garantía y el propósito del crédito antes de otorgarlo.", ind:"% de créditos con garantía y propósito verificados"},
+   {risk:"Recargas frecuentes tantito abajo del umbral", fr:"II", flag:true,
+    text:"Una empresa recarga cada tercer día las tarjetas de sus «trabajadores» por montos siempre un poco abajo del umbral. Varios trabajadores no saben que tienen tarjeta.",
+    rule:"Muchas recargas chiquitas a una misma tarjeta no es casualidad, es una bandera.",
+    mit:"Convenio con trazabilidad de uso y expediente de cada titular de tarjeta.", ind:"% de tarjetas con expediente completo, propio o delegado"},
+   {risk:"Operación ordinaria · crédito domiciliado", fr:"IV", flag:false,
+    text:"Un cliente con garantía real paga su crédito en mensualidades por domiciliación desde su cuenta bancaria, sin atrasos.",
+    rule:"Crédito con garantía real y pagos rastreables es menor riesgo."},
+   {risk:"Operación ordinaria · recarga desde cuenta", fr:"II", flag:false,
+    text:"El titular de una tarjeta la recarga una vez al mes, por montos bajos, desde su propia cuenta bancaria.",
+    rule:"Recarga desde cuenta bancaria, con límites bajos y rastreables, es menor riesgo."}
+  ]},
+ fin:{
+  name:"Entidades financieras", sub:"Bancos, SOFOM, casas de bolsa, transmisores, centros cambiarios y demás supervisadas",
+  kind:"sf", oc:"el Oficial de Cumplimiento",
+  cases:[
+   {risk:"Fraccionamiento y cuenta de paso", fr:"Perfil transaccional", flag:true,
+    text:"Un cliente que declaró ser empleado con sueldo modesto recibe en un mes decenas de depósitos en efectivo por montos parecidos, en distintas sucursales, y los transfiere al extranjero al día siguiente.",
+    rule:"Si el dinero sólo pasa por la cuenta, la cuenta es el instrumento.",
+    mit:"Alerta de perfil transaccional que cruza efectivo fraccionado con salida inmediata.", ind:"% de alertas de fraccionamiento dictaminadas en plazo"},
+   {risk:"Empresa sin sustancia económica", fr:"Factor cliente", flag:true,
+    text:"Una empresa recién constituida abre cuenta. El apoderado no sabe explicar el giro, el domicilio es una oficina virtual y espera recibir millones desde el primer mes.",
+    rule:"Si nadie puede explicar el negocio, el negocio no es el que te dicen.",
+    mit:"Visita o validación de sustancia económica antes de activar productos de alto flujo.", ind:"% de personas morales de alto riesgo con sustancia verificada"},
+   {risk:"Pregunta por el umbral de reporte", fr:"Factor cliente", flag:true,
+    text:"Al abrir una inversión, el cliente pregunta a partir de qué monto «se avisa a la autoridad» y pide que su operación quede por debajo.",
+    rule:"Quien pregunta cómo no ser visto ya te dijo algo.",
+    mit:"Reporte interno inmediato de conductas de evasión, con registro de lo dicho.", ind:"% de reportes internos por conducta atendidos en plazo"},
+   {risk:"Coincidencia con Lista de Personas Bloqueadas", fr:"Listas", flag:true,
+    text:"Al capturar a un nuevo cliente, el sistema marca una coincidencia parcial de nombre y fecha de nacimiento con la Lista de Personas Bloqueadas. El cliente tiene prisa.",
+    rule:"Una coincidencia no se resuelve en la ventanilla.",
+    mit:"Suspensión de la captura y escalamiento a cumplimiento para validar la coincidencia.", ind:"Tiempo de resolución de coincidencias en listas"},
+   {risk:"PEP con movimientos fuera de perfil", fr:"Factor cliente", flag:true,
+    text:"Un funcionario público de alto nivel abre cuenta a nombre de un familiar. Los depósitos no corresponden a la actividad declarada del familiar.",
+    rule:"El riesgo del cargo no se queda en el cargo: viaja con la familia.",
+    mit:"Debida diligencia reforzada y aprobación de nivel directivo para PEP y sus relacionados.", ind:"% de PEP y relacionados con debida diligencia reforzada vigente"},
+   {risk:"Terceros sin relación que fondean la cuenta", fr:"Factor producto/canal", flag:true,
+    text:"La cuenta de un comerciante recibe transferencias de decenas de personas sin relación comercial aparente, y el saldo se retira casi completo en efectivo.",
+    rule:"Si el dinero sólo pasa por la cuenta, la cuenta es el instrumento.",
+    mit:"Monitoreo de concentración de terceros y retiro inmediato en efectivo.", ind:"% de cuentas con patrón de embudo revisadas"},
+   {risk:"Operación ordinaria · nómina", fr:"Perfil transaccional", flag:false,
+    text:"Un cliente recibe su nómina cada quincena y paga sus servicios por domiciliación. Sus movimientos son los mismos desde hace años.",
+    rule:"Perfil estable y rastreable: no lo castigues."},
+   {risk:"Operación ordinaria · temporada alta", fr:"Perfil transaccional", flag:false,
+    text:"Una empresa con diez años de relación aumenta sus flujos en diciembre, como cada año, y el aumento coincide con sus estados financieros.",
+    rule:"Un cambio explicado y recurrente no es una alerta: conocer al cliente es también saber cuándo no preocuparse."}
+  ]}
+};
+
+
+/* Respuestas propias de cada situación. A = sigue normal · B = lo resuelve solo · C = documenta y escala sin alertar · D = alerta al cliente o rechaza */
+const CASE_OPTS = {
+ inmob:[
+  {A:"Cierro la venta: el pago está completo y el cliente tiene prisa.",B:"Pido el acta de la empresa y, si me la entrega, firmamos.",C:"Registro quién está detrás de la empresa y lo turno a cumplimiento antes de firmar.",D:"Le digo que esa forma de pago es sospechosa y no le vendo."},
+  {A:"Acepto el pago: un año adelantado es buena noticia para el dueño.",B:"Le pido un comprobante de ingresos y, si lo trae, recibo el dinero.",C:"Anoto el monto y la diferencia con el mercado y aviso a cumplimiento.",D:"Le digo que esa renta no cuadra y le devuelvo su efectivo."},
+  {A:"Recibo el enganche: lo importante es que el dinero ya llegó.",B:"Pido la identificación del conocido y, si la manda, sigo con la venta.",C:"Registro quién pagó y su relación con el comprador, y lo turno a cumplimiento.",D:"Le digo al comprador que no acepto dinero de terceros y cancelo."},
+  {A:"Acepto: así se acostumbra y el comprador ya firmó la oferta.",B:"Le pido que me firme una carta donde explique la diferencia de precio.",C:"Documento el precio pactado y el propuesto, y lo escalo a cumplimiento.",D:"Le digo que eso es evasión o lavado y rompo la negociación."},
+  {A:"Registro la preventa a nombre del inversionista que dio la cara.",B:"Le pido una lista con los nombres de los demás y la anexo al contrato.",C:"Detengo la recepción de recursos, anoto lo que sé y aviso a cumplimiento.",D:"Le explico que parece un esquema para ocultar dinero y lo rechazo."},
+  {A:"Recibo la renta: mientras alguien pague, el contrato está al corriente.",B:"Pido al inquilino una carta de su socio y la guardo en el expediente.",C:"Anoto quién paga, cómo y desde cuándo, y lo reporto a cumplimiento.",D:"Le digo al inquilino que esos pagos son sospechosos y rescindo."},
+  {A:"Integro el expediente de siempre y seguimos con la escritura.",B:"Pido estados de cuenta de seis meses antes de avanzar.",C:"La reporto a cumplimiento por ser una compra de monto alto.",D:"Le digo que su operación requiere revisión especial y la detengo."},
+  {A:"Registro el pago del mes y archivo el comprobante como siempre.",B:"Pido al inquilino que me justifique de dónde saca para la renta.",C:"Aviso a cumplimiento cada mes que llega un pago de renta.",D:"Le pido que pague en efectivo en oficina para tener más control."}
+ ],
+ alto:[
+  {A:"Le vendo: cada compra está abajo del umbral y paga completo.",B:"Le pido identificación esta vez y, si la trae, le vendo.",C:"Sumo sus compras recientes, anoto el patrón y aviso a cumplimiento.",D:"Le digo que sé que fracciona para no ser reportado y ya no le vendo."},
+  {A:"Cierro la venta: ya pagó y las facturas salen a nombre de quien pida.",B:"Pido la identificación de las otras dos personas y, si la trae, facturo.",C:"Registro quién pagó y a nombre de quién quedan, y lo turno a cumplimiento.",D:"Le digo que eso parece lavado y cancelo la venta de las tres."},
+  {A:"Acepto la consignación: el comprador ya tiene el dinero listo.",B:"Pido una carta del vendedor sobre el origen del cuadro y la anexo.",C:"Detengo la operación sin procedencia documentada y aviso a cumplimiento.",D:"Le digo al comprador que la pieza parece de origen ilícito y la retiro."},
+  {A:"Arranco el trabajo: el pago en efectivo ya está completo.",B:"Le insisto con la identificación y, si la muestra, empiezo.",C:"No inicio sin identificarlo; anoto su reacción y aviso a cumplimiento.",D:"Le digo que su actitud es sospechosa y le devuelvo el dinero."},
+  {A:"Preparo el envío: el cliente ya pagó y el destino es su decisión.",B:"Le pido el domicilio de destino completo y hago el envío.",C:"Anoto el destino, el propósito que dio y lo turno a cumplimiento.",D:"Le digo que no mando joyas a países donde no vive y cancelo."},
+  {A:"Entrego el auto: sumando las transferencias, está liquidado.",B:"Le pido que me diga de quién es cada cuenta y lo anoto en la factura.",C:"Concilio cada pago contra su titular y lo escalo a cumplimiento.",D:"Le digo que esa forma de pago es de lavado y le regreso todo."},
+  {A:"Integro el expediente normal y entrego la unidad.",B:"Pido tres estados de cuenta más antes de entregarla.",C:"La reporto a cumplimiento porque es una venta de vehículo.",D:"Le pido que mejor pague de contado para evitar trámites."},
+  {A:"Facturo a su nombre y entrego la pieza.",B:"Le pido comprobante de domicilio y de ingresos antes de entregar.",C:"Aviso a cumplimiento porque la pieza es de alto valor.",D:"Le digo que por el monto no puedo vendérsela hoy."}
+ ],
+ credito:[
+  {A:"Recibo el pago y libero la garantía: el cliente cumplió.",B:"Le pido que firme una carta que diga de dónde sacó el dinero.",C:"Documento el origen del efectivo con que pagó y aviso a cumplimiento.",D:"Le digo que pagar así es sospechoso y no le recibo el efectivo."},
+  {A:"No hago nada: las recargas son pequeñas y están permitidas.",B:"Bloqueo la tarjeta hasta que el titular me llame a explicar.",C:"Anoto el patrón de recargas y ciudades y lo reporto a cumplimiento.",D:"Llamo al titular y le digo que su tarjeta se usa para lavar dinero."},
+  {A:"Le pago el premio y le doy su constancia.",B:"Le pido identificación para entregarle el premio y la constancia.",C:"Cruzo su juego real contra el cobro, anoto y aviso a cumplimiento.",D:"Le digo que no jugó lo suficiente y no le pago."},
+  {A:"Le vendo los cheques: pagó completo en efectivo.",B:"Le insisto en sus datos y, si me los da, le vendo.",C:"No opero sin identificarlo; anoto montos y fechas y aviso a cumplimiento.",D:"Le digo que su sueldo no le alcanza para eso y no le vendo."},
+  {A:"Autorizo el crédito: la garantía cubre el monto.",B:"Le pido el avalúo del inmueble en el extranjero y, si lo trae, autorizo.",C:"Detengo la autorización, anoto lo que no cuadra y aviso a cumplimiento.",D:"Le digo que su solicitud es sospechosa y la rechazo."},
+  {A:"Proceso las recargas: la empresa es cliente desde hace tiempo.",B:"Pido a la empresa la lista de trabajadores con su firma de recibido.",C:"Anoto las tarjetas y el patrón, y lo reporto a cumplimiento.",D:"Le digo a la empresa que está simulando nómina y cancelo el contrato."},
+  {A:"Aplico los pagos como siempre: el crédito va al corriente.",B:"Le pido que actualice sus comprobantes de ingresos cada mes.",C:"Reporto la cuenta a cumplimiento porque maneja montos constantes.",D:"Le propongo pagar en efectivo en sucursal para ahorrar comisiones."},
+  {A:"Aplico la recarga: es el titular y viene de su propia cuenta.",B:"Le pido que me explique para qué usa la tarjeta.",C:"Aviso a cumplimiento cada vez que recarga.",D:"Le bloqueo la tarjeta hasta que venga a sucursal."}
+ ],
+ fin:[
+  {A:"Nada: los depósitos son pequeños y las transferencias están autorizadas.",B:"Le pido que actualice sus ingresos y ajusto su perfil transaccional.",C:"Documento depósitos, sucursales y destino, y lo reporto al Oficial de Cumplimiento.",D:"Le llamo para decirle que su cuenta se ve como de lavado y la bloqueo."},
+  {A:"Abro la cuenta: la documentación legal está completa.",B:"Pido más documentos de la empresa y, si los trae, la abro.",C:"Anoto lo que no cuadra y lo turno a cumplimiento antes de activar productos.",D:"Le digo al apoderado que parece empresa fachada y no la abro."},
+  {A:"Le explico el umbral y cómo dividir la inversión.",B:"Le digo que no sé y sigo con la apertura normal.",C:"Registro lo que preguntó y lo reporto de inmediato a cumplimiento.",D:"Le advierto que esa pregunta lo hace sospechoso ante la autoridad."},
+  {A:"Descarto la coincidencia: es un nombre común y el cliente tiene prisa.",B:"Le pido otra identificación y, si no coincide la foto, continúo.",C:"Suspendo la captura y lo escalo a cumplimiento para validar.",D:"Le digo que aparece en la lista de bloqueados y le niego el servicio."},
+  {A:"Abro la cuenta: el titular es el familiar, no el funcionario.",B:"Pido al familiar que justifique los depósitos con un escrito.",C:"Lo clasifico como relacionado con PEP y lo escalo a cumplimiento.",D:"Le digo al funcionario que no abrimos cuentas a políticos."},
+  {A:"Nada: son transferencias de clientes de su negocio.",B:"Le pido que me mande sus facturas del mes y las archivo.",C:"Documento el patrón de terceros y retiros, y lo reporto a cumplimiento.",D:"Le aviso al comerciante que su cuenta está en investigación."},
+  {A:"Nada: sigo atendiendo la cuenta como siempre.",B:"Le pido que actualice su expediente completo este mes.",C:"Reporto la cuenta a cumplimiento por tener movimientos recurrentes.",D:"Le reduzco los límites de la cuenta por precaución."},
+  {A:"Nada: el aumento es el de cada año y está soportado.",B:"Le pido estados financieros dictaminados antes de liberar los flujos.",C:"Reporto el aumento a cumplimiento como operación inusual.",D:"Congelo la cuenta hasta que la empresa explique el aumento."}
+ ]
+};
+
+const LEADER_Q = [
+ {id:"q1", t:"¿Puedes nombrar hoy los tres riesgos que más le pegan a tu sector?",
+  o:[["Sí, y están documentados en mi evaluación de riesgos",3],["Sí, pero no los tengo documentados",2],["Tengo una idea general",1],["No los tengo claros",0]],
+  read:["Tienes el punto de partida que casi nadie tiene: riesgos escritos. Ahora conviértelos en contenido por puesto.","Los conoces, pero si no están escritos no pueden guiar el programa ni defenderse ante una revisión.","Una idea general produce capacitación general. El programa 2027 tiene que nacer de riesgos concretos.","Sin riesgos claros no hay programa posible: todo lo demás se construye sobre esto."]},
+ {id:"q2", t:"¿Sabes qué área de tu organización ve primero cada foco rojo?", tSF:"¿Las áreas que capturan datos del cliente saben qué factor de tu metodología de riesgo alimentan (cliente, producto, canal, zona)?",
+  o:[["Sí, lo tengo mapeado área por área",3],["Para algunas áreas",2],["No lo he mapeado",0]],
+  read:["Ese mapa es la columna del programa: cada área aprende lo que ve primero.","Las áreas sin mapear son justo donde el foco rojo pasa sin que nadie lo note.","Si no sabes quién lo ve primero, no sabes a quién capacitar primero."]},
+ {id:"q3", t:"¿Cómo mides hoy que tu gente aprendió?",
+  o:[["Casos o simulacros, con resultado por área",3],["Examen de conocimientos",2],["Constancia de asistencia",1],["No lo medimos",0]],
+  read:["Mides lo que importa: si saben actuar. Guarda esos resultados como evidencia de debido control.","Un examen dice qué recuerdan, no qué harían con el cliente enfrente. Súmale casos.","La constancia prueba que asistieron, no que aprendieron. Es cumplimiento binario.","Sin medición no hay forma de demostrar que la capacitación funciona."]},
+ {id:"q4", t:"¿Cómo decides qué capacitación recibe cada puesto?",
+  o:[["Por riesgo y por función",3],["El mismo curso para todos",1],["Lo que ofrece el proveedor",1],["No tenemos programa",0]],
+  read:["Es exactamente lo que piden las normas: contenido coherente con la metodología y adecuado a cada responsabilidad.","Talla única: la caja y la dirección no enfrentan los mismos riesgos ni toman las mismas decisiones.","El programa lo está diseñando quien vende el curso, no quien conoce tus riesgos.","2027 empieza sin mapa: hay que construirlo desde cero, y rápido."]},
+ {id:"q5", t:"¿La dirección participa en el programa de capacitación?",
+  o:[["Lo aprueba, asiste y asigna recursos",3],["Sólo lo aprueba",1],["No participa",0]],
+  read:["Con la dirección adentro, el programa tiene dientes y presupuesto.","Firmar no es liderar: la dirección también necesita saber qué decisiones le tocan.","Sin la dirección, cumplimiento capacita contra la corriente."]},
+ {id:"q6", t:"¿Cualquier colaborador sabe cómo escalar una alerta?",
+  o:[["Sí: hay un canal conocido y se usa",3],["Existe, pero casi no se usa",1],["No hay un canal claro",0]],
+  read:["El canal existe y funciona: la capacitación puede apoyarse en él.","Un canal que no se usa es señal de miedo o de desconocimiento. Hay que enseñarlo con casos.","Aunque tu gente vea el foco rojo, no tiene a dónde llevarlo."]}
+];
+
+const AREAS = ["Dirección u órgano de administración","Ventas y atención a clientes","Caja, tesorería y cobranza","Operaciones y expedientes","Crédito y originación","Cumplimiento","Auditoría o control interno","Otra área"];
+const LEVELS = ["Operativo","Mando medio","Directivo"];
+const AREA_MUST = {
+ "Dirección u órgano de administración":"Decidir con base en el riesgo: no rechazar negocio sano, no alertar al cliente y asignar recursos al control.",
+ "Ventas y atención a clientes":"Reconocer el foco rojo en el momento del trato y escalarlo sin que el cliente lo note.",
+ "Caja, tesorería y cobranza":"Detectar efectivo, pagos de terceros y fraccionamiento en el momento del cobro.",
+ "Operaciones y expedientes":"Integrar origen de fondos y beneficiario controlador antes del acto, no después.",
+ "Crédito y originación":"Revisar propósito, garantía y origen de los pagos, incluidos los anticipados.",
+ "Cumplimiento":"Analizar, documentar y decidir con oportunidad; convertir cada caso en aprendizaje para las áreas.",
+ "Auditoría o control interno":"Evaluar si los controles funcionan con indicadores de efectividad, no sólo con evidencia de existencia.",
+ "Otra área":"Saber qué le toca ver, a quién avisar y qué no hacer frente al cliente."
+};
+
+/* ============ ESTADO ============ */
+const KEY="pulso360_v1";
+let S = Object.assign(fresh(), load()||{}); S.tq=S.tq||{};
+function fresh(){return {mode:"teoria", t:0, tq:{}, sector:null, org:"", leader:{pred:70}, people:[], view:"inicio", run:null, confirmReset:false}}
+function load(){try{const r=localStorage.getItem(KEY);return r?JSON.parse(r):null}catch(e){return null}}
+function save(){try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}}
+function set(p){Object.assign(S,p);save();render()}
+
+/* ============ UTIL ============ */
+const $=s=>document.querySelector(s);
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+function toast(m){const t=$("#toast");t.textContent=m;t.hidden=false;clearTimeout(t._h);t._h=setTimeout(()=>t.hidden=true,2400)}
+const pct=x=>Math.round(x*100);
+function sem(v){return v>=.75?["v","Lo reconocen"]:v>=.4?["a","A medias"]:["r","No lo reconocen"]}
+
+/* ============ VISTAS ============ */
+function render(){
+  document.querySelectorAll(".mode").forEach(b=>b.setAttribute("aria-current",b.dataset.mode===S.mode?"true":"false"));
+  $("#steps").hidden=S.mode!=="pulso";
+  document.querySelectorAll(".step").forEach(b=>b.setAttribute("aria-current",b.dataset.go===S.view?"true":"false"));
+  const v=S.mode==="teoria"?vTeoria:S.mode==="taller"?vTaller:({inicio:vInicio,lider:vLider,equipo:vEquipo,caso:vCaso,informe:vInforme}[S.view]||vInicio);
+  $("#app").innerHTML=`<section class="view pop">${v()}</section>`;
+  bind();
+  window.scrollTo({top:0});
+}
+
+function vInicio(){
+  const secs=Object.entries(SECTORS).map(([k,s])=>`<button class="sector" data-sector="${k}" aria-pressed="${S.sector===k}"><span class="dot"></span><span><span class="t">${s.name}</span><br><span class="s">${s.sub}</span></span></button>`).join("");
+  return `<div class="hero">
+    <div>
+      <p class="eyebrow">Diagnóstico de sensibilidad al riesgo</p>
+      <h1 style="margin-top:10px">Tu programa dice que capacitaste. ¿Tu gente reconocería un caso de lavado mañana?</h1>
+      <p class="lede">En 15 minutos sabes qué riesgos de tu sector ve tu gente, cuáles se le pasan y qué tiene que aprender cada área en 2027.</p>
+      <div class="howto">
+        <div><b>1</b><span><strong>Tú contestas</strong> seis preguntas sobre cómo lideras hoy el aprendizaje y predices cuánto acertará tu equipo.</span></div>
+        <div><b>2</b><span><strong>Cinco personas de áreas distintas</strong> resuelven ocho situaciones reales de tu sector. Es anónimo: sólo se registra área y nivel.</span></div>
+        <div><b>3</b><span><strong>Recibes tu diagnóstico</strong>: qué riesgos reconocen, dónde está la brecha, qué debe aprender cada área y tus prioridades 2027.</span></div>
+      </div>
+    </div>
+    <div class="card stack">
+      <label class="f" for="org">Organización (opcional)<input id="org" type="text" placeholder="Ej. Inmobiliaria del Bajío" value="${esc(S.org)}"></label>
+      <div><p style="font-weight:600;font-size:15px;margin-bottom:8px">Elige tu sector</p><div class="sectors">${secs}</div></div>
+      <button class="btn" id="start" ${S.sector?"":"disabled"}>Empezar</button>
+      <button class="btn ghost" id="exRep2">Ver un diagnóstico de ejemplo en un clic</button>
+      <button class="btn link" id="demo">Demostración en vivo: cargar 4 respuestas y contestar la quinta</button>
+    </div>
+  </div>`;
+}
+
+function vLider(){
+  if(!S.sector) return needSector();
+  const sf=SECTORS[S.sector].kind==="sf";
+  const qs=LEADER_Q.map(q=>`<div class="q"><h4>${sf&&q.tSF?q.tSF:q.t}</h4><div class="opts">${q.o.map((o,i)=>`<button class="opt" data-lq="${q.id}" data-i="${i}" aria-pressed="${S.leader[q.id]===i}"><span class="dot"></span><span>${o[0]}</span></button>`).join("")}</div></div>`).join("");
+  const done=LEADER_Q.every(q=>S.leader[q.id]!=null);
+  return `<p class="eyebrow">Paso 1 · Tu mirada como líder</p>
+  <h2 style="margin:8px 0 6px">Antes de ver a tu equipo, mírate a ti</h2>
+  <p class="muted" style="max-width:60ch">Nadie ve estas respuestas más que tú. Contesta cómo está hoy, no cómo debería estar.</p>
+  <div class="card" style="margin-top:20px">
+    <div class="q"><h4>Tu predicción: ¿qué porcentaje de las situaciones crees que tu gente resolverá bien?</h4>
+      <div class="slider"><input type="range" id="pred" min="0" max="100" step="5" value="${S.leader.pred}" aria-label="Predicción en porcentaje"><output id="predo">${S.leader.pred}%</output></div>
+      <p class="muted small" style="margin-top:6px">Guárdala en mente: al final la comparamos con lo que pasó.</p></div>
+    ${qs}
+  </div>
+  <div class="row" style="margin-top:20px;justify-content:flex-end"><button class="btn" id="toTeam" ${done?"":"disabled"}>Seguir con mi equipo</button></div>`;
+}
+
+function vEquipo(){
+  if(!S.sector) return needSector();
+  const cards=S.people.map((p,i)=>`<div class="person"><span class="pid">P${i+1}</span><span class="small">${esc(p.area)}</span><span class="muted small">${esc(p.level)}</span>${p.demo?'<span><span class="tag demo">Ejemplo</span></span>':''}</div>`);
+  for(let i=S.people.length;i<5;i++) cards.push(`<div class="person empty"><span class="pid" style="color:var(--ink-3)">P${i+1}</span><span class="small">Pendiente</span></div>`);
+  const used=S.people.map(p=>p.area), nextA=AREAS.find(a=>!used.includes(a))||AREAS[1];
+  const areaOpts=AREAS.map(a=>`<option ${a===nextA?"selected":""}>${a}</option>`).join(""), lvlOpts=LEVELS.map(a=>`<option>${a}</option>`).join("");
+  return `<p class="eyebrow">Paso 2 · Tu equipo</p>
+  <h2 style="margin:8px 0 6px">Cinco personas, cinco miradas distintas</h2>
+  <p class="muted" style="max-width:62ch">Elige personas de áreas o niveles diferentes: así el diagnóstico te dice dónde está la brecha, no sólo que existe. Pásales el equipo; cada quien contesta sin ver las respuestas de los demás.</p>
+  <div class="people" style="margin-top:20px">${cards.join("")}</div>
+  <div class="card" style="margin-top:20px">
+    <h3>Siguiente persona</h3>
+    <div class="grid2" style="margin-top:14px">
+      <label class="f" for="area">Área<select id="area">${areaOpts}</select></label>
+      <label class="f" for="level">Nivel<select id="level">${lvlOpts}</select></label>
+    </div>
+    <p class="muted small" style="margin-top:10px">No se pide nombre. No es un examen de la persona: es una foto de lo que hoy reconoce la organización.</p>
+    <div class="row" style="margin-top:16px"><button class="btn" id="addP">Empezar sus 8 situaciones</button></div>
+  </div>
+  <div class="row no-print" style="margin-top:20px;justify-content:space-between">
+    <button class="btn ghost" id="reset">Borrar todo y empezar de nuevo</button>
+    <button class="btn dark" id="toRep" ${S.people.length?"":"disabled"}>Ver mi diagnóstico${S.people.length<5&&S.people.length?` (${S.people.length} de 5)`:""}</button>
+  </div>
+  ${S.confirmReset?`<div class="confirm" style="margin-top:14px"><span>¿Borrar tus respuestas y las de tu equipo?</span><button class="btn" style="background:var(--rojo);color:#fff" id="resetYes">Sí, borrar</button><button class="btn ghost" id="resetNo">Cancelar</button></div>`:""}`;
+}
+
+function vCaso(){
+  const sec=SECTORS[S.sector], r=S.run, c=sec.cases[r.i], ord=ORDERS[r.i%ORDERS.length];
+  const co=(CASE_OPTS[S.sector]||[])[r.i]||OPTS;
+  const opts=ord.split("").map((k,j)=>`<button class="opt" data-ans="${k}"><span class="k">${"abcd"[j]})</span><span>${co[k]}</span></button>`).join("");
+  return `<div class="runner">
+    <div class="row" style="justify-content:space-between"><span class="eyebrow">P${S.people.length+1} · ${esc(r.area)} · ${esc(r.level)}</span><span class="muted small" style="font-variant-numeric:tabular-nums">Situación ${r.i+1} de ${sec.cases.length}</span></div>
+    <div class="prog"><i style="width:${(r.i)/sec.cases.length*100}%"></i></div>
+    <div class="card">
+      <p class="case-text">${c.text}</p>
+      <p class="case-q">Estás a cargo de esta operación. ¿Qué haces?</p>
+      <div class="answers">${opts}</div>
+    </div>
+    <div class="row" style="margin-top:14px;justify-content:space-between"><button class="btn link" id="cancelRun">Cancelar a esta persona</button><span class="muted small">No hay respuesta con truco: contesta lo que harías hoy.</span></div>
+  </div>`;
+}
+
+function needSector(){return `<div class="card"><h3>Primero elige tu sector</h3><p class="muted" style="margin-top:6px">El diagnóstico usa situaciones propias de cada sector.</p><div class="row" style="margin-top:14px"><button class="btn" data-go2="inicio">Ir al inicio</button></div></div>`}
+
+/* ============ PESTAÑA: POR QUÉ CAPACITAR ============ */
+const SKILLS=[
+ {n:"Conocimiento técnico",q:"Saber qué pide la norma, qué dice tu Manual y cómo se ve un foco rojo en tu sector.",f:"La persona tiene el caso enfrente y no sabe que es un foco rojo. Pide el papel equivocado, o ninguno, y la operación sigue.",e:"Con casos de tu propio sector, no con lectura de artículos. La norma se consulta; el foco rojo se reconoce.",d:"Se ve como «No vio el foco rojo»."},
+ {n:"Investigación",q:"Distinguir un dato de una suposición, contrastar lo que dice el cliente con lo que muestran los documentos y saber qué falta aclarar.",f:"El expediente está completo, pero la historia no cuadra y nadie lo nota. Las alertas se cierran con «es cliente conocido».",e:"Con expedientes que tienen contradicciones escondidas: encontrarlas, anotarlas y decidir qué preguntar."},
+ {n:"Comunicación",q:"Explicar una preocupación sin convertirla en acusación: preguntarle al cliente sin alertarlo y escribir un reporte interno que cumplimiento pueda usar.",f:"Dos extremos: no reporta por miedo a acusar a alguien, o le dice al cliente que su operación es sospechosa. Y los reportes que llegan no sirven para decidir.",e:"Con ensayos de conversación con el cliente y redacción de reportes internos sobre casos reales.",d:"Se ve como «Alertó al cliente»."},
+ {n:"Sensibilidad al riesgo",q:"Reconocer cuándo una situación merece atención y cuándo no, y entender qué consecuencias tiene ignorarla.",f:"Ceguera: el foco rojo pasa como operación normal. O lo contrario: todo parece sospechoso y se ahuyenta a los clientes sanos.",e:"Con el semáforo de riesgo del sector, mezclando casos de riesgo y casos sanos para calibrar.",d:"Se ve como «No vio el foco rojo» y como «Sobre-reacciona con lo sano»."},
+ {n:"Criterio",q:"Decidir con información incompleta y bajo presión: la meta de ventas, el cliente con prisa, el jefe que quiere cerrar.",f:"Gana la presión comercial. O se aplican las reglas en automático, sin entender para qué existen, y se resuelve solo lo que tocaba escalar.",e:"Con dilemas con reloj y con meta de por medio: ¿qué haces cuando cerrar hoy vale tu bono?",d:"Se ve como «Lo vio, pero lo resolvió solo»."},
+ {n:"Creatividad con recursos escasos",q:"Hacer que el control funcione con lo que hay: poco tiempo, poca gente, poco presupuesto y herramientas comunes como hojas de cálculo, videollamadas o IA.",f:"«No hay presupuesto» se vuelve la razón para no hacer nada. El programa se queda en el papel hasta que llegue el recurso, y el recurso nunca llega.",e:"Diseñando controles y difusión con herramientas que ya tienes. Es justo lo que se trabaja en el taller."},
+ {n:"Liderazgo",q:"Que la dirección y cumplimiento hagan que el control se viva: que den el ejemplo, asignen recursos y respalden a quien reporta.",f:"La organización enseña a prevenir y presiona para ignorar. Nadie escala una alerta porque sabe que no habrá respaldo, o que le costará la venta.",e:"Con sesiones para la dirección sobre qué decisiones le tocan, qué consecuencias tienen y qué recursos debe autorizar.",d:"Se ve en «Tu liderazgo del aprendizaje»."}
+];
+const ROLES=[
+ {n:"Representantes y oficiales de cumplimiento",p:"La norma pone el programa en sus manos. En bancos, el Oficial de Cumplimiento lo define y el Comité lo aprueba (Disposiciones 47.ª, fr. VIII, y 43.ª, fr. VII). En actividades vulnerables, los programas de capacitación son contenido del Manual de Políticas Internas (RCG, art. 37 Bis, fr. XI).",e:"Traduce la evaluación de riesgos en temas; decide qué recibe cada puesto; mide si aprendieron y regresa a las áreas lo que enseña cada caso.",f:"El programa se arma con lo que haya en el catálogo y no guarda coherencia con los riesgos, que es justo lo que la norma pide."},
+ {n:"Recursos humanos",p:"Tiene lo que el programa necesita para existir: la plantilla, los puestos, el nivel de estudios y las altas. Y es la puerta de entrada: quien ingresa a atención al público o administración de recursos se capacita antes de su ingreso o al mismo tiempo (Disposiciones 50.ª; RCG, art. 39 Bis 1).",e:"Padrón por puesto, inducción de nuevo ingreso, logística y resguardo de evidencia. En actividades vulnerables, además, los procedimientos de selección de personal para las nuevas contrataciones desde el 1 de marzo de 2027 (RCG, art. 39 Bis 2).",f:"Entra gente nueva al mostrador sin capacitación y nadie se entera hasta la revisión. Cumplimiento capacita a ciegas, sin saber quién ocupa cada puesto."},
+ {n:"Auditores",p:"Su trabajo es decir si el programa funciona, no sólo si existe. Y en actividades vulnerables, la auditoría interna sólo puede dictaminar si cuenta con al menos una acreditación del programa anual de capacitación (RCG, art. 44).",e:"Prueban coherencia del temario con la metodología, revisan evaluaciones y medidas para quien no aprueba, y miden efectividad con indicadores. También se capacitan ellos.",f:"El informe dice «cumple» porque hay constancias, y el control que no opera sigue sin detectarse."},
+ {n:"Consultores",p:"Muchos sujetos obligados, sobre todo en actividades vulnerables, no tienen área de cumplimiento: el consultor es quien diseña o imparte. En actividades vulnerables, quien imparte debe acreditar al menos cinco años de experiencia en prevención de lavado de dinero (RCG, art. 39 Bis, fr. III).",e:"Diseña el programa a partir de los riesgos de cada cliente, no del curso que ya tiene hecho; imparte, evalúa y deja la evidencia en orden.",f:"Se vende el mismo curso a todos los clientes. El cliente cumple en papel y queda expuesto en la operación."},
+ {n:"Dirección",p:"Está dentro del universo que la norma obliga a capacitar: consejo, administrador único y directivos, sin condición adicional. Y es quien decide los recursos.",e:"Aprueba el programa, asiste a su propia capacitación, asigna presupuesto, da el ejemplo y respalda a quien reporta una alerta aunque cueste una venta.",f:"El programa existe, pero la señal real de la organización es «cierra la venta». La gente aprende a prevenir y la presión le enseña a ignorar."}
+];
+const TSECS=[
+ {nav:"¿Preparada?", html:()=>`
+  <p class="eyebrow">Para empezar</p>
+  <h1>El curso está cumplido. ¿La empresa está preparada?</h1>
+  <p class="lede">Una empresa puede tener su programa anual, sus listas de asistencia y sus constancias en orden. Falta responder la pregunta que le da sentido a todo: cuando aparezca una situación de riesgo, ¿esas personas sabrán qué hacer?</p>
+  <div class="card"><h3>Sé honesto: ¿cómo se arma hoy tu programa de capacitación?</h3>
+   <div class="opts" style="margin-top:14px">${[
+     ["Cursos en un Excel, sumando horas","Tienes un calendario, no un programa. Las horas miden tiempo, no capacidad."],
+     ["El mismo curso para todos","Talla única: la caja y la dirección no enfrentan los mismos riesgos ni toman las mismas decisiones."],
+     ["Lo que ofrece el proveedor","El programa lo está diseñando quien vende el curso, no quien conoce tus riesgos."],
+     ["Por riesgo y por puesto","Vas bien. En este recorrido vas a ver cómo demostrar que además funciona."]
+   ].map((o,i)=>`<button class="opt" data-poll="${i}" aria-pressed="${S.tq.poll===i}"><span class="dot"></span><span>${o[0]}</span></button>`).join("")}</div>
+   ${S.tq.poll!=null?`<div class="reveal" style="margin-top:14px">${[
+     "Tienes un calendario, no un programa. Las horas miden tiempo, no capacidad.",
+     "Talla única: la caja y la dirección no enfrentan los mismos riesgos ni toman las mismas decisiones.",
+     "El programa lo está diseñando quien vende el curso, no quien conoce tus riesgos.",
+     "Vas bien. En este recorrido vas a ver cómo demostrar que además funciona."][S.tq.poll]}</div>`:""}
+  </div>`},
+ {nav:"El entorno", html:()=>`
+  <p class="eyebrow">Dónde estamos</p>
+  <h2>El entorno ya no perdona controles que sólo existen en papel</h2>
+  <div class="threats">
+   <div class="threat"><span class="when">Febrero de 2025</span><h3>Cárteles designados como organizaciones terroristas</h3><p>Estados Unidos designó a cárteles mexicanos como organizaciones terroristas extranjeras. Lo que antes era lavado ahora también puede ser financiamiento al terrorismo, con sanciones para quien les preste servicios.</p></div>
+   <div class="threat"><span class="when">Junio de 2025</span><h3>Tres instituciones mexicanas señaladas</h3><p>FinCEN señaló a tres instituciones financieras mexicanas como de preocupación principal en lavado de dinero. En semanas quedaron en riesgo de perder su relación con el sistema de EE. UU.</p></div>
+   <div class="threat"><span class="when">2026</span><h3>México en su evaluación mutua ante el GAFI</h3><p>En marzo de 2026 México recibió la visita in situ del equipo evaluador (GAFI–GAFILAT). El calendario público prevé discutir el informe en la plenaria de octubre de 2026, sujeto a ajustes. La evaluación ya no califica si existe la norma, sino si funciona. Lo mismo te van a preguntar tu auditor, tu banco y tus contrapartes.</p></div>
+  </div>
+  <div class="callout">Cumplimiento técnico es <b>tener</b> la medida. Efectividad es que la medida <b>produzca resultados</b>. Son dos preguntas distintas, y la segunda es la que hoy se examina.</div>`},
+ {nav:"Tu gente", html:()=>{const L=[
+   ["1.ª línea","Las áreas de negocio","Reconocer la inconsistencia en el momento del trato y comunicarla por el canal correcto, sin alertar al cliente.","El riesgo entra por la puerta principal y nadie lo ve: la primera línea es la única que tiene al cliente enfrente.","Casos de su propio mostrador, qué hacer y qué no decir, y a quién avisar."],
+   ["2.ª línea","Cumplimiento y riesgos","Investigar, contrastar información, sustentar conclusiones y convertir cada caso en aprendizaje para las áreas.","Las alertas se cierran por volumen, no por análisis, y las áreas repiten los mismos errores porque nadie les regresa lo aprendido.","Análisis de casos, redacción de conclusiones sustentadas y cómo enseñar a las áreas."],
+   ["3.ª línea","Auditoría","Evaluar si los controles funcionan, con indicadores de efectividad, no sólo con evidencia de que existen.","El informe dice «cumple» porque hay constancias, y el control que no opera sigue sin detectarse hasta que llega la autoridad.","Pruebas de efectividad: muestras, indicadores y entrevistas que demuestran si el control opera."]];
+  return `
+  <p class="eyebrow">Lo único que sí controlas</p>
+  <h2>En medio de todo lo que no depende de ti, tu gente sí depende de ti</h2>
+  <p class="lede">No controlas el crimen organizado, las designaciones ni la evaluación. Sí controlas qué sabe, qué sabe hacer y qué criterio tiene cada persona de tu organización.</p>
+  <div><h3>Lo que tu gente necesita. Toca cada capacidad:</h3>
+  <div class="chips" style="margin-top:12px">${SKILLS.map((c,i)=>`<button class="chip" data-skill="${i}" aria-pressed="${S.tq.skill===i}">${c.n}</button>`).join("")}</div>
+  ${S.tq.skill!=null?(()=>{const k=SKILLS[S.tq.skill];return `<div class="reveal skillcard" style="margin-top:12px"><h3>${k.n}</h3>
+    <div class="sk"><span class="skl">Qué es</span><p>${k.q}</p></div>
+    <div class="sk"><span class="skl">Si falta</span><p>${k.f}</p></div>
+    <div class="sk"><span class="skl">Cómo se entrena</span><p>${k.e}</p></div>
+    ${k.d?`<div class="sk"><span class="skl">En el diagnóstico</span><p>${k.d}</p></div>`:""}</div>`})():""}
+  </div>
+  <div><h3>Ninguna línea de defensa funciona sin eso. Toca cada una:</h3>
+   <div class="lines" style="margin-top:12px">${L.map((l,i)=>`<button class="linebtn" data-line="${i}" aria-pressed="${S.tq.line===i}"><span class="ln">${l[0]}</span><strong>${l[1]}</strong></button>`).join("")}</div>
+   ${S.tq.line!=null?(()=>{const l=L[S.tq.line];return `<div class="reveal skillcard" style="margin-top:12px"><h3>${l[0]} · ${l[1]}</h3>
+     <div class="sk"><span class="skl">Qué necesita</span><p>${l[2]}</p></div>
+     <div class="sk"><span class="skl">Si no lo tiene</span><p>${l[3]}</p></div>
+     <div class="sk"><span class="skl">Se capacita en</span><p>${l[4]}</p></div></div>`})():""}
+   <p class="muted small" style="margin-top:10px">El Comité de Basilea usa las tres líneas de defensa en su guía de riesgos de lavado para bancos y pide que la formación se adapte a la función de cada persona y al perfil de riesgo.</p>
+  </div>`}},
+ {nav:"La norma", html:()=>`
+  <p class="eyebrow">Lo que ya dice la norma</p>
+  <h2>Sector financiero y actividades vulnerables piden lo mismo: riesgo y puesto, no horas</h2>
+  <div class="grid2">
+   <div class="quote"><span class="tag">Sector financiero · desde hace años</span><q>Los temas de la capacitación deben ser coherentes con los resultados de la implementación de la metodología […] y adecuarse, en forma diferenciada, a las responsabilidades de los miembros de sus respectivos consejos de administración, directivos, funcionarios y empleados.</q><span class="src">Disposiciones del art. 115 LIC, 49.ª, fr. I (bancos)</span></div>
+   <div class="quote"><span class="tag">Actividades vulnerables · primer periodo 2027</span><q>Los temas de la capacitación señalados en esta fracción deben ser coherentes con los resultados de la implementación de la metodología […] y adecuarse a las responsabilidades de los miembros de sus respectivos consejos de administración, administrador único, directivos, funcionarios y, en todo caso de sus empleados.</q><span class="src">Reglas de Carácter General, art. 39 Bis, fr. I, último párrafo</span></div>
+  </div>
+  <div class="quote"><q>Contar con personal debidamente capacitado permite al Sujeto Supervisado hacer eficientes los recursos de que dispone.</q><span class="src">Guía de capacitación y difusión de la CNBV (2020), IV.1 · no vinculante</span></div>
+  <div class="card"><h3>Comprueba: según las dos normas, ¿de dónde sale el temario?</h3>
+   <div class="opts" style="margin-top:12px">${[["Del número de horas mínimas que marca la ley",0],["De los resultados de tu metodología de riesgos y de las responsabilidades de cada puesto",1],["Del catálogo de cursos disponible en el mercado",0]].map((o,i)=>`<button class="opt" data-nq="${i}" aria-pressed="${S.tq.nq===i}"><span class="dot"></span><span>${o[0]}</span></button>`).join("")}</div>
+   ${S.tq.nq!=null?`<div class="reveal" style="margin-top:12px">${S.tq.nq===1?"<strong>Exacto.</strong> Ninguna de las dos normas fija horas: piden coherencia con tus riesgos y contenido distinto por responsabilidad.":"<strong>No.</strong> Ninguna de las dos normas fija horas ni catálogo: piden coherencia con los resultados de tu metodología y contenido adecuado a cada responsabilidad."}</div>`:""}
+  </div>`},
+ {nav:"Cumplir o blindar", html:()=>`
+  <p class="eyebrow">La diferencia</p>
+  <h2>Cumplimiento binario o cumplimiento que blinda</h2>
+  <div class="tablewrap"><table><thead><tr><th>Cumplimiento binario</th><th>Cumplimiento que blinda</th></tr></thead><tbody>
+   <tr><td>Constancias y horas</td><td>Cada nivel hace lo que le toca</td></tr>
+   <tr><td>Mismo curso para todos</td><td>Contenido por puesto y por riesgo</td></tr>
+   <tr><td>Se prueba que asistieron</td><td>Se prueba que aprendieron y aplican</td></tr>
+   <tr><td>Un gasto para la revisión</td><td>Evidencia de debido control y confianza de tus contrapartes</td></tr>
+  </tbody></table></div>
+  <div class="card"><h3>Dos empresas, el mismo problema: un cliente las usó para lavar dinero. ¿Cuál puede demostrar mejor que tenía un control funcionando?</h3>
+   <div class="grid2" style="margin-top:14px">
+    <button class="linebtn" data-emp="0" aria-pressed="${S.tq.emp===0}"><span class="ln">A</span><span>100 % de constancias. Un curso en línea igual para todo el personal, cada año.</span></button>
+    <button class="linebtn" data-emp="1" aria-pressed="${S.tq.emp===1}"><span class="ln">B</span><span>Programa por puesto, con casos, resultados por área, un canal de alertas que se usa e indicadores.</span></button>
+   </div>
+   ${S.tq.emp!=null?`<div class="reveal" style="margin-top:12px"><strong>La B.</strong> La A demuestra que su gente asistió; la B, que el control operaba. El artículo 421 del Código Nacional de Procedimientos Penales hace responsable a la persona jurídica cuando, además del delito, «existió inobservancia del debido control en su organización»; y el Código Penal Federal (art. 11 Bis, apartado A, fr. XIV) incluye el lavado de dinero en ese catálogo. La evidencia de un control efectivo puede pesar en la defensa; una constancia, por sí sola, no garantiza nada.</div>`:""}
+  </div>`},
+ {nav:"2027", html:()=>`
+  <p class="eyebrow">Por qué ahora</p>
+  <h2>2027 no es un año cualquiera</h2>
+  <div class="tl">
+   <div><b>1 ene 2027</b><span>Arranca el primer periodo anual de capacitación para quienes realizan actividades vulnerables (RCG, Transitorio Séptimo).</span></div>
+   <div><b>1 mar 2027</b><span>Evaluación de riesgos, Manual y conocimiento del cliente conforme a las nuevas reglas.</span></div>
+   <div><b>1 jun 2027</b><span>Mecanismos automatizados obligatorios (Transitorio Noveno del Acuerdo 115).</span></div>
+   <div><b>Junio 2027</b><span>Elecciones federales: más dinero en efectivo moviéndose y más exposición a corrupción.</span></div>
+   <div><b>2027</b><span>Primer año completo después de la evaluación mutua de México: lo que diga el informe del GAFI marcará la agenda del país y de sus supervisores. La fecha de publicación del informe aún no está confirmada.</span></div>
+  </div>
+  <div class="card"><h3>¿A quién le toca diseñar esto?</h3><p class="muted small" style="margin-top:4px">Toca cada uno:</p>
+  <div class="chips" style="margin-top:10px">${ROLES.map((r,i)=>`<button class="chip" data-role="${i}" aria-pressed="${S.tq.role===i}">${r.n}</button>`).join("")}</div>
+  ${S.tq.role!=null?(()=>{const r=ROLES[S.tq.role];return `<div class="reveal skillcard" style="margin-top:12px"><h3>${r.n}</h3>
+    <div class="sk"><span class="skl">Por qué le toca</span><p>${r.p}</p></div>
+    <div class="sk"><span class="skl">En qué participa</span><p>${r.e}</p></div>
+    <div class="sk"><span class="skl">Si no participa</span><p>${r.f}</p></div></div>`})():""}
+  <p class="muted small" style="margin-top:10px">La Evaluación Nacional de Riesgos 2023 reportó más de 107 mil sujetos registrados que realizan actividades vulnerables, con información a junio de 2022.</p>
+  <p style="margin-top:12px">Un programa no es meter cursos a un Excel y sumar horas. Es asegurar que cada nivel reciba las herramientas y el conocimiento para hacer lo que le toca.</p></div>`},
+ {nav:"Tu siguiente paso", html:()=>`
+  <p class="eyebrow">Para cerrar</p>
+  <h2>¿Qué podrá hacer tu gente después de aprender, que hoy todavía no sabe hacer?</h2>
+  <div class="mantra"><span>Conoce</span><span>Sabe hacer</span><span>Sabe qué le toca</span></div>
+  <p class="lede">Sólo quien sabe a dónde va sabe qué viento le es favorable. Antes de diseñar tu programa, mide dónde está tu gente hoy.</p>
+  <div class="row"><button class="btn" data-mode="pulso">Hacer mi diagnóstico</button><button class="btn ghost" id="exRep">Ver un diagnóstico de ejemplo</button></div>
+  ${tallerHTML(couponNow(),null)}`}
+];
+function vTaller(){
+  const has=S.sector&&S.people&&S.people.length;
+  return `${tallerHTML(couponNow(),has?analyze():null)}
+  ${has?"":`<div class="card row" style="margin-top:18px;justify-content:space-between"><p>¿Todavía no tienes tu diagnóstico? Hazlo antes del taller: con él arrancas la sesión 1.</p><div class="row"><button class="btn" data-mode="pulso">Hacer mi diagnóstico</button><button class="btn ghost" id="exRep">Ver un ejemplo</button></div></div>`}`;
+}
+function vTeoria(){
+  const i=S.t||0, sec=TSECS[i];
+  return `<nav class="tnav" aria-label="Temas">${TSECS.map((t,j)=>`<button data-t="${j}" aria-current="${i===j}">${t.nav}</button>`).join("")}</nav>
+  <div class="tsec">${sec.html()}</div>
+  <div class="tfoot no-print">${i>0?`<button class="btn ghost" data-t="${i-1}">← ${TSECS[i-1].nav}</button>`:"<span></span>"}${i<TSECS.length-1?`<button class="btn" data-t="${i+1}">${TSECS[i+1].nav} →</button>`:""}</div>`;
+}
+
+
+function couponNow(){const now=new Date(), c50=new Date("2026-09-25T05:59:00Z"), start=new Date("2026-11-03T17:00:00Z");
+  return now<c50?["50desc24hrs","50% de descuento","Sólo hasta el jueves 24 de septiembre, 23:59"]: now<start?["25descprev","25% de preventa","Hasta que arranque el taller"]:null;}
+const BUY="https://www.360educa.com/order?ct=c21bc72e-d2f0-4d71-8856-9764932d40bb", PAGE="https://www.360educa.com/courses/arma-tu-programa";
+function tallerHTML(coupon,A){
+  const worst=A&&A.perCase.filter(c=>c.flag).sort((x,y)=>x.rate-y.rate)[0];
+  const S3=[
+   {n:"1",d:"Martes 3 de noviembre",t:"Planifica",q:"A quién capacitas, puesto por puesto; con qué recursos cuentas y cómo repartes el año.",o:"Tu Plantilla Maestra llenada.",u:A?`Llegas con tu semáforo: ${worst?`«${worst.risk}» y `:""}las brechas por área son el punto de partida de tu plan.`:"Llegas con tu diagnóstico: el semáforo y las brechas por área son el punto de partida.",g:"Invitada: Maribel Vázquez Menchaca"},
+   {n:"2",d:"Martes 10 de noviembre",t:"Ejecuta",q:"Tu calendario de capacitación y difusión, cómo compruebas que aprendieron y dónde guardas la evidencia.",o:"Tu calendario y tu ruta de resguardo de evidencia.",u:"Los mitigantes e indicadores de tu diagnóstico se vuelven los casos y evaluaciones de tus sesiones.",g:"Invitada: Arely Velázquez"},
+   {n:"3",d:"Martes 17 de noviembre",t:"Mejora",q:"Cómo mides si sirvió, qué corriges y cómo cierras el año con evidencia de debido control.",o:"Tu acta lista para firma y tu checklist de cierre.",u:A?`Tu índice de hoy (${pct(A.team)}/100) es tu línea base: al final del año repites el diagnóstico y demuestras la mejora.`:"Tu índice de hoy es tu línea base para demostrar la mejora al final del año.",g:"Invitada: Amanda Asaad"}
+  ];
+  return `<section class="taller">
+    <div class="taller-head">
+      <div><p class="eyebrow" style="color:var(--durazno)">Siguiente paso · Taller en vivo</p>
+        <h2 style="margin-top:8px">Arma tu Programa de Capacitación 2027</h2>
+        <p style="margin-top:10px;max-width:58ch">Ya sabes dónde está tu gente. En tres sesiones conviertes este diagnóstico en un programa para cualquier sector, normativa y nivel de tu organización, con herramientas tradicionales y de inteligencia artificial. Sales con cada tema definido: para quién, cómo se da y cómo se evalúa.</p>
+        <p class="small" style="margin-top:10px;color:#cfd6d2">Martes 3, 10 y 17 de noviembre de 2026 · 11:00 a 12:00 (CDMX) · En vivo por videollamada · Imparte Samara Barrios</p></div>
+      ${coupon?`<div class="coupon"><p style="color:#cfd6d2;font-size:14px">${coupon[1]} con el cupón</p><p class="code">${coupon[0]}</p><p style="color:#cfd6d2;font-size:13.5px;margin-top:6px">${coupon[2]}</p><p style="color:#cfd6d2;font-size:13.5px;margin-top:6px">Precio de lista: $3,200</p></div>`:`<div class="coupon"><p class="code">$3,200</p><p style="color:#cfd6d2;font-size:13.5px">Precio de lista</p></div>`}
+    </div>
+    <div class="sessions">${S3.map(x=>`<div class="session">
+      <div class="row" style="gap:12px;flex-wrap:nowrap"><span class="snum">${x.n}</span><div><p class="small muted">${x.d}</p><h3>${x.t}</h3></div></div>
+      <p>${x.q}</p>
+      <p class="small"><span class="skl">Te llevas</span><br><strong>${x.o}</strong></p>
+      <p class="small"><span class="skl">Con tu diagnóstico</span><br>${x.u}</p>
+      <p class="small muted">${x.g}</p></div>`).join("")}</div>
+    <div class="taller-foot">
+      <div class="chips">${["Sesiones en vivo","Grabaciones","Material adicional","Constancia"].map(c=>`<span class="chip" style="cursor:default">${c}</span>`).join("")}</div>
+      <div class="row"><a class="btn ghost" href="${PAGE}" target="_blank" rel="noopener">Ver el taller</a><a class="btn tbtn" href="${BUY}" target="_blank" rel="noopener">Inscribirme</a></div>
+    </div>
+  </section>`;
+}
+/* ============ MOTOR DEL DIAGNÓSTICO ============ */
+function analyze(){
+  const sec=SECTORS[S.sector], cs=sec.cases, P=S.people;
+  const scoreOf=(c,a)=>(c.flag?SCORE_FLAG:SCORE_CLEAN)[a];
+  const perPerson=P.map(p=>{const s=p.ans.reduce((t,a,i)=>t+scoreOf(cs[i],a),0)/cs.length;return {...p,score:s}});
+  const team=perPerson.reduce((t,p)=>t+p.score,0)/(P.length||1);
+  const perCase=cs.map((c,i)=>{const ok=P.filter(p=>p.ans[i]===(c.flag?"C":"A")).length;return {...c,i,ok,rate:ok/(P.length||1)}});
+  const pat={ciego:0,noEscala:0,alerta:0,correcto:0,sobre:0,sanoOk:0};
+  P.forEach(p=>p.ans.forEach((a,i)=>{const c=cs[i];if(c.flag){if(a==="A")pat.ciego++;else if(a==="B")pat.noEscala++;else if(a==="D")pat.alerta++;else pat.correcto++}else{if(a==="C"||a==="D")pat.sobre++;else pat.sanoOk++}}));
+  const nFlag=cs.filter(c=>c.flag).length*P.length, nClean=cs.filter(c=>!c.flag).length*P.length;
+  let lsum=0,lmax=0;LEADER_Q.forEach(q=>{const i=S.leader[q.id];if(i!=null){lsum+=q.o[i][1]}lmax+=3});
+  const lead=lsum/lmax;
+  const byArea={};perPerson.forEach(p=>{(byArea[p.area]=byArea[p.area]||[]).push(p)});
+  const byLevel={};perPerson.forEach(p=>{(byLevel[p.level]=byLevel[p.level]||[]).push(p)});
+  return {sec,cs,perPerson,team,perCase,pat,nFlag,nClean,lead,byArea,byLevel,pred:S.leader.pred/100};
+}
+function level(x){return x>=.85?"Blindado":x>=.7?"Gestionado":x>=.5?"En construcción":"Reactivo"}
+function personPattern(p,cs){
+  const f=cs.map((c,i)=>[c,p.ans[i]]);
+  const ciego=f.filter(([c,a])=>c.flag&&a==="A").length, noE=f.filter(([c,a])=>c.flag&&a==="B").length, al=f.filter(([c,a])=>c.flag&&a==="D").length, so=f.filter(([c,a])=>!c.flag&&(a==="C"||a==="D")).length;
+  const m=Math.max(ciego,noE,al,so);
+  if(m===0) return "Reconoce y escala";
+  if(m===ciego) return "No ve el foco rojo";
+  if(m===noE) return "Lo ve, pero lo resuelve solo";
+  if(m===al) return "Alerta al cliente";
+  return "Sobre-reacciona con lo sano";
+}
+
+function vInforme(){
+  if(!S.sector) return needSector();
+  if(!S.people.length) return `<div class="card"><h3>Todavía no hay respuestas de tu equipo</h3><p class="muted" style="margin-top:6px">Aplica las situaciones a al menos una persona para ver el diagnóstico.</p><div class="row" style="margin-top:14px"><button class="btn" data-go2="equipo">Ir a mi equipo</button></div></div>`;
+  const A=analyze(), sec=A.sec;
+  const today=new Date().toLocaleDateString("es-MX",{day:"numeric",month:"long",year:"numeric"});
+  const gap=A.team-A.pred, gapPts=Math.round(gap*100);
+  const flags=A.perCase.filter(c=>c.flag).sort((a,b)=>a.rate-b.rate);
+  const worst=flags[0], best=flags[flags.length-1];
+  const patList=[["ciego","No vio el foco rojo","#d9455f"],["noEscala","Lo vio, pero lo resolvió solo","#e0a034"],["alerta","Alertó al cliente","#393e41"],["correcto","Documentó y escaló","#2f9e93"]];
+  const dominant=patList.slice(0,3).map(x=>[x,A.pat[x[0]]]).sort((a,b)=>b[1]-a[1])[0];
+  const areasSorted=Object.entries(A.byArea).map(([a,ps])=>[a,ps.reduce((t,p)=>t+p.score,0)/ps.length]).sort((a,b)=>a[1]-b[1]);
+
+  // --- Lectura narrativa ---
+  const L=[];
+  L.push(`Tu equipo resolvió bien el <b>${pct(A.team)}%</b> de las situaciones. Nivel: <b>${level(A.team)}</b>. ${A.team<.5?"Hoy la capacitación no se está traduciendo en conducta frente al cliente.":A.team<.7?"Hay base, pero todavía depende de quién esté atendiendo ese día.":A.team<.85?"La mayoría actúa bien; las fallas se concentran en riesgos y áreas identificables.":"Tu gente reconoce y escala. El reto ahora es sostenerlo y demostrarlo."}`);
+  if(gapPts<=-10) L.push(`Tú esperabas <b>${pct(A.pred)}%</b>. La distancia de <b>${Math.abs(gapPts)} puntos</b> entre lo que crees que tu gente sabe y lo que realmente hace es el hallazgo más importante de este diagnóstico: <b>los controles que diseñas descansan en una capacidad que hoy no está ahí</b>.`);
+  else if(gapPts>=10) L.push(`Tú esperabas <b>${pct(A.pred)}%</b>: tu gente rindió <b>${gapPts} puntos más</b> de lo que pensabas. Es una buena noticia, y también una señal de que no tienes cómo medir lo que tu equipo sabe. Sin medición, tampoco puedes demostrarlo.`);
+  else L.push(`Tu predicción (<b>${pct(A.pred)}%</b>) coincide con el resultado. Conoces a tu equipo; ahora el reto es convertir ese conocimiento en un programa que cierre las brechas.`);
+  if(worst) L.push(`El riesgo que menos reconocen es <b>«${worst.risk}»</b> (${worst.ok} de ${S.people.length} personas actuaron bien). ${worst.rate<.4?"Es un foco rojo típico de tu sector y hoy pasa sin que nadie lo detenga.":"Se reconoce a medias: algunos lo ven, pero no de forma consistente."} La regla de oro que tu gente necesita escuchar: <span class="rule">«${worst.rule}»</span>`);
+  if(dominant&&dominant[1]>0){
+    const k=dominant[0][0];
+    const txt={ciego:"El error que más se repite es no ver el foco rojo: la operación sigue su curso como si fuera normal. Esto se corrige con casos reales del sector, no con más teoría.",
+      noEscala:"El error que más se repite es ver el problema y resolverlo solo: pedir un papel más y seguir adelante. La persona detecta, pero cumplimiento nunca se entera. Aquí falta enseñar el canal y la regla de escalar.",
+      alerta:"El error que más se repite es alertar al cliente. La intención es buena, pero avisarle frustra el análisis y expone a la persona y a la empresa. Hay que enseñar cómo actuar sin revelar."}[k];
+    L.push(txt);
+  }
+  if(A.pat.sobre>0) L.push(`Ojo con el otro extremo: en <b>${A.pat.sobre} de ${A.nClean}</b> respuestas ante operaciones sanas, tu gente escaló o rechazó al cliente sin motivo. Un control que ahuyenta negocio sano también falla: <b>el objetivo es blindar, no frenar</b>.`);
+  if(areasSorted.length>1) L.push(`Por área, la brecha más grande está en <b>${esc(areasSorted[0][0])}</b> (${pct(areasSorted[0][1])}%) y la más sólida en <b>${esc(areasSorted[areasSorted.length-1][0])}</b> (${pct(areasSorted[areasSorted.length-1][1])}%). Esa diferencia es la razón por la que un mismo curso para todos no funciona.`);
+
+  // --- tabla de riesgos ---
+  const rows=A.perCase.map(c=>{const [k,l]=c.flag?sem(c.rate):sem(c.rate);return `<tr><td><strong>${c.risk}</strong><br><span class="muted small">${c.flag?"Foco rojo":"Operación sana (control)"} · ${c.fr}</span></td><td class="num">${c.ok} / ${S.people.length}</td><td><span class="sem ${k}">${c.flag?l:(c.rate>=.75?"No la castigan":c.rate>=.4?"A veces la frenan":"La frenan sin motivo")}</span></td><td class="rule small">«${c.rule}»</td></tr>`}).join("");
+
+  // --- barra de patrones ---
+  const tot=A.nFlag||1;
+  const bar=patList.map(([k,l,col])=>{const v=A.pat[k]/tot;return v>0?`<div style="width:${v*100}%;background:${col};color:${col==="#e0a034"?"#1b1b1e":"#fff"}" title="${l}">${pct(v)}%</div>`:""}).join("");
+  const leg=patList.map(([k,l,col])=>`<div><i style="background:${col}"></i><span><strong>${l}</strong><br><span class="muted small">${A.pat[k]} de ${A.nFlag} respuestas</span></span></div>`).join("");
+
+  // --- personas ---
+  const prow=A.perPerson.map((p,i)=>{const [k]=sem(p.score);return `<tr><td class="num">P${i+1}</td><td>${esc(p.area)}</td><td>${esc(p.level)}</td><td class="num"><span class="sem ${k}">${pct(p.score)}%</span></td><td>${personPattern(p,A.cs)}</td></tr>`}).join("");
+
+  // --- qué debe aprender cada área ---
+  const areaCards=Object.entries(A.byArea).map(([a,ps])=>{
+    const missed=A.cs.map((c,i)=>({c,miss:ps.filter(p=>p.ans[i]!==(c.flag?"C":"A")).length})).filter(x=>x.miss>0);
+    const flagsMissed=missed.filter(x=>x.c.flag).slice(0,3);
+    const over=missed.filter(x=>!x.c.flag).length;
+    const avg=ps.reduce((t,p)=>t+p.score,0)/ps.length;const [k]=sem(avg);
+    return `<div class="area"><div class="row" style="justify-content:space-between"><h3 style="font-size:17px">${esc(a)}</h3><span class="sem ${k}">${pct(avg)}%</span></div>
+      <p class="must">${AREA_MUST[a]||AREA_MUST["Otra área"]}</p>
+      ${flagsMissed.length?`<p class="muted small" style="font-weight:700;text-transform:uppercase;letter-spacing:.06em">Lo que se le pasó</p><ul>${flagsMissed.map(x=>`<li><strong>${x.c.risk}.</strong> ${x.c.mit} <span class="muted">Indicador: ${x.c.ind}.</span></li>`).join("")}</ul>`:`<p class="small">Reconoció todos los focos rojos. Úsala como referente interno.</p>`}
+      ${over?`<p class="small"><strong>Además:</strong> frenó ${over===1?"una operación sana":over+" operaciones sanas"}. Necesita el semáforo de menor riesgo para no ahuyentar clientes buenos.</p>`:""}
+    </div>`}).join("");
+
+  // --- liderazgo ---
+  const sf=sec.kind==="sf";
+  const lrows=LEADER_Q.map(q=>{const i=S.leader[q.id];if(i==null)return"";const sc=q.o[i][1];const k=sc>=3?"v":sc>=2?"a":"r";return `<div class="leader-row"><div><p style="font-weight:700">${sf&&q.tSF?q.tSF:q.t}</p><p class="muted small" style="margin-top:4px">Tu respuesta: ${q.o[i][0]}</p></div><div class="row" style="align-items:flex-start;flex-wrap:nowrap;gap:10px"><span class="sem ${k}" style="margin-top:2px">${k==="v"?"Fuerte":k==="a"?"Parcial":"Débil"}</span><p class="small">${q.read[i]}</p></div></div>`}).join("");
+
+  // --- prioridades ---
+  const P=[];
+  if(worst) P.push(["Enseña con el riesgo que hoy no ven",`Arma un módulo de casos sobre «${worst.risk}» para las áreas que lo fallaron. Mitigante: ${worst.mit} Mide con: ${worst.ind}.`]);
+  if(dominant&&dominant[1]>0){const k=dominant[0][0];P.push({ciego:["De la teoría al caso real","Cambia exposición por situaciones del sector: cada sesión, tres casos y una decisión. La meta es que el foco rojo se reconozca en el momento del trato."],noEscala:["Enseña a escalar, no sólo a detectar","Tu gente ve el problema pero no lo lleva a cumplimiento. Incluye en el programa el canal, qué se reporta, cómo se documenta y el tiempo de respuesta."],alerta:["Actuar sin revelar","Incluye un módulo de conducta frente al cliente: qué decir, qué no decir y cómo detener una operación sin alertar."]}[k])}
+  const weakL=LEADER_Q.map(q=>[q,S.leader[q.id]]).filter(([q,i])=>i!=null).sort((a,b)=>a[0].o[a[1]][1]-b[0].o[b[1]][1])[0];
+  if(weakL){const id=weakL[0].id;P.push({q1:["Escribe tus riesgos antes que tu temario","Sin riesgos documentados no puedes demostrar que el contenido es coherente con tu metodología, que es lo que la norma pide."],q2:["Mapea quién ve cada foco rojo","Por cada riesgo, anota qué área lo ve primero. Ese mapa decide a quién capacitas primero y con qué casos."],q3:["Mide conducta, no asistencia","Repite este diagnóstico al final del año: la mejora medida es tu mejor evidencia de debido control."],q4:["Un contenido por puesto","Diseña rutas distintas para dirección, atención al cliente, operación, cumplimiento y auditoría."],q5:["Mete a la dirección al programa","La dirección también se capacita: qué decisiones le tocan y qué recursos debe autorizar."],q6:["Haz visible el canal de alertas","Enséñalo con casos y mide cuántas alertas llegan por área: si una área no reporta nada, no es buena noticia."]}[id])}
+  const prios=P.slice(0,3).map((p,i)=>`<div class="prio"><span class="pn">${i+1}</span><div><h3 style="font-size:17.5px">${p[0]}</h3><p style="margin-top:6px">${p[1]}</p></div></div>`).join("");
+
+  // --- CTA taller ---
+  const coupon=couponNow();
+
+  return `<div class="report">
+    <div class="rhead">
+      <div><p class="eyebrow">Diagnóstico de sensibilidad al riesgo</p><h1 style="margin-top:8px;font-size:clamp(26px,4vw,38px)">${S.org?esc(S.org):"Tu organización"}</h1><p class="muted" style="margin-top:6px">${sec.name} · ${S.people.length} ${S.people.length===1?"persona":"personas"} · ${today}</p></div>
+      <div class="row no-print"><button class="btn ghost" data-go2="equipo">Agregar personas</button><button class="btn dark" id="print">Imprimir o guardar PDF</button><button class="btn tbtn" data-mode="taller">Siguiente paso: el taller →</button></div>
+    </div>
+
+    <section>
+      <div class="kpis">
+        <div class="kpi"><p class="eyebrow">Índice de tu equipo</p><p class="big">${pct(A.team)}<small>/100</small></p><p class="muted small" style="margin-top:6px">${level(A.team)}</p></div>
+        <div class="kpi hot"><p class="eyebrow">Brecha de percepción</p><p class="big">${gapPts>0?"+":""}${gapPts}<small style="color:#b9c2bd"> pts</small></p><p class="muted small" style="margin-top:6px">Esperabas ${pct(A.pred)}; tu equipo sacó ${pct(A.team)}</p></div>
+        <div class="kpi"><p class="eyebrow">Tu liderazgo del aprendizaje</p><p class="big">${pct(A.lead)}<small>/100</small></p><p class="muted small" style="margin-top:6px">${level(A.lead)}</p></div>
+      </div>
+      <div class="gapbar" role="img" aria-label="Predicción ${pct(A.pred)} contra resultado ${pct(A.team)}">
+        <div class="mark real" style="left:${pct(A.team)}%"><span>Tu equipo · ${pct(A.team)}</span></div>
+        <div class="mark pred" style="left:${pct(A.pred)}%"><span>Tu predicción · ${pct(A.pred)}</span></div>
+      </div>
+    </section>
+
+    <section class="card lectura"><p class="eyebrow" style="margin-bottom:12px">Lectura del diagnóstico</p>${L.map(x=>`<p>${x}</p>`).join("")}</section>
+
+    <section><h2>Semáforo por riesgo</h2><p class="muted" style="margin:6px 0 14px">Cuántas personas actuaron bien en cada situación. Las dos operaciones sanas miden lo contrario: que no frenen al cliente bueno.</p>
+      <div class="tablewrap"><table><thead><tr><th>Riesgo</th><th>Actuó bien</th><th>Semáforo</th><th>Regla de oro</th></tr></thead><tbody>${rows}</tbody></table></div></section>
+
+    <section class="card"><h2>Cómo responde tu gente ante un foco rojo</h2><p class="muted" style="margin-top:6px">Las ${A.nFlag} respuestas a situaciones de riesgo, según lo que hicieron.</p>
+      <div class="stackbar">${bar}</div><div class="legend">${leg}</div></section>
+
+    <section><h2>Persona por persona</h2><p class="muted" style="margin:6px 0 14px">Anónimo: sólo área y nivel.</p>
+      <div class="tablewrap"><table><thead><tr><th>#</th><th>Área</th><th>Nivel</th><th>Resultado</th><th>Patrón</th></tr></thead><tbody>${prow}</tbody></table></div></section>
+
+    <section><h2>Qué debe aprender cada área</h2><p class="muted" style="margin:6px 0 14px">Con el mitigante que corresponde y el indicador con el que vas a demostrar que funcionó.</p><div class="areas">${areaCards}</div></section>
+
+    <section class="card"><h2>Tu liderazgo del aprendizaje</h2><p class="muted" style="margin-top:6px">Ninguna línea de defensa funciona si quien lidera cumplimiento no sabe qué necesita aprender cada área.</p>${lrows}</section>
+
+    <section><h2>Tus tres prioridades para el Programa 2027</h2><div class="prios" style="margin-top:14px">${prios}</div></section>
+
+    ${tallerHTML(coupon,A)}
+
+    <p class="foot">Situaciones ${sec.kind==="av"?"tomadas de los casos ilustrativos del Atlas de Riesgo por fracción (Maribel Vázquez Menchaca, GMC360)":"tipo de la práctica de GMC360"}; los mitigantes e indicadores son criterio de la casa, calibrable a tu matriz de riesgo. Con ${S.people.length} personas, este diagnóstico es orientativo, no estadístico: sirve para decidir por dónde empezar. 360Educa · GMC360.</p>
+  </div>`;
+}
+
+/* ============ EVENTOS ============ */
+function bind(){
+  document.querySelectorAll("#app [data-mode]").forEach(b=>b.onclick=()=>set({mode:b.dataset.mode}));
+  document.querySelectorAll("[data-t]").forEach(b=>b.onclick=()=>set({t:+b.dataset.t}));
+  const keep=(f)=>{const y=window.scrollY;f();save();render();window.scrollTo({top:y})};
+  document.querySelectorAll("[data-poll]").forEach(b=>b.onclick=()=>keep(()=>S.tq.poll=+b.dataset.poll));
+  document.querySelectorAll("[data-role]").forEach(b=>b.onclick=()=>keep(()=>S.tq.role=+b.dataset.role));
+  document.querySelectorAll("[data-skill]").forEach(b=>b.onclick=()=>keep(()=>S.tq.skill=+b.dataset.skill));
+  document.querySelectorAll("[data-line]").forEach(b=>b.onclick=()=>keep(()=>S.tq.line=+b.dataset.line));
+  document.querySelectorAll("[data-nq]").forEach(b=>b.onclick=()=>keep(()=>S.tq.nq=+b.dataset.nq));
+  document.querySelectorAll("[data-emp]").forEach(b=>b.onclick=()=>keep(()=>S.tq.emp=+b.dataset.emp));
+  const ex=$("#exRep"); if(ex) ex.onclick=()=>loadDemo(true);
+  const ex2=$("#exRep2"); if(ex2) ex2.onclick=()=>loadDemo(true);
+  document.querySelectorAll("[data-go2]").forEach(b=>b.onclick=()=>set({view:b.dataset.go2}));
+  document.querySelectorAll("[data-sector]").forEach(b=>b.onclick=()=>{S.sector=b.dataset.sector;const o=$("#org");if(o)S.org=o.value;save();render()});
+  const org=$("#org"); if(org) org.oninput=()=>{S.org=org.value;save()};
+  const st=$("#start"); if(st) st.onclick=()=>set({view:"lider"});
+  const dm=$("#demo"); if(dm) dm.onclick=()=>loadDemo(false);
+  const pr=$("#pred"); if(pr) pr.oninput=()=>{S.leader.pred=+pr.value;$("#predo").textContent=pr.value+"%";save()};
+  document.querySelectorAll("[data-lq]").forEach(b=>b.onclick=()=>{S.leader[b.dataset.lq]=+b.dataset.i;save();const y=window.scrollY;render();window.scrollTo({top:y})});
+  const tt=$("#toTeam"); if(tt) tt.onclick=()=>set({view:"equipo"});
+  const ap=$("#addP"); if(ap) ap.onclick=()=>set({view:"caso",run:{area:$("#area").value,level:$("#level").value,i:0,ans:[]}});
+  document.querySelectorAll("[data-ans]").forEach(b=>b.onclick=()=>{
+    const r=S.run;r.ans.push(b.dataset.ans);r.i++;
+    if(r.i>=SECTORS[S.sector].cases.length){S.people.push({area:r.area,level:r.level,ans:r.ans});S.run=null;S.view="equipo";save();render();toast(`Listo. P${S.people.length} guardada.`)}
+    else{save();render()}
+  });
+  const cr=$("#cancelRun"); if(cr) cr.onclick=()=>set({run:null,view:"equipo"});
+  const tr=$("#toRep"); if(tr) tr.onclick=()=>set({view:"informe"});
+  const rs=$("#reset"); if(rs) rs.onclick=()=>set({confirmReset:true});
+  const ry=$("#resetYes"); if(ry) ry.onclick=()=>{S=fresh();save();render();toast("Se borró todo.")};
+  const rn=$("#resetNo"); if(rn) rn.onclick=()=>set({confirmReset:false});
+  const pp=$("#print"); if(pp) pp.onclick=()=>{try{window.print()}catch(e){}};
+}
+document.querySelectorAll(".step").forEach(b=>b.onclick=()=>{if(S.view==="caso"&&!confirmLeave())return;S.run=null;set({view:b.dataset.go})});
+document.querySelectorAll(".mode").forEach(b=>b.onclick=()=>{if(S.view==="caso"&&b.dataset.mode!=="pulso"&&!confirmLeave())return;set({mode:b.dataset.mode})});
+function confirmLeave(){toast("Termina o cancela las situaciones de esta persona primero.");return false}
+
+function loadDemo(full){
+  const k=S.sector||"alto";
+  const demo=[
+    {area:"Ventas y atención a clientes",level:"Operativo",ans:"AABABAAA"},
+    {area:"Caja, tesorería y cobranza",level:"Operativo",ans:"CBABCAAB"},
+    {area:"Operaciones y expedientes",level:"Mando medio",ans:"CCBCCBBA"},
+    {area:"Dirección u órgano de administración",level:"Directivo",ans:"DCADBCCD"}
+  ].map(p=>({...p,ans:p.ans.split(""),demo:true}));
+  if(full) demo.push({area:"Cumplimiento",level:"Mando medio",ans:"CCCBCCAA".split(""),demo:true});
+  S={...fresh(),tq:S.tq||{},t:S.t||0,mode:"pulso",sector:k,org:S.org||"Empresa de demostración",leader:{pred:80,q1:1,q2:1,q3:2,q4:1,q5:1,q6:1},people:demo,view:full?"informe":"equipo"};
+  save();render();toast(full?"Diagnóstico de ejemplo con 5 personas.":"Ejemplo cargado: falta la persona 5.");
+}
+render();
+</script>
